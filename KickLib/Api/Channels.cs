@@ -13,6 +13,10 @@ public class Channels : BaseApi
     {
     }
     
+    /// <summary>
+    ///     Gets channel information.
+    /// </summary>
+    /// <param name="channel">Channel name (slug).</param>
     public Task<ChannelResponse> GetChannelInfoAsync(string channel)
     {
         if (string.IsNullOrWhiteSpace(channel))

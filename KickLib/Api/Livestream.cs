@@ -14,6 +14,10 @@ public class Livestream : BaseApi
     {
     }
     
+    /// <summary>
+    ///     Returns bool if channel (streamer) is currently live (broadcasting).
+    /// </summary>
+    /// <param name="channel">Channel name (slug).</param>
     public async Task<bool> IsStreamerLiveAsync(string channel)
     {
         if (string.IsNullOrWhiteSpace(channel))
@@ -29,6 +33,11 @@ public class Livestream : BaseApi
         return data is not null && data.IsLive;
     }
 
+    /// <summary>
+    ///     Returns livestream information of given channel.
+    ///     If there is no active livestream, null is returned instead.
+    /// </summary>
+    /// <param name="channel">Channel name (slug).</param>
     public Task<LivestreamResponse> GetLivestreamInfoAsync(string channel)
     {
         if (string.IsNullOrWhiteSpace(channel))

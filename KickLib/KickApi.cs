@@ -6,6 +6,7 @@ namespace KickLib;
 
 public class KickApi : IKickApi
 {
+    public Clips Clips { get; }
     public Channels Channels { get; }
     public Livestream Livestream { get; }
     public Users Users { get; }
@@ -14,6 +15,7 @@ public class KickApi : IKickApi
     {
         client ??= new BrowserClient();
         
+        Clips = new Clips(client);
         Channels = new Channels(client);
         Livestream = new Livestream(client);
         Users = new Users(client);
