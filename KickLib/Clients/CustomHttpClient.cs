@@ -15,7 +15,17 @@ public class CustomHttpClient : IApiCaller
     {
         return SendRequestAsync(url, "GET");
     }
-    
+
+    public Task AuthenticateAsync(string username, string password)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<KeyValuePair<int, string>> SendRequestAsync(
         string url,
         string method,

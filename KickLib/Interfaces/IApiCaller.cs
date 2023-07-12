@@ -11,4 +11,8 @@ public interface IApiCaller
     ///     Value must be valid JSON document to be deserialized.
     /// </returns>
     Task<KeyValuePair<int, string>> SendRequestAsync(string url);
+
+    Task AuthenticateAsync(string username, string password);
+
+    Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload);
 }

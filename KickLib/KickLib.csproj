@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <LangVersion>latest</LangVersion>
-        <Version>0.0.2</Version>
+        <Version>0.0.3</Version>
         <Title>KickLib</Title>
         <Authors>Bukk94</Authors>
         <Description>C# library for accessing API from Kick.com livestreaming platform.</Description>
@@ -16,9 +16,9 @@
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Implemented chat reading and channel events</PackageReleaseNotes>
-        <AssemblyVersion>0.0.2</AssemblyVersion>
-        <FileVersion>0.0.2</FileVersion>
+        <PackageReleaseNotes>Linked Client project, added preparation for authentication, added more endpoint calls</PackageReleaseNotes>
+        <AssemblyVersion>0.0.3</AssemblyVersion>
+        <FileVersion>0.0.3</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -31,5 +31,9 @@
         <Content Include="../README.md" Pack="true" PackagePath=".">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\KickLib.Client\KickLib.Client.csproj" />
     </ItemGroup>
 </Project>
