@@ -20,7 +20,8 @@ KickLib is a C# library that allows for interaction with unofficial / undocument
 and eases implementation for various bots.
 
 ## Features
-
+* Reading Chat Messages
+* Reading Channel events (follows)
 * Clips
   * Get all clips 
   * Get channel clips
@@ -33,8 +34,22 @@ and eases implementation for various bots.
 * Users
   * Get user information
 
+## Installing
+
+First, [install NuGet](http://docs.nuget.org/docs/start-here/installing-nuget). 
+Then, install [KickLib](https://www.nuget.org/packages/KickLib) from the package manager console:
+
+```
+PM> Install-Package KickLib
+```
+Or from the .NET CLI as:
+```
+dotnet add package KickLib
+```
+
 ## Examples
 
+### Using API to get information
 ```csharp
 IKickApi kickApi = new KickApi();
 
@@ -54,6 +69,21 @@ var liveInfo = await kickApi.Livestream.GetLivestreamInfoAsync(userName);
 
 // Get channel clips
 var channelClips = await kickApi.Clips.GetChannelClipsAsync(userName);
+```
+
+### Using Client to read chat messages
+
+```csharp
+IKickClient client = new KickClient();
+
+client.OnMessage += delegate(object sender, ChatMessageEventArgs e)
+{
+    Console.WriteLine(e.Data.Content);
+};
+
+await client.ListenToChatRoomAsync(1234567);
+await client.ConnectAsync();
+
 ```
 
 ## Custom downloader client

@@ -27,7 +27,8 @@ public class ChannelResponse
     [JsonProperty(PropertyName = "followersCount")]
     public int FollowersCount { get; set; }
 
-    // TODO: subscriber_badges
+    [JsonProperty(PropertyName = "subscriber_badges")]
+    public ICollection<SubscriberBadgeResponse> Type { get; set; }
 
     [JsonProperty(PropertyName = "banner_image")]
     public BannerResponse BannerImage { get; set; }
@@ -58,8 +59,8 @@ public class ChannelResponse
     
     [JsonProperty(PropertyName = "ascending_links")]
     public ICollection<LinksResponse> AscendingLinks { get; set; }
-
-    // TODO: plan
+    
+    public PlanResponse Plan { get; set; }
     
     public ICollection<MediaResponse> Media { get; set; }
     

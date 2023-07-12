@@ -73,4 +73,23 @@ public class Clips : BaseApi
         var urlPart = $"{ApiUrlPart}/{clipId}";
         return GetAsync<ClipResponse>(urlPart, ApiVersion.V2, "clip");
     }
+    
+    public async Task<byte[]> DownloadClipAsync(int clipId)
+    {
+        var clip = await GetClipAsync(clipId);
+        if (clip is null)
+        {
+            return null;
+        }
+        
+        using var client = new HttpClient();
+        var response = await client.GetAsync(clip.VideoUrl);
+        response.EnsureSuccessStatusCode();
+
+        using var memoryStream = new MemoryStream();
+        await response.Content.CopyToAsync(memoryStream);
+        memoryStream.Seek(0, SeekOrigin.Begin);
+
+        return memoryStream.ToArray();
+    }
 }
