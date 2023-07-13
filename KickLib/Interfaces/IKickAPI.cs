@@ -9,4 +9,6 @@ public interface IKickApi
     Livestream Livestream { get; }
     Messages Messages { get; }
     Users Users { get; }
+
+    Task AuthenticateAsync(string username, string password);
 }

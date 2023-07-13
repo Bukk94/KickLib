@@ -7,6 +7,7 @@
 <img src="https://img.shields.io/badge/Platform-.NET-lightgrey.svg" style="max-height: 300px;">
 <a href="https://discord.gg/fPRXy57WrS"><img src="https://img.shields.io/badge/Discord-KickLib-green.svg" style="max-height: 300px;"></a>
 <a href="https://github.com/Bukk94/KickLib/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" style="max-height: 300px;"></a>
+<a href="https://www.nuget.org/packages/KickLib"><img src="https://img.shields.io/nuget/v/KickLib.svg?style=flat-square" style="max-height: 300px;"></a>
 </p>
 
 <p align="center">
@@ -17,24 +18,42 @@
 # About
 
 KickLib is a C# library that allows for interaction with unofficial / undocumented Kick API (https://kick.com) 
-and eases implementation for various bots.
+ and WebSocket. KickLib eases implementation for various chatbots by providing simple to use methods.
 
-## Features
+## KickLib Highlights ✨
+* Real-time chat reading
+* Authentication flow
+* Message sending
+* Endpoint calls
+
+<details>
+<summary>Click here to see Complete Features List</summary>
+
+### Client
 * Reading Chat Messages
-* Reading Channel events (follows)
+* Reading Channel events 
+  * Follows status updated
+
+### API
 * Clips
-  * Get all clips 
+  * Get all Kick clips 
   * Get channel clips
   * Get clip information
+  * Download clip
 * Channels
   * Get channel information
+  * Get latest subscriber
+  * Get chatroom information
 * Livestreams
   * Is streamer live?
   * Get livestream information 
+* Message
+  * Send message to chatroom
 * Users
   * Get user information
+</details>
 
-## Installing
+## Installing ⏫
 
 First, [install NuGet](http://docs.nuget.org/docs/start-here/installing-nuget). 
 Then, install [KickLib](https://www.nuget.org/packages/KickLib) from the package manager console:
@@ -47,7 +66,7 @@ Or from the .NET CLI as:
 dotnet add package KickLib
 ```
 
-## Examples
+## Examples 💡
 
 ### Using API to get information
 ```csharp
@@ -61,14 +80,15 @@ var user = await kickApi.Users.GetUserAsync(userName);
 // Get information about channel
 var channelInfo = await kickApi.Channels.GetChannelInfoAsync(userName);
 
-// Is user broadcasting / streaming?
-var isBroadcasting = await kickApi.Livestream.IsStreamerLiveAsync(userName);
-
 // Gets detailed information about current livestream
 var liveInfo = await kickApi.Livestream.GetLivestreamInfoAsync(userName);
 
 // Get channel clips
 var channelClips = await kickApi.Clips.GetChannelClipsAsync(userName);
+
+// Authenticated calls
+await kickApi.AuthenticateAsync("username", "password");
+await kickApi.Messages.SendMessageAsync(123456, "My message");
 ```
 
 ### Using Client to read chat messages
@@ -81,7 +101,7 @@ client.OnMessage += delegate(object sender, ChatMessageEventArgs e)
     Console.WriteLine(e.Data.Content);
 };
 
-await client.ListenToChatRoomAsync(1234567);
+await client.ListenToChatRoomAsync(123456);
 await client.ConnectAsync();
 
 ```
@@ -102,12 +122,6 @@ var myDownloader = new MyOwnDownloader();
 IKickApi kickApi = new KickApi(myDownloader);
 ```
 
-## Limitations
-
-Currently KickLib is not able to do authenticated calls, because any authentication to Kick's API is very tricky
-and they do not provide any official ways to authenticate. Thus library uses only endpoints that don't need this 
-(but there are plans to extend it in the future).
-
 # Disclaimer
 
 Kick don't have any official API. All functionality in KickLib was researched and reversed-engineered from their website.
@@ -120,4 +134,4 @@ Once API is officially released, this library will be adjusted accordingly.
 
 # License
 
-See [MIT License](LICENSE)
+See [MIT License](LICENSE).

@@ -12,6 +12,11 @@ public class Messages : BaseApi
     {
     }
 
+    /// <summary>
+    ///     Sends message to chatroom. [Requires authentication].
+    /// </summary>
+    /// <param name="chatroomId">Chatroom ID where to send the message.</param>
+    /// <param name="message">Message to be send.</param>
     public async Task SendMessageAsync(int chatroomId, string message)
     {
         if (string.IsNullOrWhiteSpace(message))

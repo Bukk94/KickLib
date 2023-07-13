@@ -44,4 +44,20 @@ public class Channels : BaseApi
         var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channel)}/subscribers/last";
         return GetAuthenticatedAsync<LastSubscriberResponse>(urlPart, ApiVersion.V2);
     }
+    
+    /// <summary>
+    ///     Returns chatroom information of given channel.
+    /// </summary>
+    /// <param name="channel">Channel name (slug).</param>
+    public Task<ChatroomResponseV2> GetChatroomAsync(string channel)
+    {
+        if (string.IsNullOrWhiteSpace(channel))
+        {
+            throw new ArgumentNullException(nameof(channel));
+        }
+        
+        var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channel)}/chatroom";
+        
+        return GetAsync<ChatroomResponseV2>(urlPart, ApiVersion.V2);
+    }
 }

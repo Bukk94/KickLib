@@ -8,8 +8,10 @@ public class AuthenticationService : IAuthenticationService
     public string BearerToken { get; private set; }
     public bool IsAuthenticated => BearerToken is not null;
     
-    public async Task AuthenticateAsync(string username, string password)
+    public Task AuthenticateAsync(string username, string password)
     {
+        // TODO: Will be implemented soon.
+        // For now anyone can implement own auth flow and pass it into Client using IAuthenticationService
         throw new NotImplementedException();
     }
     
