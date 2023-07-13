@@ -95,7 +95,16 @@ public abstract class BaseApi
             throw new Exception("Cannot pass null resource with null override url");
         }
 
-        var url = $"{BaseUrl}{(int)version}/{urlPart}";
+        string url;
+        if (version == ApiVersion.None)
+        {
+            // In some cases, there is no api and v1 prefix and some endpoints are called directly
+            url = $"{Constants.KickUrl}/{urlPart}";
+        }
+        else
+        {
+            url = $"{BaseUrl}{(int)version}/{urlPart}";
+        }
 
         if (queryParams != null)
         {

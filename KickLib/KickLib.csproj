@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <LangVersion>latest</LangVersion>
-        <Version>0.0.6</Version>
+        <Version>0.1.0</Version>
         <Title>KickLib</Title>
         <Authors>Bukk94</Authors>
         <Description>C# library for accessing API from Kick.com livestreaming platform.</Description>
@@ -17,14 +17,17 @@
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageReleaseNotes>Added Chatroom endpoint</PackageReleaseNotes>
-        <AssemblyVersion>0.0.6</AssemblyVersion>
-        <FileVersion>0.0.6</FileVersion>
+        <AssemblyVersion>0.1.0</AssemblyVersion>
+        <FileVersion>0.1.0</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="JsonSubTypes" Version="2.0.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="PuppeteerExtraSharp" Version="2.0.0" />
         <PackageReference Include="PuppeteerSharp" Version="10.1.0" />
+        <PackageReference Include="PusherClient" Version="2.2.1" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.2" />
     </ItemGroup>
 
     <ItemGroup>

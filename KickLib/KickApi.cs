@@ -10,6 +10,7 @@ public class KickApi : IKickApi
     
     public Clips Clips { get; }
     public Channels Channels { get; }
+    public Emotes Emotes { get; }
     public Livestream Livestream { get; }
     public Messages Messages { get; }
     public Users Users { get; }
@@ -20,6 +21,7 @@ public class KickApi : IKickApi
         
         Clips = new Clips(client);
         Channels = new Channels(client);
+        Emotes = new Emotes(client);
         Livestream = new Livestream(client);
         Messages = new Messages(client);
         Users = new Users(client);

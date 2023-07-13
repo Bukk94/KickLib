@@ -6,6 +6,7 @@ public interface IKickApi
 {
     Clips Clips { get; }
     Channels Channels { get; }
+    Emotes Emotes { get; }
     Livestream Livestream { get; }
     Messages Messages { get; }
     Users Users { get; }
