@@ -2,6 +2,7 @@ using KickLib.Client.Interfaces;
 using KickLib.Client.Models.Args;
 using KickLib.Client.Models.Events.Channel;
 using KickLib.Client.Models.Events.Chatroom;
+using KickLib.Client.Models.Events.Livestream;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PusherClient;
@@ -33,6 +34,7 @@ public class KickClient : IKickClient
     public event EventHandler OnDisconnected;
     public event EventHandler<ChatMessageEventArgs> OnMessage;
     public event EventHandler<FollowersUpdatedEventArgs> OnFollowersUpdated;
+    public event EventHandler<StreamStateChangedArgs> OnStreamStatusChanged;
     public event EventHandler<UnknownEventArgs> OnUnknownEvent;
     
     public async Task ListenToChannelAsync(int channelId)
@@ -99,6 +101,13 @@ public class KickClient : IKickClient
                 {
                     Data = parsed
                 });
+                break;
+            case "App\\Events\\StreamerIsLive":
+                var livestreamData = ParseData<LivestreamStartedEvent>(e.Data);
+                OnStreamStatusChanged?.Invoke(this, new StreamStateChangedArgs { IsLive = true, Data = livestreamData });
+                break;
+            case "App\\Events\\StopStreamBroadcast":
+                OnStreamStatusChanged?.Invoke(this, new StreamStateChangedArgs { IsLive = false });
                 break;
             default:
                 _logger?.LogInformation("Encountered unknown event during channel reading.");

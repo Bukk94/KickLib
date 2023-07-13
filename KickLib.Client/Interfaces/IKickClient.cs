@@ -25,6 +25,11 @@ public interface IKickClient
     event EventHandler<FollowersUpdatedEventArgs> OnFollowersUpdated;
     
     /// <summary>
+    ///     Event that fires when client detects stream status change (went online / offline).
+    /// </summary>
+    event EventHandler<StreamStateChangedArgs> OnStreamStatusChanged;
+    
+    /// <summary>
     ///     Event that fires when client receives unknown message.
     /// </summary>
     event EventHandler<UnknownEventArgs> OnUnknownEvent;
