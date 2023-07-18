@@ -3,6 +3,7 @@ namespace KickLib.Client.Models.Events.Chatroom;
 public class Badge
 {
     // TODO: Convert to enum when all values are known
+    // moderator, sub_gifter, subscriber, broadcaster
     public string Type { get; set; }
     
     public string Text { get; set; }

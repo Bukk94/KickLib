@@ -1,6 +1,7 @@
 ﻿using KickLib.Core;
 using KickLib.Interfaces;
 using KickLib.Models.Response.v1.Users;
+using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
@@ -8,8 +9,8 @@ public class Users : BaseApi
 {
     private const string ApiUrlPart = "users/";
 
-    public Users(IApiCaller client)
-        : base(client)
+    public Users(IApiCaller client, ILogger logger = null)
+        : base(client, logger)
     {
     }
     

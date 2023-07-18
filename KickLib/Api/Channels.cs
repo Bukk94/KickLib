@@ -2,6 +2,7 @@ using KickLib.Core;
 using KickLib.Interfaces;
 using KickLib.Models.Response.v1.Channels;
 using KickLib.Models.Response.v2.Channels;
+using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
@@ -9,8 +10,8 @@ public class Channels : BaseApi
 {
     private const string ApiUrlPart = "channels/";
 
-    public Channels(IApiCaller client)
-        : base(client)
+    public Channels(IApiCaller client, ILogger logger = null)
+        : base(client, logger)
     {
     }
     

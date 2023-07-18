@@ -1,6 +1,7 @@
 ﻿using KickLib.Core;
 using KickLib.Interfaces;
 using KickLib.Models.Response.v2.Clips;
+using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
@@ -8,8 +9,8 @@ public class Clips : BaseApi
 {
     private const string ApiUrlPart = "clips";
 
-    public Clips(IApiCaller client)
-        : base(client)
+    public Clips(IApiCaller client, ILogger logger = null)
+        : base(client, logger)
     {
     }
     

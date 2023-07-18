@@ -2,10 +2,6 @@ using System.Text.RegularExpressions;
 using KickLib.Extensions;
 using KickLib.Interfaces;
 using Newtonsoft.Json.Linq;
-using PuppeteerExtraSharp;
-using PuppeteerExtraSharp.Plugins.AnonymizeUa;
-using PuppeteerExtraSharp.Plugins.ExtraStealth;
-using PuppeteerSharp;
 
 namespace KickLib.Clients;
 
@@ -30,17 +26,7 @@ public class BrowserClient : IApiCaller
     
     public async Task<KeyValuePair<int, string>> SendRequestAsync(string url)
     {
-        await EnsureBrowserAsync();
-        
-        var extra = new PuppeteerExtra(); 
-        extra.Use(new StealthPlugin());
-        extra.Use(new AnonymizeUaPlugin());
-        
-        await using var browser = await extra.LaunchAsync(
-            new LaunchOptions
-            {
-                Headless = true
-            });
+        await using var browser = await BrowserInitializer.LaunchBrowserAsync();
         
         await using var page = await browser.NewPageAsync();
         await page.GoToAsync(url);
@@ -62,17 +48,7 @@ public class BrowserClient : IApiCaller
             throw new ArgumentException($"Cannot send authenticated request without authenticating first! Call '{nameof(AuthenticateAsync)}' first.");
         }
         
-        await EnsureBrowserAsync();
-        
-        var extra = new PuppeteerExtra(); 
-        extra.Use(new StealthPlugin());
-        extra.Use(new AnonymizeUaPlugin());
-        
-        await using var browser = await extra.LaunchAsync(
-            new LaunchOptions
-            {
-                Headless = true
-            });
+        await using var browser = await BrowserInitializer.LaunchBrowserAsync();
         
         try
         {
@@ -123,11 +99,5 @@ public class BrowserClient : IApiCaller
 
         // At this point we got error, so return empty string with 500.
         return new KeyValuePair<int, string>(500, string.Empty);
-    }
-    
-    private static async Task EnsureBrowserAsync()
-    {
-        using var browserFetcher = new BrowserFetcher();
-        await browserFetcher.DownloadAsync();
     }
 }

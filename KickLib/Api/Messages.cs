@@ -1,5 +1,6 @@
 using KickLib.Core;
 using KickLib.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
@@ -7,8 +8,8 @@ public class Messages : BaseApi
 {
     private const string ApiUrlPart = "messages/";
 
-    public Messages(IApiCaller client)
-        : base(client)
+    public Messages(IApiCaller client, ILogger logger = null)
+        : base(client, logger)
     {
     }
 

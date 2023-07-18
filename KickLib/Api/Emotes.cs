@@ -1,6 +1,7 @@
 using KickLib.Core;
 using KickLib.Interfaces;
 using KickLib.Models.Response.v1.Emotes;
+using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
@@ -8,8 +9,8 @@ public class Emotes : BaseApi
 {
     private const string ApiUrlPart = "emotes/";
 
-    public Emotes(IApiCaller client)
-        : base(client)
+    public Emotes(IApiCaller client, ILogger logger = null)
+        : base(client, logger)
     {
     }
     

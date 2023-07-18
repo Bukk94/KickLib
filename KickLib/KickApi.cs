@@ -1,6 +1,7 @@
 ﻿using KickLib.Api;
 using KickLib.Clients;
 using KickLib.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace KickLib;
 
@@ -15,16 +16,16 @@ public class KickApi : IKickApi
     public Messages Messages { get; }
     public Users Users { get; }
 
-    public KickApi(IApiCaller client = null)
+    public KickApi(IApiCaller client = null, ILogger logger = null)
     {
         client ??= new BrowserClient(new AuthenticationService());
         
-        Clips = new Clips(client);
-        Channels = new Channels(client);
-        Emotes = new Emotes(client);
-        Livestream = new Livestream(client);
-        Messages = new Messages(client);
-        Users = new Users(client);
+        Clips = new Clips(client, logger);
+        Channels = new Channels(client, logger);
+        Emotes = new Emotes(client, logger);
+        Livestream = new Livestream(client, logger);
+        Messages = new Messages(client, logger);
+        Users = new Users(client, logger);
 
         _client = client;
     }

@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <LangVersion>latest</LangVersion>
-        <Version>0.1.0</Version>
+        <Version>0.1.2</Version>
         <Title>KickLib</Title>
         <Authors>Bukk94</Authors>
         <Description>C# library for accessing API from Kick.com livestreaming platform.</Description>
@@ -17,8 +17,8 @@
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageReleaseNotes>Added Chatroom endpoint</PackageReleaseNotes>
-        <AssemblyVersion>0.1.0</AssemblyVersion>
-        <FileVersion>0.1.0</FileVersion>
+        <AssemblyVersion>0.1.2</AssemblyVersion>
+        <FileVersion>0.1.2</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>

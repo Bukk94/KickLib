@@ -2,6 +2,7 @@ using KickLib.Core;
 using KickLib.Interfaces;
 using KickLib.Models.Response.v1.Livestream;
 using KickLib.Models.Response.v2.Livestream;
+using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
@@ -9,8 +10,8 @@ public class Livestream : BaseApi
 {
     private const string ApiUrlPart = "channels/";
 
-    public Livestream(IApiCaller client)
-        : base(client)
+    public Livestream(IApiCaller client, ILogger logger = null)
+        : base(client, logger)
     {
     }
     

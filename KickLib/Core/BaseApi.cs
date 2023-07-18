@@ -1,6 +1,8 @@
 ﻿using KickLib.Interfaces;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 
 namespace KickLib.Core;
 
@@ -8,10 +10,33 @@ public abstract class BaseApi
 {
     private const string BaseUrl = $"{Constants.KickUrl}/api/v";
     private readonly IApiCaller _client;
+    private readonly ILogger _logger;
+    private readonly JsonSerializerSettings _serializerSettings;
 
-    protected BaseApi(IApiCaller client)
+    /// <summary>
+    ///     When set to true, API will throw an exception when deserialization fails.
+    ///     Default: false
+    ///     Enabling this might cause instability as Kick API is not official and they might change some fields in API without notice.
+    /// </summary>
+    public static bool ThrowOnDeserializationError { get; set; }
+    
+    protected BaseApi(IApiCaller client, ILogger logger = null)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
+        _logger = logger;
+
+        _serializerSettings = new JsonSerializerSettings
+        {
+            Error = delegate(object sender, ErrorEventArgs args)
+            {
+                logger?.LogError("Deserialization failed in {sender}! {ex}", sender, args.ErrorContext.Error);
+
+                if (!ThrowOnDeserializationError)
+                {
+                    args.ErrorContext.Handled = true;
+                }
+            }
+        };
     }
     
     protected async Task<TType> GetAsync<TType>(
@@ -28,7 +53,7 @@ public abstract class BaseApi
             return default;
         }
         
-        return JsonConvert.DeserializeObject<TType>(data.Value);
+        return JsonConvert.DeserializeObject<TType>(data.Value, _serializerSettings);
     }
     
     protected async Task<TType> GetAsync<TType>(
@@ -49,7 +74,7 @@ public abstract class BaseApi
         var parsed = JObject.Parse(data.Value);
         var partData = parsed.SelectToken(part)?.ToString();
         return partData is not null
-            ? JsonConvert.DeserializeObject<TType>(partData)
+            ? JsonConvert.DeserializeObject<TType>(partData, _serializerSettings)
             : default;
     }
 
@@ -66,7 +91,7 @@ public abstract class BaseApi
             return default;
         }
         
-        return JsonConvert.DeserializeObject<TType>(data.Value);
+        return JsonConvert.DeserializeObject<TType>(data.Value, _serializerSettings);
     }
     
     protected async Task PostAuthenticatedAsync(
