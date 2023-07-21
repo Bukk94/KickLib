@@ -1,5 +1,6 @@
 using KickLib.Core;
 using KickLib.Interfaces;
+using KickLib.Models.Response;
 using KickLib.Models.Response.v1.Channels;
 using KickLib.Models.Response.v2.Channels;
 using Microsoft.Extensions.Logging;
@@ -44,6 +45,23 @@ public class Channels : BaseApi
 
         var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channel)}/subscribers/last";
         return GetAuthenticatedAsync<LastSubscriberResponse>(urlPart, ApiVersion.V2);
+    }
+    
+    /// <summary>
+    ///     Gets follower count of the channel.
+    /// </summary>
+    /// <param name="channel">Channel name (slug).</param>
+    public async Task<int?> GetFollowersCountAsync(string channel)
+    {
+        if (string.IsNullOrWhiteSpace(channel))
+        {
+            throw new ArgumentNullException(nameof(channel));
+        }
+
+        var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channel)}/followers-count";
+        var response = await GetAsync<DataWrapper<CountResponse>>(urlPart, ApiVersion.V1Internal);
+        
+        return response?.Data?.Count;
     }
     
     /// <summary>
