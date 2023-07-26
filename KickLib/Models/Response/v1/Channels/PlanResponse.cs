@@ -10,7 +10,7 @@ public class PlanResponse
     public int ChannelId { get; set; }
     
     [JsonProperty(PropertyName = "stripe_plan_id")]
-    public int StripePlanId { get; set; }
+    public string StripePlanId { get; set; }
 
     public double Amount { get; set; }
     
