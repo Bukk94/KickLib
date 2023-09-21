@@ -2,6 +2,7 @@ using System.Dynamic;
 using KickLib.Extensions;
 using KickLib.Interfaces;
 using Newtonsoft.Json.Linq;
+using PuppeteerSharp;
 
 namespace KickLib.Clients;
 
@@ -11,6 +12,7 @@ namespace KickLib.Clients;
 public class AuthenticationService : IAuthenticationService
 {
     public string BearerToken { get; private set; }
+    public string XsrfToken { get; private set; }
     public bool IsAuthenticated => BearerToken is not null;
     
     public async Task AuthenticateAsync(string username, string password)
@@ -19,6 +21,7 @@ public class AuthenticationService : IAuthenticationService
         
         await using var page = await browser.NewPageAsync();
         var xsrfToken = await page.GetXsrfTokenAsync();
+        XsrfToken = xsrfToken;
 
         // Call kick-token-provider to get data required for login process
         var tokenProviderResponse = await page.EvaluateFunctionAsync<string>(@"
@@ -85,5 +88,15 @@ public class AuthenticationService : IAuthenticationService
 
         BearerToken = token;
         Console.WriteLine("Successfully authenticated!");
+    }
+
+    public async Task RefreshXsrfTokenAsync(IPage targetPage)
+    {
+        if (targetPage is null)
+        {
+            throw new ArgumentNullException(nameof(targetPage));
+        }
+        
+        XsrfToken = await targetPage.GetXsrfTokenAsync();
     }
 }

@@ -1,7 +1,9 @@
 using System.Text.RegularExpressions;
-using KickLib.Extensions;
+using KickLib.Exceptions;
 using KickLib.Interfaces;
 using Newtonsoft.Json.Linq;
+using Polly;
+using PuppeteerSharp;
 
 namespace KickLib.Clients;
 
@@ -53,31 +55,28 @@ public class BrowserClient : IApiCaller
         try
         {
             await using var page = await browser.NewPageAsync();
-            var xsrfToken = await page.GetXsrfTokenAsync();
             
             var method = payload is not null ? "POST" : "GET";
             var body = payload is not null
                 ? $", body: JSON.stringify({payload})"
                 : "";
-            
-            var response = await page.EvaluateFunctionAsync<string>($@"
-                async () => {{
-                    const response = await fetch('{url}', {{
-                        method: '{method}',
-                        headers: {{
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Bearer {_authenticationService.BearerToken}',
-                            'X-Xsrf-Token': '{xsrfToken}'
-                        }}{body}
-                    }});
-                    return response.text();
-                }}
-            ");
 
-            if (response.Contains("CSRF token mismatch"))
+            string response = null;
+            await Policy
+                .Handle<XsrfMismatchException>()
+                .RetryAsync(2, async (_, _) =>
+                {
+                    // Refresh Xsrf token if we get a mismatch
+                    await _authenticationService.RefreshXsrfTokenAsync(page);
+                })
+                .ExecuteAsync(async () =>
+                {
+                    response = await GetApiResponseAsync(page, url, method, body);
+                });
+
+            if (response is null)
             {
-                throw new ArgumentException("Something went wrong: CSRF token mismatch");
+                throw new ArgumentException("Couldn't get the response from target page");
             }
 
             var parsedResponse = JToken.Parse(response);
@@ -99,5 +98,39 @@ public class BrowserClient : IApiCaller
 
         // At this point we got error, so return empty string with 500.
         return new KeyValuePair<int, string>(500, string.Empty);
+    }
+
+    private async Task<string> GetApiResponseAsync(IPage page, string url, string method, string body)
+    {
+        return await Policy
+            .Handle<PuppeteerException>()
+            .RetryAsync(3)
+            .ExecuteAsync(async () =>
+            {
+                // Sometimes Kick doesn't like our requests and we get 'Failed to fetch' exception
+                // Simple retry is enough to pass through 
+                
+                var response = await page.EvaluateFunctionAsync<string>($@"
+                    async () => {{
+                        const response = await fetch('{url}', {{
+                            method: '{method}',
+                            headers: {{
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer {_authenticationService.BearerToken}',
+                                'X-Xsrf-Token': '{_authenticationService.XsrfToken}'
+                            }}{body}
+                        }});
+                        return response.text();
+                    }}
+                ");
+
+                if (response.Contains("CSRF token mismatch"))
+                {
+                    throw new XsrfMismatchException("Something went wrong: CSRF token mismatch");
+                }
+
+                return response;
+            });
     }
 }
