@@ -30,7 +30,7 @@ public class KickApi : IKickApi
         _client = client;
     }
 
-    public Task AuthenticateAsync(string username, string password)
+    public Task AuthenticateAsync(string username, string password, string totp)
     {
         if (string.IsNullOrWhiteSpace(username))
         {
@@ -42,6 +42,6 @@ public class KickApi : IKickApi
             throw new ArgumentNullException(nameof(password));
         }
         
-        return _client.AuthenticateAsync(username, password);
+        return _client.AuthenticateAsync(username, password, totp);
     }
 }

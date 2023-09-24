@@ -15,7 +15,7 @@ public class AuthenticationService : IAuthenticationService
     public string XsrfToken { get; private set; }
     public bool IsAuthenticated => BearerToken is not null;
     
-    public async Task AuthenticateAsync(string username, string password)
+    public async Task AuthenticateAsync(string username, string password, string totp)
     {
         await using var browser = await BrowserInitializer.LaunchBrowserAsync();
         
@@ -45,6 +45,10 @@ public class AuthenticationService : IAuthenticationService
         payloadPrep.Add("isMobileRequest", true);
         payloadPrep.Add("email", username);
         payloadPrep.Add("password", password);
+        if (!string.IsNullOrEmpty(totp))
+        {
+            payloadPrep.Add("one_time_password", totp);
+        }
         payloadPrep.Add(tokenProvider["nameFieldName"]!.ToString(), "");
         payloadPrep.Add(tokenProvider["validFromFieldName"]!.ToString(), tokenProvider["encryptedValidFrom"]);
         
@@ -71,11 +75,6 @@ public class AuthenticationService : IAuthenticationService
             throw new ArgumentException("Something went wrong: CSRF token mismatch");
         }
 
-        if (!loginResponse.Contains("token"))
-        {
-            throw new ArgumentException("Something went wrong: No token found in payload!");
-        }
-
         var parsedLoginResponse = JToken.Parse(loginResponse);
         
         var token = parsedLoginResponse["token"]?.ToString();
@@ -83,8 +82,14 @@ public class AuthenticationService : IAuthenticationService
 
         if (faRequired)
         {
-            throw new ArgumentException("2FA is required! Cannot log-in.");
+            throw new ArgumentException("2FA is required! Cannot log-in. Provide a valid topt code.");
         }
+
+        if (!loginResponse.Contains("token"))
+        {
+            throw new ArgumentException("Something went wrong: No token found in payload!");
+        }
+
 
         BearerToken = token;
         Console.WriteLine("Successfully authenticated!");

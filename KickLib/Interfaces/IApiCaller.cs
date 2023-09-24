@@ -12,7 +12,7 @@ public interface IApiCaller
     /// </returns>
     Task<KeyValuePair<int, string>> SendRequestAsync(string url);
 
-    Task AuthenticateAsync(string username, string password);
+    Task AuthenticateAsync(string username, string password, string totp);
 
     Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload);
 }
