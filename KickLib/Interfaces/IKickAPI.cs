@@ -11,5 +11,5 @@ public interface IKickApi
     Messages Messages { get; }
     Users Users { get; }
 
-    Task AuthenticateAsync(string username, string password);
+    Task AuthenticateAsync(string username, string password, string totp);
 }

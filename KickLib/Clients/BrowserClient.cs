@@ -21,9 +21,9 @@ public class BrowserClient : IApiCaller
         _authenticationService = authenticationService;
     }
     
-    public Task AuthenticateAsync(string username, string password)
+    public Task AuthenticateAsync(string username, string password, string totp)
     {
-        return _authenticationService.AuthenticateAsync(username, password);
+        return _authenticationService.AuthenticateAsync(username, password, totp);
     }
     
     public async Task<KeyValuePair<int, string>> SendRequestAsync(string url)

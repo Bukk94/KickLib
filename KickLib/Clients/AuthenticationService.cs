@@ -15,7 +15,7 @@ public class AuthenticationService : IAuthenticationService
     public string XsrfToken { get; private set; }
     public bool IsAuthenticated => BearerToken is not null;
     
-    public async Task AuthenticateAsync(string username, string password)
+    public async Task AuthenticateAsync(string username, string password, string totp)
     {
         await using var browser = await BrowserInitializer.LaunchBrowserAsync();
         
@@ -45,6 +45,7 @@ public class AuthenticationService : IAuthenticationService
         payloadPrep.Add("isMobileRequest", true);
         payloadPrep.Add("email", username);
         payloadPrep.Add("password", password);
+        payloadPrep.Add("one_time_password", totp);
         payloadPrep.Add(tokenProvider["nameFieldName"]!.ToString(), "");
         payloadPrep.Add(tokenProvider["validFromFieldName"]!.ToString(), tokenProvider["encryptedValidFrom"]);
         
