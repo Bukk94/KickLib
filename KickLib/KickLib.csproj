@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <LangVersion>latest</LangVersion>
-        <Version>0.1.3</Version>
+        <Version>0.1.4</Version>
         <Title>KickLib</Title>
         <Authors>Bukk94</Authors>
         <Description>C# library for accessing API from Kick.com livestreaming platform.</Description>
@@ -16,14 +16,15 @@
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Improved XSRF handling</PackageReleaseNotes>
-        <AssemblyVersion>0.1.3</AssemblyVersion>
-        <FileVersion>0.1.3</FileVersion>
+        <PackageReleaseNotes>Updated Authentication flow to with with new 2FA settings</PackageReleaseNotes>
+        <AssemblyVersion>0.1.4</AssemblyVersion>
+        <FileVersion>0.1.4</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="JsonSubTypes" Version="2.0.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="Otp.NET" Version="1.3.0" />
         <PackageReference Include="Polly" Version="7.2.4" />
         <PackageReference Include="PuppeteerExtraSharp" Version="2.0.0" />
         <PackageReference Include="PuppeteerSharp" Version="10.1.0" />

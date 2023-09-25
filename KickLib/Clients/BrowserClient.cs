@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using KickLib.Exceptions;
 using KickLib.Interfaces;
+using KickLib.Models;
 using Newtonsoft.Json.Linq;
 using Polly;
 using PuppeteerSharp;
@@ -21,9 +22,9 @@ public class BrowserClient : IApiCaller
         _authenticationService = authenticationService;
     }
     
-    public Task AuthenticateAsync(string username, string password, string totp)
+    public Task AuthenticateAsync(AuthenticationSettings authenticationSettings)
     {
-        return _authenticationService.AuthenticateAsync(username, password, totp);
+        return _authenticationService.AuthenticateAsync(authenticationSettings);
     }
     
     public async Task<KeyValuePair<int, string>> SendRequestAsync(string url)

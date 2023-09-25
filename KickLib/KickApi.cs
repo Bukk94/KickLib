@@ -1,6 +1,7 @@
 ﻿using KickLib.Api;
 using KickLib.Clients;
 using KickLib.Interfaces;
+using KickLib.Models;
 using Microsoft.Extensions.Logging;
 
 namespace KickLib;
@@ -30,18 +31,13 @@ public class KickApi : IKickApi
         _client = client;
     }
 
-    public Task AuthenticateAsync(string username, string password, string totp)
+    public Task AuthenticateAsync(AuthenticationSettings authenticationSettings)
     {
-        if (string.IsNullOrWhiteSpace(username))
+        if (authenticationSettings is null)
         {
-            throw new ArgumentNullException(nameof(username));
+            throw new ArgumentNullException(nameof(authenticationSettings));
         }
         
-        if (string.IsNullOrWhiteSpace(password))
-        {
-            throw new ArgumentNullException(nameof(password));
-        }
-        
-        return _client.AuthenticateAsync(username, password, totp);
+        return _client.AuthenticateAsync(authenticationSettings);
     }
 }

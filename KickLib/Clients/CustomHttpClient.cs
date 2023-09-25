@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using KickLib.Interfaces;
+using KickLib.Models;
 
 namespace KickLib.Clients;
 
@@ -16,7 +17,7 @@ public class CustomHttpClient : IApiCaller
         return SendRequestAsync(url, "GET");
     }
 
-    public Task AuthenticateAsync(string username, string password, string totp)
+    public Task AuthenticateAsync(AuthenticationSettings authenticationSettings)
     {
         throw new NotImplementedException();
     }

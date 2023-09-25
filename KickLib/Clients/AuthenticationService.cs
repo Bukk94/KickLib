@@ -1,7 +1,9 @@
 using System.Dynamic;
 using KickLib.Extensions;
 using KickLib.Interfaces;
+using KickLib.Models;
 using Newtonsoft.Json.Linq;
+using OtpNet;
 using PuppeteerSharp;
 
 namespace KickLib.Clients;
@@ -15,7 +17,7 @@ public class AuthenticationService : IAuthenticationService
     public string XsrfToken { get; private set; }
     public bool IsAuthenticated => BearerToken is not null;
     
-    public async Task AuthenticateAsync(string username, string password, string totp)
+    public async Task AuthenticateAsync(AuthenticationSettings authenticationSettings)
     {
         await using var browser = await BrowserInitializer.LaunchBrowserAsync();
         
@@ -43,14 +45,15 @@ public class AuthenticationService : IAuthenticationService
         // Construct login payload
         var payloadPrep = new ExpandoObject() as IDictionary<string, object>;
         payloadPrep.Add("isMobileRequest", true);
-        payloadPrep.Add("email", username);
-        payloadPrep.Add("password", password);
-        if (!string.IsNullOrEmpty(totp))
-        {
-            payloadPrep.Add("one_time_password", totp);
-        }
+        payloadPrep.Add("email", authenticationSettings.Username);
+        payloadPrep.Add("password", authenticationSettings.Password);
         payloadPrep.Add(tokenProvider["nameFieldName"]!.ToString(), "");
         payloadPrep.Add(tokenProvider["validFromFieldName"]!.ToString(), tokenProvider["encryptedValidFrom"]);
+        if (authenticationSettings.UseOtp)
+        {
+            var otp = GenerateTotp(authenticationSettings.TwoFactorAuthCode);
+            payloadPrep.Add("one_time_password", otp);
+        }
         
         var loginPayload = Newtonsoft.Json.JsonConvert.SerializeObject(payloadPrep);
         
@@ -82,14 +85,18 @@ public class AuthenticationService : IAuthenticationService
 
         if (faRequired)
         {
-            throw new ArgumentException("2FA is required! Cannot log-in. Provide a valid topt code.");
+            throw new ArgumentException("2FA is required! Cannot log-in. Provide a valid OTP code setup.");
+        }
+
+        if (loginResponse.Contains("Invalid OTP"))
+        {
+            throw new ArgumentException("Generated OTP was not valid!");
         }
 
         if (!loginResponse.Contains("token"))
         {
             throw new ArgumentException("Something went wrong: No token found in payload!");
         }
-
 
         BearerToken = token;
         Console.WriteLine("Successfully authenticated!");
@@ -103,5 +110,18 @@ public class AuthenticationService : IAuthenticationService
         }
         
         XsrfToken = await targetPage.GetXsrfTokenAsync();
+    }
+
+    private static string GenerateTotp(string twoFaAuthCode)
+    {
+        if (string.IsNullOrWhiteSpace(twoFaAuthCode))
+        {
+            throw new ArgumentException($"Missing 2FA authentication code! You need to provide it using {nameof(AuthenticationSettings)}");
+        }
+        
+        var secretKey = Base32Encoding.ToBytes(twoFaAuthCode);
+        var totp = new Totp(secretKey);
+
+        return totp.ComputeTotp();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using KickLib.Api;
+using KickLib.Models;
 
 namespace KickLib.Interfaces;
 
@@ -11,5 +12,5 @@ public interface IKickApi
     Messages Messages { get; }
     Users Users { get; }
 
-    Task AuthenticateAsync(string username, string password, string totp);
+    Task AuthenticateAsync(AuthenticationSettings authenticationSettings);
 }

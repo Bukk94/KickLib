@@ -1,3 +1,5 @@
+using KickLib.Models;
+
 namespace KickLib.Interfaces;
 
 public interface IApiCaller
@@ -12,7 +14,7 @@ public interface IApiCaller
     /// </returns>
     Task<KeyValuePair<int, string>> SendRequestAsync(string url);
 
-    Task AuthenticateAsync(string username, string password, string totp);
+    Task AuthenticateAsync(AuthenticationSettings authenticationSettings);
 
     Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload);
 }

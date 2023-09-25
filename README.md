@@ -89,10 +89,6 @@ var liveInfo = await kickApi.Livestream.GetLivestreamInfoAsync(userName);
 
 // Get channel clips
 var channelClips = await kickApi.Clips.GetChannelClipsAsync(userName);
-
-// Authenticated calls
-await kickApi.AuthenticateAsync("username", "password");
-await kickApi.Messages.SendMessageAsync(123456, "My message");
 ```
 
 ### Using Client to read chat messages
@@ -107,7 +103,38 @@ client.OnMessage += delegate(object sender, ChatMessageEventArgs e)
 
 await client.ListenToChatRoomAsync(123456);
 await client.ConnectAsync();
+```
 
+### Authenticated API calls
+
+Authenticated calls are tricky as there is no official authentication flow. 
+Currently, authenticated API calls can be done only by enabling 2FA and providing
+login credentials and 2FA authorization code.
+
+Step 1: Go to Security settings page on your account:
+[https://kick.com/dashboard/settings/security](https://kick.com/dashboard/settings/security)
+![Auth flow Step One](auth_setup1.png)
+
+Step 2: Click `Enable 2FA`. If you already have 2FA enabled, you will need to remove it and add it again.
+
+![Auth flow Step Two](auth_setup2.png)
+
+Step 3: Copy authentication code show on the screen. Usually in following format:
+`A123BCDEFGIJFKLM`. You need to save this code! You can't view it again after you finish setup.
+
+Step 4: Finalize 2FA setup using Authentication app of your choice.
+
+Step 5: You're done! Now you can use Authorization code in KickLib to generate correct TOTP tokens.
+
+```csharp
+IKickApi kickApi = new KickApi();
+var authSettings = new AuthenticationSettings("username", "password")
+{
+    TwoFactorAuthCode = "A123BCDEFGIJFKLM"
+};
+    
+await kickApi.AuthenticateAsync(authSettings);
+await kickApi.Messages.SendMessageAsync(123456, "My message");
 ```
 
 ## Custom downloader client
@@ -135,6 +162,10 @@ KickLib is meant to be used for education purposes. Don't use it for heavy scrap
 Kick streaming platform. I don't take responsibility for any KickLib misuse and I strongly advice against such actions.
 
 Once API is officially released, this library will be adjusted accordingly.
+
+# Special Thanks
+
+@Robertsmania for helping with OTP generation and library improvements
 
 # License
 
