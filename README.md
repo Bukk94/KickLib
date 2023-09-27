@@ -70,6 +70,15 @@ Or from the .NET CLI as:
 dotnet add package KickLib
 ```
 
+### Using KickLib via Dependency Injection
+
+If you are using Dependency Injection, you can easily add KickLib via extension method 
+`.AddKickLib()`, that will register all related services with Scoped lifetime.
+
+```csharp
+serviceCollection.AddKickLib();
+```
+
 ## Examples 💡
 
 ### Using API to get information
