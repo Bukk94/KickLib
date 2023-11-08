@@ -4,7 +4,7 @@ namespace KickLib.Models.Response.v2.Clips;
 
 public class ClipResponse
 {
-    public int Id { get; set; }
+    public string Id { get; set; }
     
     [JsonProperty(PropertyName = "is_mature")]
     public bool IsMature { get; set; }

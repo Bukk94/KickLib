@@ -13,13 +13,20 @@ namespace KickLib.Clients;
 /// </summary>
 public class AuthenticationService : IAuthenticationService
 {
+    private readonly BrowserSettings _browserSettings;
+    
     public string BearerToken { get; private set; }
     public string XsrfToken { get; private set; }
     public bool IsAuthenticated => BearerToken is not null;
+
+    public AuthenticationService(BrowserSettings browserSettings)
+    {
+        _browserSettings = browserSettings ?? BrowserSettings.Empty;
+    }
     
     public async Task AuthenticateAsync(AuthenticationSettings authenticationSettings)
     {
-        await using var browser = await BrowserInitializer.LaunchBrowserAsync();
+        await using var browser = await BrowserInitializer.LaunchBrowserAsync(_browserSettings);
         
         await using var page = await browser.NewPageAsync();
         var xsrfToken = await page.GetXsrfTokenAsync();

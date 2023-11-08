@@ -16,51 +16,51 @@ public class Clips : BaseApi
     
     /// <summary>
     ///     List through all clips (across whole platform).
-    ///     By default, first 20 entries are returned. To page to more result, use <param name="offset">offset</param> value. 
+    ///     By default, first 20 entries are returned. To page to more result, use <param name="nextCursor">cursor</param> value. 
     /// </summary>
-    /// <param name="offset">Offset value to get more results.</param>
-    public Task<ClipsResponse> GetClipsAsync(int offset = 0)
+    /// <param name="nextCursor">Cursor value to get more results.</param>
+    public Task<ClipsResponse> GetClipsAsync(string nextCursor = null)
     {
-        if (offset < 0)
-        {
-            throw new ArgumentException("Offset must be bigger than 0");
-        }
-
         var query = new List<KeyValuePair<string, string>>
         {
-            new("cursor", offset.ToString()),
             new("sort", "view"),
             new("time", "all"),
         };
+        
+        if (nextCursor is not null)
+        {
+            // Add cursor (if any)
+            query.Add(new("cursor", nextCursor));
+        }
         
         return GetAsync<ClipsResponse>(ApiUrlPart, ApiVersion.V2, query);
     }
     
     /// <summary>
     ///     Gets clips for specific channel.
-    ///     By default, first 20 entries are returned. To page to more result, use <param name="offset">offset</param> value.  
+    ///     By default, first 20 entries are returned. To page to more result, use <param name="nextCursor">cursor</param> value.  
     /// </summary>
     /// <param name="channel">Channel name (slug).</param>
-    /// <param name="offset">Offset value to get more results.</param>
-    public Task<ClipsResponse> GetChannelClipsAsync(string channel, int offset = 0)
+    /// <param name="nextCursor">Cursor value to get more results.</param>
+    public Task<ClipsResponse> GetChannelClipsAsync(string channel, string nextCursor = null)
     {
         if (string.IsNullOrWhiteSpace(channel))
         {
             throw new ArgumentNullException(nameof(channel));
         }
 
-        if (offset < 0)
-        {
-            throw new ArgumentException("Offset must be bigger than 0");
-        }
-
         var urlPart = $"channels/{Uri.EscapeDataString(channel)}/{ApiUrlPart}";
         var query = new List<KeyValuePair<string, string>>
         {
-            new("cursor", offset.ToString()),
             new("sort", "view"),
             new("time", "all"),
         };
+
+        if (nextCursor is not null)
+        {
+            // Add cursor (if any)
+            query.Add(new("cursor", nextCursor));
+        }
         
         return GetAsync<ClipsResponse>(urlPart, ApiVersion.V2, query);
     }

@@ -16,10 +16,14 @@ public class BrowserClient : IApiCaller
 {
     private readonly Regex _regex = new(@"<body>(?<json>.+)<\/body>", RegexOptions.Compiled);
     private readonly IAuthenticationService _authenticationService;
-
-    public BrowserClient(IAuthenticationService authenticationService)
+    private readonly BrowserSettings _settings;
+    
+    public BrowserClient(
+        IAuthenticationService authenticationService,
+        BrowserSettings settings)
     {
         _authenticationService = authenticationService;
+        _settings = settings ?? BrowserSettings.Empty;
     }
     
     public Task AuthenticateAsync(AuthenticationSettings authenticationSettings)
@@ -29,7 +33,7 @@ public class BrowserClient : IApiCaller
     
     public async Task<KeyValuePair<int, string>> SendRequestAsync(string url)
     {
-        await using var browser = await BrowserInitializer.LaunchBrowserAsync();
+        await using var browser = await BrowserInitializer.LaunchBrowserAsync(_settings);
         
         await using var page = await browser.NewPageAsync();
         await page.GoToAsync(url);
@@ -51,7 +55,7 @@ public class BrowserClient : IApiCaller
             throw new ArgumentException($"Cannot send authenticated request without authenticating first! Call '{nameof(AuthenticateAsync)}' first.");
         }
         
-        await using var browser = await BrowserInitializer.LaunchBrowserAsync();
+        await using var browser = await BrowserInitializer.LaunchBrowserAsync(_settings);
         
         try
         {
