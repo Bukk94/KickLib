@@ -10,6 +10,7 @@ public class KickApi : IKickApi
 {
     private readonly IApiCaller _client;
     
+    public Categories Categories { get; }
     public Clips Clips { get; }
     public Channels Channels { get; }
     public Emotes Emotes { get; }
@@ -22,6 +23,7 @@ public class KickApi : IKickApi
         var browserSettings = BrowserSettings.Empty;
         client ??= new BrowserClient(new AuthenticationService(browserSettings), browserSettings);
         
+        Categories = new Categories(client, logger);
         Clips = new Clips(client, logger);
         Channels = new Channels(client, logger);
         Emotes = new Emotes(client, logger);

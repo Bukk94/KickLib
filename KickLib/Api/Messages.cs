@@ -14,7 +14,7 @@ public class Messages : BaseApi
     }
 
     /// <summary>
-    ///     Sends message to chatroom. [Requires authentication].
+    ///     [Auth Required] Sends message to chatroom.
     /// </summary>
     /// <param name="chatroomId">Chatroom ID where to send the message.</param>
     /// <param name="message">Message to be send.</param>

@@ -25,7 +25,7 @@ KickLib is a C# library that allows for interaction with unofficial / undocument
 * Stream state detection
 * Authentication flow
 * Message sending
-* Endpoint calls
+* API Endpoint calls
 
 <details>
 <summary>Click here to see Complete Features List</summary>
@@ -37,22 +37,31 @@ KickLib is a C# library that allows for interaction with unofficial / undocument
   * Stream state detection
 
 ### API
+* Categories
+  * Get all main (root) categories
+  * Get specific main category
+  * Get top categories
+  * Get sub-categories (paged)
+  * Get all sub-categories (list all)
+  * Get specific sub-category
 * Clips
-  * Get all Kick clips 
-  * Get channel clips
+  * Get all Kick clips
   * Get clip information
   * Download clip
 * Channels
   * Get channel information
-  * Get latest subscriber
-  * Get chatroom information
+  * Get channel chatroom information
+  * Get channel clips
+  * Get channel links
+  * Get latest subscriber (Requires Authentication)
+  * Get followers count
 * Emotes
   * Get channel emotes
 * Livestreams
   * Is streamer live?
   * Get livestream information 
 * Message
-  * Send message to chatroom
+  * Send message to chatroom (Requires Authentication)
 * Users
   * Get user information
 </details>
@@ -75,8 +84,12 @@ dotnet add package KickLib
 If you are using Dependency Injection, you can easily add KickLib via extension method 
 `.AddKickLib()`, that will register all related services with Scoped lifetime.
 
+Then you need to either register your own `BrowserSettings` or use `.AddKickLibSettings()`.
+
 ```csharp
-serviceCollection.AddKickLib();
+serviceCollection
+   .AddKickLib()
+   .AddKickLibSettings();
 ```
 
 ## Examples 💡
@@ -96,8 +109,8 @@ var channelInfo = await kickApi.Channels.GetChannelInfoAsync(userName);
 // Gets detailed information about current livestream
 var liveInfo = await kickApi.Livestream.GetLivestreamInfoAsync(userName);
 
-// Get channel clips
-var channelClips = await kickApi.Clips.GetChannelClipsAsync(userName);
+// Get clips
+var channelClips = await kickApi.Clips.GetClipsAsync();
 ```
 
 ### Using Client to read chat messages

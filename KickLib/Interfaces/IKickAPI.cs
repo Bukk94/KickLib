@@ -5,6 +5,7 @@ namespace KickLib.Interfaces;
 
 public interface IKickApi
 {
+    Categories Categories { get; }
     Clips Clips { get; }
     Channels Channels { get; }
     Emotes Emotes { get; }
