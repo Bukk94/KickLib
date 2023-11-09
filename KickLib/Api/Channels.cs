@@ -82,6 +82,22 @@ public class Channels : BaseApi
     }
     
     /// <summary>
+    ///     Returns channel links.
+    /// </summary>
+    /// <param name="channelSlug">Channel slug.</param>
+    public Task<LinksResponse> GetLinksAsync(string channelSlug)
+    {
+        if (string.IsNullOrWhiteSpace(channelSlug))
+        {
+            throw new ArgumentNullException(nameof(channelSlug));
+        }
+        
+        var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channelSlug)}/links";
+        
+        return GetAsync<LinksResponse>(urlPart, ApiVersion.V1);
+    }
+    
+    /// <summary>
     ///     Gets clips for specific channel.
     ///     By default, first 20 entries are returned. To page to more result, use <param name="nextCursor">cursor</param> value.  
     /// </summary>

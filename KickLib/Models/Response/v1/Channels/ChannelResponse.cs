@@ -58,7 +58,7 @@ public class ChannelResponse
     public ChatroomResponse Chatroom { get; set; }
     
     [JsonProperty(PropertyName = "ascending_links")]
-    public ICollection<LinksResponse> AscendingLinks { get; set; }
+    public ICollection<LinkResponse> AscendingLinks { get; set; }
     
     public PlanResponse Plan { get; set; }
     
