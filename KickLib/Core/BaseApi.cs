@@ -1,4 +1,5 @@
-﻿using KickLib.Interfaces;
+﻿using KickLib.Exceptions;
+using KickLib.Interfaces;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -50,6 +51,7 @@ public abstract class BaseApi
         if (data.Key != 200 && 
             data.Key != 204)
         {
+            HandleErrorThrowIfCritical(data.Key);
             return default;
         }
         
@@ -68,6 +70,7 @@ public abstract class BaseApi
         if (data.Key != 200 && 
             data.Key != 204)
         {
+            HandleErrorThrowIfCritical(data.Key);
             return default;
         }
         
@@ -88,6 +91,7 @@ public abstract class BaseApi
         if (data.Key != 200 && 
             data.Key != 204)
         {
+            HandleErrorThrowIfCritical(data.Key);
             return default;
         }
         
@@ -139,5 +143,14 @@ public abstract class BaseApi
         }
 
         return url;
+    }
+
+    private static void HandleErrorThrowIfCritical(int errorCode)
+    {
+        switch (errorCode)
+        {
+            case 500: throw new KickLibException("KickLib failed to get data from Kick.com");
+            case 503: throw new KickUnavailableException();
+        }
     }
 }

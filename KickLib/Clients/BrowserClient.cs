@@ -37,15 +37,29 @@ public class BrowserClient : IApiCaller
         
         await using var page = await browser.NewPageAsync();
         await page.GoToAsync(url);
-        await page.WaitForSelectorAsync("body:not([class])");
+
+        try
+        {
+            // Wait for one of following selector:
+            //    1) <body> with no class - that means JSON response with no formatting -> expected behavior
+            //    2) Specific div that contains error name -> this happens when Kick throw 404 or 500 errors (we catch this to avoid timeout waiting)
+            await page.WaitForSelectorAsync(
+                "body:not([class]), body > div > div > div > div.ml-4.text-lg.text-gray-500.uppercase.tracking-wider");
+        }
+        catch (Exception ex)
+        {
+            throw new KickLibException("KickLib failed to get response from Kick.com. See inner exception for details.", ex);
+        }
         
         var content = await page.GetContentAsync();
 
         var match = _regex.Match(content);
+        if (!match.Success)
+        {
+            return GetErrorResponse(content);
+        }
         
-        return new KeyValuePair<int, string>(
-            match.Success ? 200 : 500,
-            match.Success ? match.Groups["json"].Value : string.Empty);
+        return new KeyValuePair<int, string>(200, match.Groups["json"].Value);
     }
 
     public async Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload)
@@ -137,5 +151,23 @@ public class BrowserClient : IApiCaller
 
                 return response;
             });
+    }
+    
+    private static KeyValuePair<int, string> GetErrorResponse(string pageContent)
+    {
+        if (pageContent.Contains("<title>Server Error</title>"))
+        {
+            // Kick throws 500
+            return new KeyValuePair<int, string>(503, string.Empty);
+        }
+        
+        if (pageContent.Contains("<title>Not Found</title>"))
+        {
+            // Kick sends Not found error
+            return new KeyValuePair<int, string>(404, string.Empty);
+        }
+
+        // In all other cases, it's probably library fault
+        return new KeyValuePair<int, string>(500, string.Empty);
     }
 }
