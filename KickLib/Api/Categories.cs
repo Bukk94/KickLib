@@ -1,6 +1,7 @@
 using KickLib.Core;
 using KickLib.Interfaces;
 using KickLib.Models.Response.v1.Categories;
+using KickLib.Models.Response.v2.Categories;
 using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
@@ -108,5 +109,31 @@ public class Categories : BaseApi
         // v1/listsubcategories
         var urlPart = $"listsub{ApiUrlPart}";
         return GetAsync<ICollection<SimpleSubCategoryResponse>>(urlPart, ApiVersion.V1);
+    }
+    
+    /// <summary>
+    ///     Get sub-category clips (paged).
+    ///     By default, first 20 entries are returned. To page to more result, use <param name="nextCursor">cursor</param> value.
+    /// </summary>
+    /// <param name="subcategorySlug">Subcategory slug.</param>
+    /// <param name="nextCursor">Next cursor value.</param>
+    public Task<CategoryClipsResponse> GetSubCategoryClipsAsync(string subcategorySlug, string nextCursor = null)
+    {
+        if (string.IsNullOrWhiteSpace(subcategorySlug))
+        {
+            throw new ArgumentNullException(nameof(subcategorySlug));
+        }
+        
+        var query = new List<KeyValuePair<string, string>>();
+
+        if (nextCursor is not null)
+        {
+            // Add cursor (if any)
+            query.Add(new("cursor", nextCursor));
+        }
+        
+        // v2/categories/slots/clips
+        var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(subcategorySlug)}/clips";
+        return GetAsync<CategoryClipsResponse>(urlPart, ApiVersion.V2, query);
     }
 }

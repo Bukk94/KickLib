@@ -44,6 +44,7 @@ KickLib is a C# library that allows for interaction with unofficial / undocument
   * Get sub-categories (paged)
   * Get all sub-categories (list all)
   * Get specific sub-category
+  * Get subcategory clips (paged)
 * Clips
   * Get all Kick clips
   * Get clip information
