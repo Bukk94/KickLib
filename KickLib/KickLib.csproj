@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <LangVersion>latest</LangVersion>
-        <Version>0.1.5</Version>
+        <Version>0.1.6</Version>
         <Title>KickLib</Title>
         <Authors>Bukk94</Authors>
         <Description>C# library for accessing API from Kick.com livestreaming platform.</Description>
@@ -16,9 +16,9 @@
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Updated Clips structures, added Browser settings to be able to customize browser initialization</PackageReleaseNotes>
-        <AssemblyVersion>0.1.4</AssemblyVersion>
-        <FileVersion>0.1.4</FileVersion>
+        <PackageReleaseNotes>Library error handling improvements, added many new endpoints (links, categories, subcategories)</PackageReleaseNotes>
+        <AssemblyVersion>0.1.6</AssemblyVersion>
+        <FileVersion>0.1.6</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>
