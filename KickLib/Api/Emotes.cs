@@ -14,14 +14,18 @@ public class Emotes : BaseApi
     {
     }
     
-    public Task<EmotesListResponse> GetChannelEmotesAsync(string channel)
+    /// <summary>
+    ///     Returns channel emotes.
+    /// </summary>
+    /// <param name="channelSlug">Channel slug.</param>
+    public Task<EmotesListResponse> GetChannelEmotesAsync(string channelSlug)
     {
-        if (string.IsNullOrWhiteSpace(channel))
+        if (string.IsNullOrWhiteSpace(channelSlug))
         {
-            throw new ArgumentNullException(nameof(channel));
+            throw new ArgumentNullException(nameof(channelSlug));
         }
         
-        var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channel)}";
+        var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channelSlug)}";
         
         return GetAsync<EmotesListResponse>(urlPart, ApiVersion.None);
     }

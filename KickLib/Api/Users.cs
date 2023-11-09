@@ -17,7 +17,7 @@ public class Users : BaseApi
     /// <summary>
     ///     Gets user information.
     /// </summary>
-    /// <param name="username">Username (slug) to search for.</param>
+    /// <param name="username">Username (or slug) to search for.</param>
     public Task<UserResponse> GetUserAsync(string username)
     {
         if (string.IsNullOrWhiteSpace(username))

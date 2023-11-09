@@ -18,15 +18,15 @@ public class Livestream : BaseApi
     /// <summary>
     ///     Returns bool if channel (streamer) is currently live (broadcasting).
     /// </summary>
-    /// <param name="channel">Channel name (slug).</param>
-    public async Task<bool> IsStreamerLiveAsync(string channel)
+    /// <param name="channelSlug">Channel name slug.</param>
+    public async Task<bool> IsStreamerLiveAsync(string channelSlug)
     {
-        if (string.IsNullOrWhiteSpace(channel))
+        if (string.IsNullOrWhiteSpace(channelSlug))
         {
-            throw new ArgumentNullException(nameof(channel));
+            throw new ArgumentNullException(nameof(channelSlug));
         }
 
-        var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channel)}";
+        var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channelSlug)}";
 
         // Version 2 contains much less information which is sufficient for this method
         var data = await GetAsync<LivestreamResponseV2>(urlPart, ApiVersion.V2, "livestream");
@@ -38,15 +38,15 @@ public class Livestream : BaseApi
     ///     Returns livestream information of given channel.
     ///     If there is no active livestream, null is returned instead.
     /// </summary>
-    /// <param name="channel">Channel name (slug).</param>
-    public Task<LivestreamResponse> GetLivestreamInfoAsync(string channel)
+    /// <param name="channelSlug">Channel name slug.</param>
+    public Task<LivestreamResponse> GetLivestreamInfoAsync(string channelSlug)
     {
-        if (string.IsNullOrWhiteSpace(channel))
+        if (string.IsNullOrWhiteSpace(channelSlug))
         {
-            throw new ArgumentNullException(nameof(channel));
+            throw new ArgumentNullException(nameof(channelSlug));
         }
 
-        var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channel)}";
+        var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channelSlug)}";
 
         // Call v1 for more data
         return GetAsync<LivestreamResponse>(urlPart, ApiVersion.V1, "livestream");

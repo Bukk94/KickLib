@@ -37,35 +37,6 @@ public class Clips : BaseApi
     }
     
     /// <summary>
-    ///     Gets clips for specific channel.
-    ///     By default, first 20 entries are returned. To page to more result, use <param name="nextCursor">cursor</param> value.  
-    /// </summary>
-    /// <param name="channel">Channel name (slug).</param>
-    /// <param name="nextCursor">Cursor value to get more results.</param>
-    public Task<ClipsResponse> GetChannelClipsAsync(string channel, string nextCursor = null)
-    {
-        if (string.IsNullOrWhiteSpace(channel))
-        {
-            throw new ArgumentNullException(nameof(channel));
-        }
-
-        var urlPart = $"channels/{Uri.EscapeDataString(channel)}/{ApiUrlPart}";
-        var query = new List<KeyValuePair<string, string>>
-        {
-            new("sort", "view"),
-            new("time", "all"),
-        };
-
-        if (nextCursor is not null)
-        {
-            // Add cursor (if any)
-            query.Add(new("cursor", nextCursor));
-        }
-        
-        return GetAsync<ClipsResponse>(urlPart, ApiVersion.V2, query);
-    }
-    
-    /// <summary>
     ///     Gets specific clip by <param name="clipId">Clip ID</param>.
     /// </summary>
     /// <param name="clipId">Id of the clip.</param>
