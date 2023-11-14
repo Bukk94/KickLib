@@ -5,6 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
+/// <summary>
+///     Get emotes data.
+/// </summary>
 public class Emotes : BaseApi
 {
     private const string ApiUrlPart = "emotes/";

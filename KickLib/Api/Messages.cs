@@ -4,6 +4,9 @@ using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
+/// <summary>
+///     Allows sending messages to the chat.
+/// </summary>
 public class Messages : BaseApi
 {
     private const string ApiUrlPart = "messages/";

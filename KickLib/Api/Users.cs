@@ -5,6 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
+/// <summary>
+///     Get information and data about users.
+/// </summary>
 public class Users : BaseApi
 {
     private const string ApiUrlPart = "users/";

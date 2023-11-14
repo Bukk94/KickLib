@@ -1,13 +1,19 @@
+using KickLib.Client.Interfaces;
 using KickLib.Core;
+using KickLib.Exceptions;
 using KickLib.Interfaces;
 using KickLib.Models.Response;
 using KickLib.Models.Response.v1.Channels;
 using KickLib.Models.Response.v2.Channels;
+using KickLib.Models.Response.v2.Channels.Messages;
 using KickLib.Models.Response.v2.Clips;
 using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
+/// <summary>
+///     Get information and data about specific channel.
+/// </summary>
 public class Channels : BaseApi
 {
     private const string ApiUrlPart = "channels/";
@@ -124,5 +130,40 @@ public class Channels : BaseApi
         }
         
         return GetAsync<ClipsResponse>(urlPart, ApiVersion.V2, query);
+    }
+
+    /// <summary>
+    ///     Page through latest messages in the channel's chat.
+    ///     Each page contains up to 25 messages.
+    ///     To get live, real-time messages, use <see cref="IKickClient"/> instead.
+    /// </summary>
+    /// <param name="channelId">Channel ID to get messages from. ID can be found by calling <see cref="GetChannelInfoAsync"/>.</param>
+    /// <param name="nextCursor">Cursor value to get more results.</param>
+    public async Task<MessagesResponse> GetChannelMessagesAsync(int channelId, string nextCursor = null)
+    {
+        if (channelId < 0)
+        {
+            throw new ArgumentException($"Channel ID must be positive value, but was {channelId}.");
+        }
+        
+        var urlPart = $"{ApiUrlPart}{channelId}/messages";
+        
+        var query = new List<KeyValuePair<string, string>>();
+        if (nextCursor is not null)
+        {
+            // Add cursor (if any)
+            query.Add(new("next", nextCursor));
+        }
+        
+        var wrapper = await GetAsync<DataWrapper<MessagesResponse>>(urlPart, ApiVersion.V2, query);
+
+        if (wrapper is null ||
+            wrapper.Status.Code != 200)
+        {
+            throw new KickLibException(
+                $"Could not get data. Kick.com error response [{wrapper?.Status?.Code.ToString() ?? "Unknown"}]: {wrapper?.Status?.Message}");
+        }
+
+        return wrapper.Data;
     }
 }

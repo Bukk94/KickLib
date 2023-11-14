@@ -5,6 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
+/// <summary>
+///     Get clips data.
+/// </summary>
 public class Clips : BaseApi
 {
     private const string ApiUrlPart = "clips";

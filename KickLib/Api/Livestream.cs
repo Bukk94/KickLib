@@ -6,6 +6,9 @@ using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
+/// <summary>
+///     Get information and data about channel livestream.
+/// </summary>
 public class Livestream : BaseApi
 {
     private const string ApiUrlPart = "channels/";

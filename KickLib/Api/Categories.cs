@@ -6,6 +6,9 @@ using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
+/// <summary>
+///     Get categories data.
+/// </summary>
 public class Categories : BaseApi
 {
     private const string ApiUrlPart = "categories/";
@@ -59,7 +62,7 @@ public class Categories : BaseApi
     /// <returns>Returns paged object of sub-categories</returns>
     public Task<SubCategoryPagedResponse> GetSubCategoriesAsync(int perPage = 10, int? page = null)
     {
-        if (perPage < 0)
+        if (perPage < 1)
         {
             throw new ArgumentException("Per Page must be positive number!");
         }

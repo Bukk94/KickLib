@@ -50,6 +50,7 @@ KickLib is a C# library that allows for interaction with unofficial / undocument
   * Get clip information
   * Download clip
 * Channels
+  * Get messages
   * Get channel information
   * Get channel chatroom information
   * Get channel clips
@@ -113,6 +114,24 @@ var liveInfo = await kickApi.Livestream.GetLivestreamInfoAsync(userName);
 // Get clips
 var channelClips = await kickApi.Clips.GetClipsAsync();
 ```
+
+### Using `Cursor` to page data
+
+Using following example you can retrieve history messages from channel's chat.
+```
+IKickApi kickApi = new KickApi();
+var channelInfo = await kickApi.Channels.GetChannelInfoAsync("channelUsername");
+var channelId = channelInfo.Id;
+
+KickLib.Models.Response.v2.Channels.Messages.MessagesResponse response = null;
+do
+{
+    response = await kickApi.Channels.GetChannelMessagesAsync(90876, response?.Cursor);
+    // Process page response
+} while (response.Cursor != null);
+```
+
+To get real-time messages, use `IKickClient` (example below).
 
 ### Using Client to read chat messages
 
