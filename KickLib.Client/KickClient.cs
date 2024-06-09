@@ -36,6 +36,8 @@ public class KickClient : IKickClient
     public event EventHandler<FollowersUpdatedEventArgs> OnFollowersUpdated;
     public event EventHandler<StreamStateChangedArgs> OnStreamStatusChanged;
     public event EventHandler<UnknownEventArgs> OnUnknownEvent;
+
+    public bool IsConnected => _pusher.State == ConnectionState.Connected;
     
     public async Task ListenToChannelAsync(int channelId)
     {

@@ -35,6 +35,11 @@ public interface IKickClient
     event EventHandler<UnknownEventArgs> OnUnknownEvent;
 
     /// <summary>
+    ///     Gets connected state of the client. Returns <c>true</c>, if client is connected.
+    /// </summary>
+    bool IsConnected { get; }
+    
+    /// <summary>
     ///     Listens to events of specific channel.
     /// </summary>
     /// <param name="channelId">Channel ID (also referred as user ID).</param>

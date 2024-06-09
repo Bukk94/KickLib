@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <LangVersion>latest</LangVersion>
-        <Version>0.1.7</Version>
+        <Version>0.1.8</Version>
         <Title>KickLib</Title>
         <Authors>Bukk94</Authors>
         <Description>C# library for accessing API from Kick.com livestreaming platform.</Description>
@@ -16,9 +16,9 @@
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Add Get Messages from Channel, included docs</PackageReleaseNotes>
-        <AssemblyVersion>0.1.7</AssemblyVersion>
-        <FileVersion>0.1.7</FileVersion>
+        <PackageReleaseNotes>Extended KickClient, updated to .NET 8</PackageReleaseNotes>
+        <AssemblyVersion>0.1.8</AssemblyVersion>
+        <FileVersion>0.1.8</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
@@ -28,9 +28,9 @@
         <PackageReference Include="Otp.NET" Version="1.3.0" />
         <PackageReference Include="Polly" Version="7.2.4" />
         <PackageReference Include="PuppeteerExtraSharp" Version="2.0.0" />
-        <PackageReference Include="PuppeteerSharp" Version="10.1.0" />
+        <PackageReference Include="PuppeteerSharp" Version="14.0.0" />
         <PackageReference Include="PusherClient" Version="2.2.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
     </ItemGroup>
 
     <ItemGroup>
