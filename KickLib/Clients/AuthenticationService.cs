@@ -2,6 +2,7 @@ using System.Dynamic;
 using KickLib.Extensions;
 using KickLib.Interfaces;
 using KickLib.Models;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using OtpNet;
 using PuppeteerSharp;
@@ -14,22 +15,26 @@ namespace KickLib.Clients;
 public class AuthenticationService : IAuthenticationService
 {
     private readonly BrowserSettings _browserSettings;
-    
+    private readonly ILogger _logger;
+
     public string BearerToken { get; private set; }
     public string XsrfToken { get; private set; }
     public bool IsAuthenticated => BearerToken is not null;
 
-    public AuthenticationService(BrowserSettings browserSettings)
+    public AuthenticationService(BrowserSettings browserSettings, ILogger logger = null)
     {
+        _logger = logger;
         _browserSettings = browserSettings ?? BrowserSettings.Empty;
     }
     
     public async Task AuthenticateAsync(AuthenticationSettings authenticationSettings)
     {
+        _logger?.LogInformation("Starting authentication process. This might take a while...");
+
         await using var browser = await BrowserInitializer.LaunchBrowserAsync(_browserSettings);
         
         await using var page = await browser.NewPageAsync();
-        var xsrfToken = await page.GetXsrfTokenAsync();
+        var xsrfToken = await page.GetXsrfTokenAsync(_logger);
         XsrfToken = xsrfToken;
 
         // Call kick-token-provider to get data required for login process
@@ -106,7 +111,7 @@ public class AuthenticationService : IAuthenticationService
         }
 
         BearerToken = token;
-        Console.WriteLine("Successfully authenticated!");
+        _logger?.LogInformation("Successfully authenticated!");
     }
 
     public async Task RefreshXsrfTokenAsync(IPage targetPage)
@@ -116,7 +121,7 @@ public class AuthenticationService : IAuthenticationService
             throw new ArgumentNullException(nameof(targetPage));
         }
         
-        XsrfToken = await targetPage.GetXsrfTokenAsync();
+        XsrfToken = await targetPage.GetXsrfTokenAsync(_logger);
     }
 
     private static string GenerateTotp(string twoFaAuthCode)

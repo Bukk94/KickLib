@@ -1,12 +1,13 @@
 using System.Text.RegularExpressions;
 using System.Web;
+using Microsoft.Extensions.Logging;
 using PuppeteerSharp;
 
 namespace KickLib.Extensions;
 
 public static class PuppeteerExtensions
 {
-    public static async Task<string> GetXsrfTokenAsync(this IPage page)
+    public static async Task<string> GetXsrfTokenAsync(this IPage page, ILogger logger)
     {
         string xsrfToken = null;
         var attempts = 10;
@@ -21,7 +22,7 @@ public static class PuppeteerExtensions
             var match = Regex.Match(responseHeaders["set-cookie"], "XSRF-TOKEN=(?<token>[^;]*)");
             if (!match.Success)
             {
-                Console.WriteLine("Failed attempt to get XSRF Token");
+                logger?.LogInformation($"Failed attempt to get XSRF Token. Remaining attemts: {attempts}.");
                 attempts--;
                 continue;
             }
