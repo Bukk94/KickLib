@@ -21,7 +21,7 @@ public class KickApi : IKickApi
     public KickApi(IApiCaller client = null, ILogger logger = null)
     {
         var browserSettings = BrowserSettings.Empty;
-        client ??= new BrowserClient(new AuthenticationService(browserSettings), browserSettings);
+        client ??= new BrowserClient(new AuthenticationService(browserSettings, logger), browserSettings, logger);
         
         Categories = new Categories(client, logger);
         Clips = new Clips(client, logger);

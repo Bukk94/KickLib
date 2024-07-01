@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 using KickLib.Exceptions;
 using KickLib.Interfaces;
 using KickLib.Models;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using Polly;
 using PuppeteerSharp;
@@ -17,12 +18,15 @@ public class BrowserClient : IApiCaller
     private readonly Regex _regex = new(@"<body>(?<json>.+)<\/body>", RegexOptions.Compiled);
     private readonly IAuthenticationService _authenticationService;
     private readonly BrowserSettings _settings;
-    
+    private readonly ILogger _logger;
+
     public BrowserClient(
         IAuthenticationService authenticationService,
-        BrowserSettings settings)
+        BrowserSettings settings, 
+        ILogger logger = null)
     {
         _authenticationService = authenticationService;
+        _logger = logger;
         _settings = settings ?? BrowserSettings.Empty;
     }
     
@@ -112,7 +116,7 @@ public class BrowserClient : IApiCaller
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error sending message: {ex.Message}");
+            _logger?.LogError($"Error sending message: {ex.Message}");
         }
 
         // At this point we got error, so return empty string with 500.

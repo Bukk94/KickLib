@@ -1,7 +1,5 @@
 ﻿using KickLib.Models;
 using PuppeteerExtraSharp;
-using PuppeteerExtraSharp.Plugins.AnonymizeUa;
-using PuppeteerExtraSharp.Plugins.ExtraStealth;
 using PuppeteerSharp;
 
 namespace KickLib.Clients
@@ -27,31 +25,12 @@ namespace KickLib.Clients
             }
 
             var extra = new PuppeteerExtra();
-            extra.Use(new StealthPlugin());
-            extra.Use(new AnonymizeUaPlugin());
-
-            var launchSettings = new LaunchOptions
+            foreach (var plugin in settings.PuppeteerPlugins)
             {
-                Headless = true,
-                Args = new[]
-                {
-                    "--disable-gpu",
-                    "--disable-dev-shm-usage",
-                    "--disable-setuid-sandbox",
-                    "--no-sandbox"
-                },
-                IgnoredDefaultArgs = new[]
-                {
-                    "--disable-extensions"
-                }
-            };
-
-            if (settings.BrowserExecutablePath is not null)
-            {
-                launchSettings.ExecutablePath = settings.BrowserExecutablePath;
-            } 
+                extra.Use(plugin);
+            }
             
-            return await extra.LaunchAsync(launchSettings);
+            return await extra.LaunchAsync(settings.LaunchOptions);
         }
     }
 }
