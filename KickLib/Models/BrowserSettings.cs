@@ -1,4 +1,4 @@
-using PuppeteerExtraSharp.Plugins.AnonymizeUa;
+using KickLib.Clients;
 using PuppeteerExtraSharp.Plugins.ExtraStealth;
 using PuppeteerExtraSharp.Plugins;
 using PuppeteerSharp;
@@ -26,7 +26,7 @@ public class BrowserSettings
          new List<PuppeteerExtraPlugin>
             {
                 new StealthPlugin(),
-                new AnonymizeUaPlugin()
+                new RandomUAPlugin()
             };
     
     /// <summary>
