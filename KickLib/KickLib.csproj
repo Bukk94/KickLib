@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <LangVersion>latest</LangVersion>
-        <Version>0.1.9</Version>
+        <Version>0.1.10</Version>
         <Title>KickLib</Title>
         <Authors>Bukk94</Authors>
         <Description>C# library for accessing API from Kick.com livestreaming platform.</Description>
@@ -16,9 +16,9 @@
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Extended browser settings</PackageReleaseNotes>
-        <AssemblyVersion>0.1.9</AssemblyVersion>
-        <FileVersion>0.1.9</FileVersion>
+        <PackageReleaseNotes>Made package multitarget .NET 6, 7, and 8</PackageReleaseNotes>
+        <AssemblyVersion>0.1.10</AssemblyVersion>
+        <FileVersion>0.1.10</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
@@ -29,8 +29,8 @@
         <PackageReference Include="Polly" Version="7.2.4" />
         <PackageReference Include="PuppeteerExtraSharp" Version="2.0.0" />
         <PackageReference Include="PuppeteerSharp" Version="14.0.0" />
-        <PackageReference Include="PusherClient" Version="2.2.1" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+        <PackageReference Include="PusherClient" Version="2.2.1" />
         <PackageReference Include="RandomUserAgent" Version="1.1.2" />
     </ItemGroup>
 
