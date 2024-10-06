@@ -5,20 +5,20 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <LangVersion>latest</LangVersion>
-        <Version>0.1.11</Version>
+        <Version>0.1.12</Version>
         <Title>KickLib</Title>
         <Authors>Bukk94</Authors>
         <Description>C# library for accessing API from Kick.com livestreaming platform.</Description>
         <PackageTags>api,kick,chat,client,csharp,data,livestream</PackageTags>
         <License>https://github.com/Bukk94/KickLib/blob/master/LICENSE</License>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Copyright>Copyright (c) 2023 Bukk94</Copyright>
+        <Copyright>Copyright (c) 2024 Bukk94</Copyright>
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Updated WS key for Client pusher</PackageReleaseNotes>
-        <AssemblyVersion>0.1.11</AssemblyVersion>
-        <FileVersion>0.1.11</FileVersion>
+        <PackageReleaseNotes>Fixed XSRF token retrieval</PackageReleaseNotes>
+        <AssemblyVersion>0.1.12</AssemblyVersion>
+        <FileVersion>0.1.12</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 

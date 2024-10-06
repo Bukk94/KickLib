@@ -7,7 +7,7 @@
 <img src="https://img.shields.io/badge/Platform-.NET-lightgrey.svg" style="max-height: 300px;">
 <a href="https://discord.gg/fPRXy57WrS"><img src="https://img.shields.io/badge/Discord-KickLib-green.svg" style="max-height: 300px;"></a>
 <a href="https://github.com/Bukk94/KickLib/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" style="max-height: 300px;"></a>
-<a href="https://www.nuget.org/packages/KickLib"><img src="https://img.shields.io/nuget/v/KickLib.svg?style=flat-square" style="max-height: 300px;"></a>
+<a href="https://www.nuget.org/packages/KickLib"><img src="https://img.shields.io/nuget/dt/KickLib?label=NuGet&color=orange" style="max-height: 300px;"></a>
 </p>
 
 <p align="center">

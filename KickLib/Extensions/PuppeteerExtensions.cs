@@ -14,9 +14,16 @@ public static class PuppeteerExtensions
         while (string.IsNullOrEmpty(xsrfToken) && attempts > 0)
         {
             // Go to Kick's main page
-            var pageResponse = await page.GoToAsync(Constants.KickUrl);
+            var pageResponse = await page.GoToAsync(Constants.CsrfUrl);
             await Task.Delay(500);
             var responseHeaders = pageResponse.Headers;
+
+            if (!responseHeaders.ContainsKey("set-cookie"))
+            {
+                logger?.LogError("Call to Kick.com did not return any set-cookie header! Cannot retrieve XSRF-Token. Retrying");
+                attempts--;
+                continue;
+            }
             
             // Parse XSRF token
             var match = Regex.Match(responseHeaders["set-cookie"], "XSRF-TOKEN=(?<token>[^;]*)");
