@@ -12,22 +12,25 @@ public class CustomHttpClient : IApiCaller
 {
     private readonly HttpClient _httpClient = new();
 
+    /// <inheritdoc />
     public Task<KeyValuePair<int, string>> SendRequestAsync(string url)
     {
         return SendRequestAsync(url, "GET");
     }
 
+    /// <inheritdoc />
     public Task AuthenticateAsync(AuthenticationSettings authenticationSettings)
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc />
     public Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<KeyValuePair<int, string>> SendRequestAsync(
+    private async Task<KeyValuePair<int, string>> SendRequestAsync(
         string url,
         string method,
         string payload = null)

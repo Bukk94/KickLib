@@ -1,5 +1,4 @@
 using KickLib.Models;
-using PuppeteerSharp;
 
 namespace KickLib.Interfaces;
 
@@ -10,5 +9,5 @@ public interface IAuthenticationService
     public bool IsAuthenticated { get; }
 
     public Task AuthenticateAsync(AuthenticationSettings authenticationSettings);
-    public Task RefreshXsrfTokenAsync(IPage targetPage);
+    public Task RefreshXsrfTokenAsync<TPage>(TPage targetPage);
 }

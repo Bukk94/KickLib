@@ -86,12 +86,12 @@ dotnet add package KickLib
 If you are using Dependency Injection, you can easily add KickLib via extension method 
 `.AddKickLib()`, that will register all related services with Scoped lifetime.
 
-Then you need to either register your own `BrowserSettings` or use `.AddKickLibSettings()`.
+Additionally, you need to either register your own client or use prepared builders like `.WithPuppeteerClient()`.
 
 ```csharp
 serviceCollection
-   .AddKickLib()
-   .AddKickLibSettings();
+  .AddKickLib()
+  .WithPuppeteerClient();
 ```
 
 ## Examples 💡
@@ -207,7 +207,7 @@ Once API is officially released, this library will be adjusted accordingly.
 
 # Special Thanks
 
-@Robertsmania for helping with OTP generation and library improvements
+@Robertsmania for helping with OTP generation, library improvements, and extensive testing.
 
 # License
 

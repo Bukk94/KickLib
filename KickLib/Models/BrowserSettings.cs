@@ -1,4 +1,4 @@
-using KickLib.Clients;
+using KickLib.Clients.Puppeteer;
 using PuppeteerExtraSharp.Plugins.ExtraStealth;
 using PuppeteerExtraSharp.Plugins;
 using PuppeteerSharp;
@@ -12,7 +12,7 @@ public class BrowserSettings
     /// </summary>
     public bool EnableBrowserFetching { get; set; } = true;
 
-    public PuppeteerSharp.Platform? BrowserPlatform { get; set; }
+    public Platform? BrowserPlatform { get; set; }
     
     /// <summary>
     ///     Puppeteer browser download path. Defaults to [root]/.local-chromium
