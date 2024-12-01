@@ -31,10 +31,19 @@ KickLib is a C# library that allows for interaction with unofficial / undocument
 <summary>Click here to see Complete Features List</summary>
 
 ### Client
-* Reading Chat Messages
+* Reading Chatroom events
+  * New message received
+  * Message deleted
+  * User banned / unbanned
+  * New subscriptions
+  * Subscriptions gifts
+  * Stream host changes
+  * New pinned message
+  * Pinned message deleted
 * Reading Channel events 
-  * Follows status updated
+  * Followers status updated
   * Stream state detection
+  * Gifts leaderboards updated
 
 ### API
 * Categories
@@ -53,8 +62,13 @@ KickLib is a C# library that allows for interaction with unofficial / undocument
   * Get messages
   * Get channel information
   * Get channel chatroom information
+  * Get channel chatroom rules
+  * Get channel polls
   * Get channel clips
   * Get channel links
+  * Get channel videos
+  * Get channel latest video
+  * Get channel leaderboards
   * Get latest subscriber (Requires Authentication)
   * Get followers count
 * Emotes
@@ -66,6 +80,8 @@ KickLib is a C# library that allows for interaction with unofficial / undocument
   * Send message to chatroom (Requires Authentication)
 * Users
   * Get user information
+* Videos
+  * Get video
 </details>
 
 ## Installing ⏫

@@ -1,7 +1,9 @@
 using KickLib.Client.Interfaces;
 using KickLib.Client.Models.Args;
 using KickLib.Client.Models.Events.Channel;
+using KickLib.Client.Models.Events.Channel.Gifts;
 using KickLib.Client.Models.Events.Chatroom;
+using KickLib.Client.Models.Events.Chatroom.Pins;
 using KickLib.Client.Models.Events.Livestream;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -33,9 +35,18 @@ public class KickClient : IKickClient
     public event EventHandler OnConnected;
     public event EventHandler OnDisconnected;
     public event EventHandler<ChatMessageEventArgs> OnMessage;
+    public event EventHandler<MessageDeletedEventArgs> OnMessageDeleted;
+    public event EventHandler<SubscriptionEventArgs> OnSubscription;
+    public event EventHandler<GiftedSubscriptionsEventArgs> OnGiftedSubscription;
+    public event EventHandler<UserBannedEventArgs> OnUserBanned;
+    public event EventHandler<UserUnbannedEventArgs> OnUserUnbanned;
     public event EventHandler<FollowersUpdatedEventArgs> OnFollowersUpdated;
     public event EventHandler<StreamStateChangedArgs> OnStreamStatusChanged;
+    public event EventHandler<StreamHostEventArgs> OnStreamHost;
+    public event EventHandler<GiftsLeaderboardUpdatedArgs> OnGiftsLeaderboardUpdated;
     public event EventHandler<UnknownEventArgs> OnUnknownEvent;
+    public event EventHandler<PinnedMessageCreatedEventArgs> OnPinnedMessageCreated;
+    public event EventHandler<PinnedMessageDeletedEventArgs> OnPinnedMessageDeleted;
 
     public bool IsConnected => _pusher.State == ConnectionState.Connected;
     
@@ -98,25 +109,41 @@ public class KickClient : IKickClient
         switch (eventName)
         {
             case "App\\Events\\FollowersUpdated":
-                var parsed = ParseData<FollowersUpdatedEvent>(e.Data);
+                var followersUpdated = ParseData<FollowersUpdatedEvent>(e.Data);
                 OnFollowersUpdated?.Invoke(this, new FollowersUpdatedEventArgs
                 {
-                    Data = parsed
+                    Data = followersUpdated
                 });
                 break;
+            
             case "App\\Events\\StreamerIsLive":
                 var livestreamData = ParseData<LivestreamStartedEvent>(e.Data);
                 OnStreamStatusChanged?.Invoke(this, new StreamStateChangedArgs { IsLive = true, Data = livestreamData });
                 break;
+            
             case "App\\Events\\StopStreamBroadcast":
                 OnStreamStatusChanged?.Invoke(this, new StreamStateChangedArgs { IsLive = false });
                 break;
+            
+            // case "App\\Events\\StreamHostedEvent":
+            // case "App\\Events\\ChannelSubscriptionEvent":
+            // case "App\\Events\\LuckyUsersWhoGotGiftSubscriptionsEvent":
+            
+            case "App\\Events\\GiftsLeaderboardUpdated":
+                var giftsLeaderboardUpdate = ParseData<GiftsLeaderboardUpdatedEvent>(e.Data);
+                OnGiftsLeaderboardUpdated?.Invoke(this, new GiftsLeaderboardUpdatedArgs
+                {
+                    Data = giftsLeaderboardUpdate
+                });
+                break;
+            
             default:
                 _logger?.LogInformation("Encountered unknown event during channel reading.");
                 OnUnknownEvent?.Invoke(this, new UnknownEventArgs
                 {
                     EventName = eventName,
-                    RawData = e.Data
+                    RawData = e.Data,
+                    Source = EventSource.Channel
                 });
                 break;
         }
@@ -127,18 +154,84 @@ public class KickClient : IKickClient
         switch (eventName)
         {
             case "App\\Events\\ChatMessageEvent":
-                var parsed = ParseData<ChatMessageEvent>(e.Data);
+                var parsedChatEvent = ParseData<ChatMessageEvent>(e.Data);
                 OnMessage?.Invoke(this, new ChatMessageEventArgs
                 {
-                    Data = parsed
+                    Data = parsedChatEvent
                 });
                 break;
+            
+            case "App\\Events\\MessageDeletedEvent":
+                var messageDeletedEvent = ParseData<MessageDeletedEvent>(e.Data);
+                OnMessageDeleted?.Invoke(this, new MessageDeletedEventArgs
+                {
+                    Data = messageDeletedEvent
+                });
+                break;
+            
+            case "App\\Events\\SubscriptionEvent":
+                var parsedSubscriptionEvent = ParseData<SubscriptionEvent>(e.Data);
+                OnSubscription?.Invoke(this, new SubscriptionEventArgs
+                {
+                    Data = parsedSubscriptionEvent
+                });
+                break;
+            
+            case "App\\Events\\GiftedSubscriptionsEvent":
+                var parsedGiftedSubscriptionEvent = ParseData<GiftedSubscriptionsEvent>(e.Data);
+                OnGiftedSubscription?.Invoke(this, new GiftedSubscriptionsEventArgs
+                {
+                    Data = parsedGiftedSubscriptionEvent
+                });
+                break;
+            
+            case "App\\Events\\UserBannedEvent":
+                var userBannedEvent = ParseData<UserBannedEvent>(e.Data);
+                OnUserBanned?.Invoke(this, new UserBannedEventArgs
+                {
+                    Data = userBannedEvent
+                });
+                break;
+            
+            case "App\\Events\\UserUnbannedEvent":
+                var userUnbannedEvent = ParseData<UserUnbannedEvent>(e.Data);
+                OnUserUnbanned?.Invoke(this, new UserUnbannedEventArgs
+                {
+                    Data = userUnbannedEvent
+                });
+                break;
+            
+            case "App\\Events\\StreamHostEvent":
+                var streamHostEvent = ParseData<StreamHostEvent>(e.Data);
+                OnStreamHost?.Invoke(this, new StreamHostEventArgs
+                {
+                    Data = streamHostEvent
+                });
+                break;
+            
+            case "App\\Events\\PinnedMessageCreatedEvent":
+                var pinnedMessage = ParseData<PinnedMessageCreatedEvent>(e.Data);
+                OnPinnedMessageCreated?.Invoke(this, new PinnedMessageCreatedEventArgs
+                {
+                    Data = pinnedMessage
+                });
+                break;
+            
+            case "App\\Events\\PinnedMessageDeletedEvent":
+                var pinnedMessageDeleted = ParseData<PinnedMessageDeletedEvent>(e.Data);
+                OnPinnedMessageDeleted?.Invoke(this, new PinnedMessageDeletedEventArgs
+                {
+                    Data = pinnedMessageDeleted
+                });
+                break;
+            
             default:
                 _logger?.LogInformation("Encountered unknown event during chatroom reading.");
                 OnUnknownEvent?.Invoke(this, new UnknownEventArgs
                 {
                     EventName = eventName,
-                    RawData = e.Data
+                    RawData = e.Data,
+                    Source = EventSource.Chatroom
                 });
                 break;
         }

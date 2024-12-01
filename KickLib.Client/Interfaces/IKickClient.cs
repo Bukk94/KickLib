@@ -15,19 +15,100 @@ public interface IKickClient
     event EventHandler OnDisconnected;
     
     /// <summary>
-    ///     Event that fires when client receives new chat message.
+    ///     Fires when new chat message is received.
     /// </summary>
+    /// <remarks>
+    ///     Must be listening to Chatroom <see cref="ListenToChatRoomAsync"/>.
+    /// </remarks>
     event EventHandler<ChatMessageEventArgs> OnMessage;
     
     /// <summary>
-    ///     Event that fires when client receives followers update.
+    ///     Fires when message is deleted in the chatroom.
     /// </summary>
+    /// <remarks>
+    ///     Must be listening to Chatroom <see cref="ListenToChatRoomAsync"/>.
+    /// </remarks>
+    event EventHandler<MessageDeletedEventArgs> OnMessageDeleted;
+    
+    /// <summary>
+    ///     Fires when channel gets new subscription.
+    /// </summary>
+    /// <remarks>
+    ///     Must be listening to Chatroom <see cref="ListenToChatRoomAsync"/>.
+    /// </remarks>
+    event EventHandler<SubscriptionEventArgs> OnSubscription;
+    
+    /// <summary>
+    ///     Fires when there is gifted subscription in the chatroom.
+    /// </summary>
+    /// <remarks>
+    ///     Must be listening to Chatroom <see cref="ListenToChatRoomAsync"/>.
+    /// </remarks>
+    event EventHandler<GiftedSubscriptionsEventArgs> OnGiftedSubscription;
+    
+    /// <summary>
+    ///     Fires when user is banned.
+    /// </summary>
+    /// <remarks>
+    ///     Must be listening to Chatroom <see cref="ListenToChatRoomAsync"/>.
+    /// </remarks>
+    event EventHandler<UserBannedEventArgs> OnUserBanned;
+    
+    /// <summary>
+    ///     Fires when user is unbanned.
+    /// </summary>
+    /// <remarks>
+    ///     Must be listening to Chatroom <see cref="ListenToChatRoomAsync"/>.
+    /// </remarks>
+    event EventHandler<UserUnbannedEventArgs> OnUserUnbanned;
+    
+    /// <summary>
+    ///     Fires when client receives followers update. Channel must be broadcasting to receive updates.
+    /// </summary>
+    /// <remarks>
+    ///     Must be listening to Channel <see cref="ListenToChannelAsync"/>.
+    /// </remarks>
     event EventHandler<FollowersUpdatedEventArgs> OnFollowersUpdated;
     
     /// <summary>
-    ///     Event that fires when client detects stream status change (went online / offline).
+    ///     Fires when client detects stream status change (went online / offline).
     /// </summary>
+    /// <remarks>
+    ///     Must be listening to Channel <see cref="ListenToChannelAsync"/>.
+    /// </remarks>
     event EventHandler<StreamStateChangedArgs> OnStreamStatusChanged;
+    
+    /// <summary>
+    ///     Fires when client detects stream status change (went online / offline).
+    /// </summary>
+    /// <remarks>
+    ///     Must be listening to Channel <see cref="ListenToChannelAsync"/>.
+    /// </remarks>
+    event EventHandler<GiftsLeaderboardUpdatedArgs> OnGiftsLeaderboardUpdated;
+    
+    /// <summary>
+    ///     Fires when stream host event occurs.
+    /// </summary>
+    /// <remarks>
+    ///     Must be listening to Chatroom <see cref="ListenToChatRoomAsync"/>.
+    /// </remarks>
+    event EventHandler<StreamHostEventArgs> OnStreamHost;
+    
+    /// <summary>
+    ///     Fires when message is pinned in the chatroom.
+    /// </summary>
+    /// <remarks>
+    ///     Must be listening to Chatroom <see cref="ListenToChatRoomAsync"/>.
+    /// </remarks>
+    event EventHandler<PinnedMessageCreatedEventArgs> OnPinnedMessageCreated;
+    
+    /// <summary>
+    ///     Fires when pinned message is deleted.
+    /// </summary>
+    /// <remarks>
+    ///     Must be listening to Chatroom <see cref="ListenToChatRoomAsync"/>.
+    /// </remarks>
+    event EventHandler<PinnedMessageDeletedEventArgs> OnPinnedMessageDeleted;
     
     /// <summary>
     ///     Event that fires when client receives unknown message.
@@ -41,6 +122,8 @@ public interface IKickClient
     
     /// <summary>
     ///     Listens to events of specific channel.
+    ///     Uses the `channel.${channelId}` Pusher channel.
+    ///     Contains events directly related to the channel, like stream state, followers, etc.
     /// </summary>
     /// <param name="channelId">Channel ID (also referred as user ID).</param>
     Task ListenToChannelAsync(int channelId);
@@ -53,6 +136,8 @@ public interface IKickClient
     
     /// <summary>
     ///     Listens to events of specific chatroom.
+    ///     Uses the `chatrooms.${chatroomId}.v2` Pusher channel.
+    ///     Contains events directly related to the chatroom, like new messages, message deletions, polls, subscriptions.
     /// </summary>
     /// <param name="chatroomId">Chatroom ID</param>
     Task ListenToChatRoomAsync(int chatroomId);
