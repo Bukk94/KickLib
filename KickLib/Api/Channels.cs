@@ -5,7 +5,10 @@ using KickLib.Interfaces;
 using KickLib.Models.Response;
 using KickLib.Models.Response.v1.Channels;
 using KickLib.Models.Response.v2.Channels;
+using KickLib.Models.Response.v2.Channels.Leaderboards;
 using KickLib.Models.Response.v2.Channels.Messages;
+using KickLib.Models.Response.v2.Channels.Polls;
+using KickLib.Models.Response.v2.Channels.Videos;
 using KickLib.Models.Response.v2.Clips;
 using Microsoft.Extensions.Logging;
 
@@ -88,6 +91,23 @@ public class Channels : BaseApi
     }
     
     /// <summary>
+    ///     Returns chatroom rules.
+    /// </summary>
+    /// <param name="channelSlug">Channel slug.</param>
+    public async Task<ChatroomRulesResponse> GetChatroomRulesAsync(string channelSlug)
+    {
+        if (string.IsNullOrWhiteSpace(channelSlug))
+        {
+            throw new ArgumentNullException(nameof(channelSlug));
+        }
+        
+        var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channelSlug)}/chatroom/rules";
+        
+        var response = await GetAsync<DataWrapper<ChatroomRulesResponse>>(urlPart, ApiVersion.V2);
+        return response?.Data;
+    }
+    
+    /// <summary>
     ///     Returns channel links.
     /// </summary>
     /// <param name="channelSlug">Channel slug.</param>
@@ -165,5 +185,72 @@ public class Channels : BaseApi
         }
 
         return wrapper.Data;
+    }
+
+    /// <summary>
+    ///     Gets active channel poll.
+    /// </summary>
+    /// <param name="channelSlug">Channel slug.</param>
+    public async Task<PollResponse> GetChannelPollAsync(string channelSlug)
+    {
+        if (string.IsNullOrWhiteSpace(channelSlug))
+        {
+            throw new ArgumentNullException(nameof(channelSlug));
+        }
+
+        var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channelSlug)}/polls";
+        
+        var response = await GetAsync<DataWrapper<PollResponse>>(urlPart, ApiVersion.V2);
+        return response?.Data;
+    }
+    
+    /// <summary>
+    ///     Gets channel videos.
+    /// </summary>
+    /// <param name="channelSlug">Channel slug.</param>
+    public Task<ICollection<VideoResponse>> GetChannelVideosAsync(string channelSlug)
+    {
+        if (string.IsNullOrWhiteSpace(channelSlug))
+        {
+            throw new ArgumentNullException(nameof(channelSlug));
+        }
+
+        var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channelSlug)}/videos";
+        
+        return GetAsync<ICollection<VideoResponse>>(urlPart, ApiVersion.V2);
+    }
+    
+    /// <summary>
+    ///     Gets latest video on the channel.
+    /// </summary>
+    /// <param name="channelSlug">Channel slug.</param>
+    public async Task<LatestVideoResponse> GetChannelLatestVideoAsync(string channelSlug)
+    {
+        if (string.IsNullOrWhiteSpace(channelSlug))
+        {
+            throw new ArgumentNullException(nameof(channelSlug));
+        }
+
+        var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channelSlug)}/videos/latest";
+        
+        var response = await GetAsync<DataWrapper<LatestVideoResponse>>(urlPart, ApiVersion.V2);
+
+        return response?.Data;
+    }
+    
+    /// <summary>
+    ///     Gets channel leaderboards.
+    /// </summary>
+    /// <param name="channelSlug">Channel slug.</param>
+    public Task<LeaderboardsResponse> GetChannelLeaderboardsAsync(string channelSlug)
+    {
+        if (string.IsNullOrWhiteSpace(channelSlug))
+        {
+            throw new ArgumentNullException(nameof(channelSlug));
+        }
+
+        var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channelSlug)}/leaderboards";
+        
+        return GetAsync<LeaderboardsResponse>(urlPart, ApiVersion.V2);
     }
 }

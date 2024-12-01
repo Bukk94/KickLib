@@ -12,6 +12,7 @@ public interface IKickApi
     Livestream Livestream { get; }
     Messages Messages { get; }
     Users Users { get; }
+    Videos Videos { get; }
 
     Task AuthenticateAsync(AuthenticationSettings authenticationSettings);
 }

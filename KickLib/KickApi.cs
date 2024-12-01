@@ -17,6 +17,7 @@ public class KickApi : IKickApi
     public Livestream Livestream { get; }
     public Messages Messages { get; }
     public Users Users { get; }
+    public Videos Videos { get; }
 
     public KickApi(IApiCaller client = null, ILogger logger = null)
     {
@@ -30,6 +31,7 @@ public class KickApi : IKickApi
         Livestream = new Livestream(client, logger);
         Messages = new Messages(client, logger);
         Users = new Users(client, logger);
+        Videos = new Videos(client, logger);
 
         _client = client;
     }

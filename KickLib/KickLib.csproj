@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <LangVersion>latest</LangVersion>
-        <Version>0.1.12</Version>
+        <Version>0.1.13</Version>
         <Title>KickLib</Title>
         <Authors>Bukk94</Authors>
         <Description>C# library for accessing API from Kick.com livestreaming platform.</Description>
@@ -16,9 +16,9 @@
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Fixed XSRF token retrieval</PackageReleaseNotes>
-        <AssemblyVersion>0.1.12</AssemblyVersion>
-        <FileVersion>0.1.12</FileVersion>
+        <PackageReleaseNotes>Added more API endpoints</PackageReleaseNotes>
+        <AssemblyVersion>0.1.13</AssemblyVersion>
+        <FileVersion>0.1.13</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
