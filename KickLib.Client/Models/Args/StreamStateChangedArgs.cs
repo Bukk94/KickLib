@@ -6,5 +6,7 @@ public class StreamStateChangedArgs : EventArgs
 {
     public bool IsLive { get; set; }
 
-    public LivestreamStartedEvent Data { get; set; }
+    public int ChannelId { get; set; }
+    
+    public LivestreamChangedEvent Data { get; set; }
 }

@@ -21,5 +21,5 @@ public class GiftsLeaderboardUpdatedEvent
     public int GiftedQuantity { get; set; }
     
     [JsonProperty(PropertyName = "gifter_username")]
-    public int GifterUsername { get; set; }
+    public string GifterUsername { get; set; }
 }
