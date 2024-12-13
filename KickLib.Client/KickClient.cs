@@ -117,12 +117,27 @@ public class KickClient : IKickClient
                 break;
             
             case "App\\Events\\StreamerIsLive":
-                var livestreamData = ParseData<LivestreamStartedEvent>(e.Data);
-                OnStreamStatusChanged?.Invoke(this, new StreamStateChangedArgs { IsLive = true, Data = livestreamData });
+                var livestreamData = ParseData<LivestreamWrapper<LivestreamChangedEvent>>(e.Data);
+                OnStreamStatusChanged?.Invoke(this, new StreamStateChangedArgs
+                {
+                    IsLive = true,
+                    ChannelId = livestreamData.Livestream.ChannelId,
+                    Data = livestreamData.Livestream
+                });
                 break;
             
             case "App\\Events\\StopStreamBroadcast":
-                OnStreamStatusChanged?.Invoke(this, new StreamStateChangedArgs { IsLive = false });
+                var livestreamEndedData = ParseData<LivestreamWrapper<LivestreamEndedEvent>>(e.Data);
+                OnStreamStatusChanged?.Invoke(this, new StreamStateChangedArgs
+                {
+                    IsLive = false, 
+                    Data = new LivestreamChangedEvent
+                    {
+                        Id = livestreamEndedData.Livestream.Id,
+                        ChannelId = livestreamEndedData.Livestream.Channel.Id,
+                        CreatedAt = DateTime.UtcNow
+                    }
+                });
                 break;
             
             // case "App\\Events\\StreamHostedEvent":
