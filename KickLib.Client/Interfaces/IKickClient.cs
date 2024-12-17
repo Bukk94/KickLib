@@ -7,7 +7,7 @@ public interface IKickClient
     /// <summary>
     ///     Event that fires when client gets connected.
     /// </summary>
-    event EventHandler OnConnected;
+    event EventHandler<ClientConnectedArgs> OnConnected;
     
     /// <summary>
     ///     Event that fires when client gets disconnected.
@@ -119,6 +119,14 @@ public interface IKickClient
     ///     Gets connected state of the client. Returns <c>true</c>, if client is connected.
     /// </summary>
     bool IsConnected { get; }
+    
+    /// <summary>
+    ///     Gets Socket ID of the client. Returns <c>null</c>, if client is not connected.
+    /// </summary>
+    /// <remarks>
+    ///     Socket ID is unique identifier of the client connection and is used for private pusher channels authentication.
+    /// </remarks>
+    string? SocketId { get; }
     
     /// <summary>
     ///     Listens to events of specific channel.

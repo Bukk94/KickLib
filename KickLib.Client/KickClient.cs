@@ -32,7 +32,8 @@ public class KickClient : IKickClient
         _pusher.Disconnected += PusherOnDisconnected;
     }
 
-    public event EventHandler OnConnected;
+    #region Events
+    public event EventHandler<ClientConnectedArgs> OnConnected;
     public event EventHandler OnDisconnected;
     public event EventHandler<ChatMessageEventArgs> OnMessage;
     public event EventHandler<MessageDeletedEventArgs> OnMessageDeleted;
@@ -47,8 +48,10 @@ public class KickClient : IKickClient
     public event EventHandler<UnknownEventArgs> OnUnknownEvent;
     public event EventHandler<PinnedMessageCreatedEventArgs> OnPinnedMessageCreated;
     public event EventHandler<PinnedMessageDeletedEventArgs> OnPinnedMessageDeleted;
-
+    #endregion
+    
     public bool IsConnected => _pusher.State == ConnectionState.Connected;
+    public string? SocketId => _pusher.SocketID;
     
     public async Task ListenToChannelAsync(int channelId)
     {
@@ -95,7 +98,10 @@ public class KickClient : IKickClient
     private void PusherOnConnected(object sender)
     {
         _logger?.LogInformation("Client connected to Kick server");
-        OnConnected?.Invoke(this, EventArgs.Empty);
+        OnConnected?.Invoke(this, new ClientConnectedArgs
+        {
+            SocketId = _pusher.SocketID
+        });
     }
     
     private void PusherOnDisconnected(object sender)
