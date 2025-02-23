@@ -12,9 +12,12 @@ public static class CycleTlsInitializer
     public static void Initialize(SpoofSettings settings, ILogger logger)
     {
         _settings = settings ?? SpoofSettings.Empty;
-        
-        Client = new CycleTLSClient(logger);
-        Client.InitializeServerAndClient();
+
+        if (Client is null)
+        {
+            Client = new CycleTLSClient(logger);
+            Client.InitializeServerAndClient();
+        }
     } 
     
     public static CycleTlsRequestOptions GetOptions(string url)
