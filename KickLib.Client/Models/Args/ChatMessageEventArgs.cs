@@ -4,5 +4,5 @@ namespace KickLib.Client.Models.Args;
 
 public class ChatMessageEventArgs : EventArgs
 {
-    public ChatMessageEvent Data { get; set; }
+    public required ChatMessageEvent Data { get; set; }
 }

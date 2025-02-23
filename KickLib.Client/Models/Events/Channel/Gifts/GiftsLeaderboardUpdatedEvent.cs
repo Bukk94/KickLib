@@ -4,15 +4,15 @@ namespace KickLib.Client.Models.Events.Channel.Gifts;
 
 public class GiftsLeaderboardUpdatedEvent
 {
-    public ChannelInfo Channel { get; set; }
-    
-    public ICollection<GiftsLeaderboard> Leaderboard { get; set; }
+    public required ChannelInfo Channel { get; set; }
+
+    public ICollection<GiftsLeaderboard> Leaderboard { get; set; } = new List<GiftsLeaderboard>();
     
     [JsonProperty(PropertyName = "weekly_leaderboard")]
-    public ICollection<GiftsLeaderboard> WeeklyLeaderboard { get; set; }
+    public ICollection<GiftsLeaderboard> WeeklyLeaderboard { get; set; } = new List<GiftsLeaderboard>();
     
     [JsonProperty(PropertyName = "monthly_leaderboard")]
-    public ICollection<GiftsLeaderboard> MonthlyLeaderboard { get; set; }
+    public ICollection<GiftsLeaderboard> MonthlyLeaderboard { get; set; } = new List<GiftsLeaderboard>();
     
     [JsonProperty(PropertyName = "gifter_id")]
     public int GifterId { get; set; }
@@ -21,5 +21,5 @@ public class GiftsLeaderboardUpdatedEvent
     public int GiftedQuantity { get; set; }
     
     [JsonProperty(PropertyName = "gifter_username")]
-    public string GifterUsername { get; set; }
+    public required string GifterUsername { get; set; }
 }

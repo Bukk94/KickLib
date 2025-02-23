@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using KickLib.Clients.Puppeteer;
 using KickLib.Exceptions;
 using KickLib.Interfaces;
 using KickLib.Models;
@@ -30,11 +31,13 @@ public class BrowserClient : IApiCaller
         _settings = settings ?? BrowserSettings.Empty;
     }
     
+    /// <inheritdoc />
     public Task AuthenticateAsync(AuthenticationSettings authenticationSettings)
     {
         return _authenticationService.AuthenticateAsync(authenticationSettings);
     }
     
+    /// <inheritdoc />
     public async Task<KeyValuePair<int, string>> SendRequestAsync(string url)
     {
         await using var browser = await BrowserInitializer.LaunchBrowserAsync(_settings);
@@ -66,6 +69,7 @@ public class BrowserClient : IApiCaller
         return new KeyValuePair<int, string>(200, match.Groups["json"].Value);
     }
 
+    /// <inheritdoc />
     public async Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload)
     {
         if (!_authenticationService.IsAuthenticated)

@@ -4,7 +4,7 @@ public class MessageDeletedEvent
 {
     public Guid Id { get; set; }
 
-    public IdEnvelope Message { get; set; }
+    public required IdEnvelope Message { get; set; }
     
     public bool AiModerated { get; set; }
 

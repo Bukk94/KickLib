@@ -1,5 +1,6 @@
 ﻿using KickLib.Api;
 using KickLib.Clients;
+using KickLib.Clients.Puppeteer;
 using KickLib.Interfaces;
 using KickLib.Models;
 using Microsoft.Extensions.Logging;
@@ -22,7 +23,7 @@ public class KickApi : IKickApi
     public KickApi(IApiCaller client = null, ILogger logger = null)
     {
         var browserSettings = BrowserSettings.Empty;
-        client ??= new BrowserClient(new AuthenticationService(browserSettings, logger), browserSettings, logger);
+        client ??= new BrowserClient(new PuppeteerAuthenticationService(browserSettings, logger), browserSettings, logger);
         
         Categories = new Categories(client, logger);
         Clips = new Clips(client, logger);

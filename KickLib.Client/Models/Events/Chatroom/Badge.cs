@@ -8,7 +8,7 @@ public class Badge
     [JsonConverter(typeof(BadgeTypeConverter))]
     public BadgeType Type { get; set; }
     
-    public string Text { get; set; }
+    public required string Text { get; set; }
     
     /// <summary>
     ///     Optional count value (e.g. number of months for a subscriber badge).
@@ -17,7 +17,7 @@ public class Badge
 
     private class BadgeTypeConverter : StringEnumConverter
     {
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             var value = reader.Value?.ToString();
 
@@ -31,7 +31,7 @@ public class Badge
                 : BadgeType.Unknown;
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             if (value is BadgeType badgeType)
             {

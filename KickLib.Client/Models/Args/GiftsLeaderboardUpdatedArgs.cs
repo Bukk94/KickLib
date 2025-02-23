@@ -4,5 +4,5 @@ namespace KickLib.Client.Models.Args;
 
 public class GiftsLeaderboardUpdatedArgs : EventArgs
 {
-    public GiftsLeaderboardUpdatedEvent Data { get; set; }
+    public required GiftsLeaderboardUpdatedEvent Data { get; set; }
 }

@@ -9,13 +9,18 @@ public class PinMessage
     [JsonProperty(PropertyName = "chatroom_id")]
     public int ChatroomId { get; set; }
 
-    public string Content { get; set; }
+    public required string Content { get; set; }
 
-    public string Type { get; set; }
+    /// <summary>
+    ///     Possible known values:
+    ///     message
+    /// </summary>
+    public required string Type { get; set; }
     
     [JsonProperty(PropertyName = "created_at")]
     public DateTime CreatedAt { get; set; }
 
-    public PinUser Sender { get; set; }
-    // Metadata
+    public required PinUser Sender { get; set; }
+    
+    // Metadata - nullable
 }

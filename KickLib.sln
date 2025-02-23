@@ -4,6 +4,24 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KickLib", "KickLib\KickLib.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KickLib.Client", "KickLib.Client\KickLib.Client.csproj", "{D0C30847-E3E3-41B4-8773-D1D38A7D3340}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dist", "Dist", "{4EBA99D9-5078-4174-B1B7-547DBB219C51}"
+	ProjectSection(SolutionItems) = preProject
+		Dist\index = Dist\index
+		Dist\index-arm = Dist\index-arm
+		Dist\index-arm64 = Dist\index-arm64
+		Dist\index-freebsd = Dist\index-freebsd
+		Dist\index-mac = Dist\index-mac
+		Dist\index-mac-arm64 = Dist\index-mac-arm64
+		Dist\index.exe = Dist\index.exe
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{B0DA31F6-B4E7-4025-9F14-ACE2EBC0F16A}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+		Breaking Changes - Migration Guide.md = Breaking Changes - Migration Guide.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
