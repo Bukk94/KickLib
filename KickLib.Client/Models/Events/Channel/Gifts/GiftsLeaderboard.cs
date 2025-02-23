@@ -7,7 +7,7 @@ public class GiftsLeaderboard
     [JsonProperty(PropertyName = "user_id")]
     public int UserId { get; set; }
 
-    public string Username { get; set; }
+    public required string Username { get; set; }
 
     public int Quantity { get; set; }
 }

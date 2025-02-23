@@ -6,8 +6,8 @@ public class UserUnbannedEvent
 {
     public Guid Id { get; set; }
 
-    public User User { get; set; }
+    public required User User { get; set; }
     
     [JsonProperty(PropertyName = "unbanned_by")]
-    public User BannedBy { get; set; }
+    public required User BannedBy { get; set; }
 }

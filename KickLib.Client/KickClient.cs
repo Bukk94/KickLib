@@ -15,9 +15,9 @@ public class KickClient : IKickClient
 {
     private const string KickWsKey = "32cbd69e4b950bf97679";
     private readonly Pusher _pusher;
-    private readonly ILogger _logger;
+    private readonly ILogger? _logger;
     
-    public KickClient(ILogger logger = null)
+    public KickClient(ILogger? logger = null)
     {
         _logger = logger;
         
@@ -33,21 +33,21 @@ public class KickClient : IKickClient
     }
 
     #region Events
-    public event EventHandler<ClientConnectedArgs> OnConnected;
-    public event EventHandler OnDisconnected;
-    public event EventHandler<ChatMessageEventArgs> OnMessage;
-    public event EventHandler<MessageDeletedEventArgs> OnMessageDeleted;
-    public event EventHandler<SubscriptionEventArgs> OnSubscription;
-    public event EventHandler<GiftedSubscriptionsEventArgs> OnGiftedSubscription;
-    public event EventHandler<UserBannedEventArgs> OnUserBanned;
-    public event EventHandler<UserUnbannedEventArgs> OnUserUnbanned;
-    public event EventHandler<FollowersUpdatedEventArgs> OnFollowersUpdated;
-    public event EventHandler<StreamStateChangedArgs> OnStreamStatusChanged;
-    public event EventHandler<StreamHostEventArgs> OnStreamHost;
-    public event EventHandler<GiftsLeaderboardUpdatedArgs> OnGiftsLeaderboardUpdated;
-    public event EventHandler<UnknownEventArgs> OnUnknownEvent;
-    public event EventHandler<PinnedMessageCreatedEventArgs> OnPinnedMessageCreated;
-    public event EventHandler<PinnedMessageDeletedEventArgs> OnPinnedMessageDeleted;
+    public event EventHandler<ClientConnectedArgs>? OnConnected;
+    public event EventHandler? OnDisconnected;
+    public event EventHandler<ChatMessageEventArgs>? OnMessage;
+    public event EventHandler<MessageDeletedEventArgs>? OnMessageDeleted;
+    public event EventHandler<SubscriptionEventArgs>? OnSubscription;
+    public event EventHandler<GiftedSubscriptionsEventArgs>? OnGiftedSubscription;
+    public event EventHandler<UserBannedEventArgs>? OnUserBanned;
+    public event EventHandler<UserUnbannedEventArgs>? OnUserUnbanned;
+    public event EventHandler<FollowersUpdatedEventArgs>? OnFollowersUpdated;
+    public event EventHandler<StreamStateChangedArgs>? OnStreamStatusChanged;
+    public event EventHandler<StreamHostEventArgs>? OnStreamHost;
+    public event EventHandler<GiftsLeaderboardUpdatedArgs>? OnGiftsLeaderboardUpdated;
+    public event EventHandler<UnknownEventArgs>? OnUnknownEvent;
+    public event EventHandler<PinnedMessageCreatedEventArgs>? OnPinnedMessageCreated;
+    public event EventHandler<PinnedMessageDeletedEventArgs>? OnPinnedMessageDeleted;
     #endregion
     
     public bool IsConnected => _pusher.State == ConnectionState.Connected;

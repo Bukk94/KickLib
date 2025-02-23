@@ -9,7 +9,7 @@ public class FollowersUpdatedEvent
     [JsonProperty(PropertyName = "channel_id")]
     public int ChannelId { get; set; }
     
-    public string Username { get; set; }
+    public required string Username { get; set; }
     
     /// <summary>
     ///     Time in ticks instead of proper date

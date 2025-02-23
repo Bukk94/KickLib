@@ -9,13 +9,13 @@ public class ChannelInfo
     [JsonProperty(PropertyName = "user_id")]
     public int UserId { get; set; }
 
-    public string Slug { get; set; }
+    public required string Slug { get; set; }
 
     [JsonProperty(PropertyName = "is_banned")]
     public bool IsBanned { get; set; }
 
     [JsonProperty(PropertyName = "playback_url")]
-    public string PlaybackUrl { get; set; }
+    public required string PlaybackUrl { get; set; }
 
     [JsonProperty(PropertyName = "name_updated_at")]
     public DateTime? NameUpdatedAt { get; set; }
@@ -32,5 +32,5 @@ public class ChannelInfo
     [JsonProperty(PropertyName = "can_host")]
     public bool CanHost { get; set; }
 
-    public ChatroomInfo Chatroom { get; set; }
+    public required ChatroomInfo Chatroom { get; set; }
 }

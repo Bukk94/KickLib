@@ -4,5 +4,5 @@ namespace KickLib.Client.Models.Args;
 
 public class SubscriptionEventArgs : EventArgs
 {
-    public SubscriptionEvent Data { get; set; }
+    public required SubscriptionEvent Data { get; set; }
 }

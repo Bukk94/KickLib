@@ -4,5 +4,5 @@ namespace KickLib.Client.Models.Args;
 
 public class UserUnbannedEventArgs : EventArgs
 {
-    public UserUnbannedEvent Data { get; set; }
+    public required UserUnbannedEvent Data { get; set; }
 }

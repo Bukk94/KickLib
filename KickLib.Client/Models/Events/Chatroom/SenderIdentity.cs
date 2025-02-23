@@ -2,7 +2,7 @@ namespace KickLib.Client.Models.Events.Chatroom;
 
 public class SenderIdentity
 {
-    public string Color { get; set; }
+    public required string Color { get; set; }
 
-    public ICollection<Badge> Badges { get; set; }
+    public ICollection<Badge> Badges { get; set; } = new List<Badge>();
 }
