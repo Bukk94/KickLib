@@ -1,0 +1,279 @@
+using System.Net;
+using System.Security.Cryptography;
+using System.Text;
+using FluentResults;
+using Newtonsoft.Json;
+
+namespace KickLib.Auth;
+
+/// <summary>
+///     KickLib service for generating OAuth 2.1 authorization flow (URLs, exchanging tokens, revokation).
+/// </summary>
+public static class KickOAuthGenerator
+{
+    /// <summary>
+    ///     Authorization URL
+    /// </summary>
+    public const string AuthorizeUrl = "https://id.kick.com/oauth/authorize";
+
+    /// <summary>
+    ///     URL used for token exchange.
+    /// </summary>
+    public const string ExchangeTokenUrl = "https://id.kick.com/oauth/token";
+    
+    /// <summary>
+    ///     URL used for Token revocation.
+    /// </summary>
+    public const string RevokeTokenUrl = "https://id.kick.com/oauth/revoke";
+
+    /// <summary>
+    ///     Generate the OAuth authorization URL.
+    ///     When state is provided, it will be used. Otherwise Base64 encoded verifier will be used (unsafe).
+    /// </summary>
+    /// <param name="redirectUri">Callback redirect URL (must be registered in the app).</param>
+    /// <param name="clientId">App Client ID.</param>
+    /// <param name="scopes">A list of scopes to grant.</param>
+    /// <param name="verifier">Used verifier code value before hashing.</param>
+    /// <param name="state">Validation state (if null, base64 encoded verifier code will be used).</param>
+    /// <returns></returns>
+    public static Uri GetAuthorizationUri(
+        string redirectUri,
+        string clientId,
+        ICollection<string> scopes,
+        out string verifier,
+        string? state = null)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(clientId);
+        ArgumentException.ThrowIfNullOrEmpty(redirectUri);
+        ArgumentNullException.ThrowIfNull(scopes, nameof(scopes));
+        if (scopes.Count == 0)
+        {
+            throw new ArgumentException("Scopes cannot be empty.", nameof(scopes));
+        }
+
+        var scope = string.Join(" ", scopes);
+
+        verifier = GenerateCodeVerifier();
+        if (string.IsNullOrWhiteSpace(state))
+        {
+            state = GenerateState(verifier);
+        }
+
+        var challenge = GenerateChallengeCode(verifier);
+
+        var url = new StringBuilder(AuthorizeUrl)
+            .Append("?client_id=").Append(clientId)
+            .Append("&response_type=code")
+            .Append("&redirect_uri=").Append(redirectUri)
+            .Append("&state=").Append(state)
+            .Append("&scope=").Append(scope)
+            .Append("&code_challenge=").Append(challenge)
+            .Append("&code_challenge_method=S256")
+            .ToString();
+
+        return new Uri(url);
+    }
+
+    /// <summary>
+    ///     Exchange the code from callback for an access token.
+    /// </summary>
+    /// <param name="code">Code received from callback.</param>
+    /// <param name="clientId">App client ID.</param>
+    /// <param name="clientSecret">App secret.</param>
+    /// <param name="redirectUrl">Redirect URL used during initial request.</param>
+    /// <param name="state">Received state from the callback.</param>
+    /// <param name="verifier">Verifier code used for initial authentication call (if null, it will try to decode state value).</param>
+    /// <returns>Returns Kick token response (access/refresh tokens).</returns>
+    public static async Task<Result<KickTokenResponse>> ExchangeCodeForTokenAsync(
+        string code,
+        string clientId,
+        string clientSecret,
+        string redirectUrl,
+        string state,
+        string verifier = null)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(code);
+        ArgumentException.ThrowIfNullOrEmpty(clientId);
+        ArgumentException.ThrowIfNullOrEmpty(state);
+        ArgumentException.ThrowIfNullOrEmpty(redirectUrl);
+
+        using var client = new HttpClient();
+
+        if (string.IsNullOrWhiteSpace(verifier))
+        {
+            verifier = DecodeState(state);
+        }
+
+        var data = new FormUrlEncodedContent(
+        [
+            new KeyValuePair<string, string>("code", code),
+            new KeyValuePair<string, string>("client_id", clientId),
+            new KeyValuePair<string, string>("client_secret", clientSecret),
+            new KeyValuePair<string, string>("redirect_uri", redirectUrl),
+            new KeyValuePair<string, string>("grant_type", "authorization_code"),
+            // This is the PKCE part. It's the ORIGINAL generated code before it was sha256 hashed.
+            // This is what proves to kick that you are the one that started the original auth request
+            new KeyValuePair<string, string>("code_verifier", verifier)
+        ]);
+
+        var response = await client.PostAsync(
+            ExchangeTokenUrl,
+            data);
+
+        var content = await response.Content.ReadAsStringAsync();
+
+        if (response.StatusCode != HttpStatusCode.OK)
+        {
+            var message =
+                $"ExchangeCodeForToken call returned non-Ok response. Reason: {response.ReasonPhrase}. Status: {response.StatusCode}. Data: {content}";
+            return Result.Fail(message);
+        }
+
+        try
+        {
+            return Result.Ok(JsonConvert.DeserializeObject<KickTokenResponse>(content));
+        }
+        catch (Exception ex)
+        {
+            var message = $"ExchangeCodeForToken failed to deserialize response: {content}\nException:{ex}";
+            return Result.Fail(message);
+        }
+    }
+
+    /// <summary>
+    ///     Refresh the access token using the refresh token.
+    /// </summary>
+    /// <param name="refreshToken">Valid refresh token.</param>
+    /// <param name="clientId">App Client ID.</param>
+    /// <param name="clientSecret">App secret.</param>
+    /// <returns>Returns refreshed access token.</returns>
+    public static async Task<Result<KickTokenResponse>> RefreshAccessTokenAsync(
+        string refreshToken,
+        string clientId,
+        string clientSecret)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(refreshToken);
+        ArgumentException.ThrowIfNullOrEmpty(clientId);
+        ArgumentException.ThrowIfNullOrEmpty(clientSecret);
+
+        using var client = new HttpClient();
+
+        var data = new FormUrlEncodedContent(
+        [
+            new KeyValuePair<string, string>("refresh_token", refreshToken),
+            new KeyValuePair<string, string>("client_id", clientId!),
+            new KeyValuePair<string, string>("client_secret", clientSecret!),
+            new KeyValuePair<string, string>("grant_type", "refresh_token")
+        ]);
+
+        var response = await client.PostAsync(
+            ExchangeTokenUrl,
+            data);
+
+        var message = await response.Content.ReadAsStringAsync();
+
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            return Result.Ok(JsonConvert.DeserializeObject<KickTokenResponse>(message));
+        }
+
+        return Result.Fail("Refresh token failed: " + message);
+    }
+
+    /// <summary>
+    ///     Revoke Access Token.
+    /// </summary>
+    /// <param name="tokenToRevoke">Access token to revoke.</param>
+    /// <returns>Returns true if successfully revoked.</returns>
+    public static Task<Result<bool>> RevokeAccessTokenAsync(string tokenToRevoke) => RevokeTokenAsync(tokenToRevoke, true);
+    
+    /// <summary>
+    ///     Revoke Refresh token.
+    /// </summary>
+    /// <param name="tokenToRevoke">Refresh token to revoke.</param>
+    /// <returns>Returns true if successfully revoked.</returns>
+    public static Task<Result<bool>> RevokeRefreshTokenAsync(string tokenToRevoke) => RevokeTokenAsync(tokenToRevoke, false);
+    
+    /// <summary>
+    ///     Revoke access/refresh token.
+    /// </summary>
+    /// <param name="tokenToRevoke">Token to revoke.</param>
+    /// <param name="isAccessToken">Is passed token an Access Token?</param>
+    /// <returns>Returns true if successfully revoked.</returns>
+    public static async Task<Result<bool>> RevokeTokenAsync(
+        string tokenToRevoke,
+        bool isAccessToken)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(tokenToRevoke);
+
+        using var client = new HttpClient();
+
+        var hintType = isAccessToken ? "access_token" : "refresh_token";
+        var data = new FormUrlEncodedContent(
+        [
+            new KeyValuePair<string, string>("token", tokenToRevoke),
+            new KeyValuePair<string, string>("token_hint_type", hintType)
+        ]);
+
+        var response = await client.PostAsync(
+            RevokeTokenUrl,
+            data);
+
+        var message = await response.Content.ReadAsStringAsync();
+
+        return response.StatusCode == HttpStatusCode.OK
+            ? Result.Ok()
+            : Result.Fail(message);
+    }
+
+    private static string GenerateChallengeCode(string verifier)
+    {
+        using var sha256 = SHA256.Create();
+        var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(verifier));
+        return Convert.ToBase64String(hash)
+            .Replace("+", "-")
+            .Replace("/", "_")
+            .Replace("=", "");
+    }
+
+    /// <summary>
+    ///     The verifier system is used to "prove" that the request for authorization was 
+    ///     started by your application, and later that the code exchange was also by your application.
+    /// </summary>
+    private static string GenerateCodeVerifier()
+    {
+        var buffer = new byte[32];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(buffer);
+
+        return Convert.ToBase64String(buffer)
+            .Replace("+", "-")
+            .Replace("/", "_")
+            .Replace("=", "");
+    }
+
+    private static string GenerateState(string codeVerifier)
+    {
+        // Using verifier as state is not recommended and unsafe.
+        var json = JsonConvert.SerializeObject(new KickVerifier { CodeVerifier = codeVerifier });
+        var jsonBytes = Encoding.UTF8.GetBytes(json);
+        return Convert.ToBase64String(jsonBytes);
+    }
+
+    private static string DecodeState(string state)
+    {
+        try
+        {
+            state = WebUtility.UrlDecode(state);
+            var jsonBytes = Convert.FromBase64String(state);
+            var json = Encoding.UTF8.GetString(jsonBytes);
+            var data = JsonConvert.DeserializeObject<KickVerifier>(json);
+
+            return data!.CodeVerifier;
+        }
+        catch
+        {
+            return string.Empty;
+        }
+    }
+}

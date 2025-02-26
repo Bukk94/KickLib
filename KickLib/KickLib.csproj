@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <LangVersion>latest</LangVersion>
-        <Version>0.2.0</Version>
+        <Version>0.2.1</Version>
         <Title>KickLib</Title>
         <Authors>Bukk94</Authors>
         <Description>C# library for accessing API from Kick.com livestreaming platform.</Description>
@@ -16,13 +16,14 @@
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Updated project structure and prepared TLS Spoofing Client</PackageReleaseNotes>
-        <AssemblyVersion>0.2.0</AssemblyVersion>
-        <FileVersion>0.2.0</FileVersion>
+        <PackageReleaseNotes>Added OAuth flow</PackageReleaseNotes>
+        <AssemblyVersion>0.2.1</AssemblyVersion>
+        <FileVersion>0.2.1</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentResults" Version="3.16.0" />
         <PackageReference Include="JsonSubTypes" Version="2.0.1" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
