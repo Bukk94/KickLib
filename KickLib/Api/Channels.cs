@@ -46,4 +46,21 @@ public class Channels : ApiBase
 
         return Result.Ok(result.Value.First()).WithSuccesses(result.Successes);
     }
+    
+    public async Task<Result<bool>> UpdateChannelAsync(
+        UpdateChannelInput input,
+        string? accessToken = null)
+    {
+        ArgumentNullException.ThrowIfNull(input);
+        
+        // v1/channels
+        var result = await PatchAsync(ApiUrlPart, ApiVersion.v1, input, accessToken).ConfigureAwait(false);
+
+        if (result.HasError(x => x.Message == "Response code: 403"))
+        {
+            result.WithError($"Missing scope: {KickScopes.ChannelWrite}");
+        }
+
+        return result;
+    }
 }
