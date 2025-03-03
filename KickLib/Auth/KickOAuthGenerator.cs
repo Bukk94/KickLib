@@ -161,16 +161,16 @@ public static class KickOAuthGenerator
         var data = new FormUrlEncodedContent(
         [
             new KeyValuePair<string, string>("refresh_token", refreshToken),
-            new KeyValuePair<string, string>("client_id", clientId!),
-            new KeyValuePair<string, string>("client_secret", clientSecret!),
+            new KeyValuePair<string, string>("client_id", clientId),
+            new KeyValuePair<string, string>("client_secret", clientSecret),
             new KeyValuePair<string, string>("grant_type", "refresh_token")
         ]);
 
         var response = await client.PostAsync(
             ExchangeTokenUrl,
-            data);
+            data).ConfigureAwait(false);
 
-        var message = await response.Content.ReadAsStringAsync();
+        var message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
         if (response.StatusCode == HttpStatusCode.OK)
         {

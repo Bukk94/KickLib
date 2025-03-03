@@ -3,54 +3,46 @@
     <PropertyGroup>
         <TargetFrameworks>net7.0;net8.0;net9.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>disable</Nullable>
+        <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
-        <Version>0.2.1</Version>
         <Title>KickLib</Title>
         <Authors>Bukk94</Authors>
         <Description>C# library for accessing API from Kick.com livestreaming platform.</Description>
         <PackageTags>api,kick,chat,client,csharp,data,livestream</PackageTags>
         <License>https://github.com/Bukk94/KickLib/blob/master/LICENSE</License>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Copyright>Copyright (c) 2024 Bukk94</Copyright>
+        <Copyright>Copyright (c) 2025 Bukk94</Copyright>
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Added OAuth flow</PackageReleaseNotes>
-        <AssemblyVersion>0.2.1</AssemblyVersion>
-        <FileVersion>0.2.1</FileVersion>
+        <PackageReleaseNotes>Library overhault to support official endpoints.</PackageReleaseNotes>
+        <Version>1.0.0-preview</Version>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0-preview</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="FluentResults" Version="3.16.0" />
-        <PackageReference Include="JsonSubTypes" Version="2.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="Otp.NET" Version="1.3.0" />
-        <PackageReference Include="Polly" Version="7.2.4" />
-        <PackageReference Include="PuppeteerExtraSharp" Version="2.0.0" />
-        <PackageReference Include="PuppeteerSharp" Version="14.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
-        <PackageReference Include="PusherClient" Version="2.2.1" />
-        <PackageReference Include="RandomUserAgent" Version="1.1.2" />
-        <PackageReference Include="WebSocketSharper" Version="1.0.42" />
     </ItemGroup>
 
     <ItemGroup>
         <Content Include="../README.md" Pack="true" PackagePath=".">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+        <Content Include="../KickLib.Api.Unofficial/README_UnofficialAPI.md" Pack="true" PackagePath=".">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\KickLib.Client\KickLib.Client.csproj" PrivateAssets="all" />
+        <ProjectReference Include="..\KickLib.Api.Unofficial\KickLib.Api.Unofficial.csproj" />
     </ItemGroup>
 
     <PropertyGroup>
         <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     </PropertyGroup>
+    
     <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
         <ItemGroup>
             <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'All'))" />

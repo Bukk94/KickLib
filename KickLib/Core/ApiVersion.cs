@@ -1,11 +1,7 @@
-﻿namespace KickLib.Core;
-
-public enum ApiVersion
+﻿namespace KickLib.Core
 {
-    V1 = 1,
-    V2 = 2,
-    
-    V1Internal,
-    // Some endpoints don't have /v1/ in the path
-    None
+    public enum ApiVersion
+    {
+        v1 = 1
+    }
 }
