@@ -28,6 +28,12 @@ public interface IKickApi
     public Channels Channels { get; }
     
     /// <summary>
+    ///     [WEBHOOKS] Event Subscriptions APIs allow you to subscribe to events on Kick e.g. chat messages, follows, subscriptions.
+    ///     Those events are then sent to a webhook URL that you provide.
+    /// </summary>
+    public EventSubscriptions EventSubscriptions { get; }
+    
+    /// <summary>
     ///     User APIs allow apps to interact with user information. Scopes will vary and sensitive data will be available to User Access Tokens with the required scopes.
     /// </summary>
     public Users Users { get; }

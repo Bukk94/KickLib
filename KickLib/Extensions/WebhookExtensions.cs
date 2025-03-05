@@ -1,0 +1,45 @@
+using KickLib.Models.v1.EventSubscriptions;
+
+namespace KickLib.Extensions;
+
+public static class WebhookExtensions
+{
+    /// <summary>
+    ///     Extracts the event type and version from the headers of a request.
+    /// </summary>
+    public static (EventType EventType, int Version)? GetEventType(this Dictionary<string, string> headers)
+    {
+        if (!headers.TryGetValue("Kick-Event-Type", out var type) ||
+            !headers.TryGetValue("Kick-Event-Version", out var versionValue) ||
+            !int.TryParse(versionValue, out var version))
+        {
+            return null;
+        }
+
+        return type switch
+        {
+            "chat.message.sent" => (EventType.ChatMessageSent, version),
+            "channel.followed" => (EventType.ChannelFollowed, version),
+            "channel.subscription.renewal" => (EventType.ChannelSubscriptionRenewal, version),
+            "channel.subscription.gifts" => (EventType.ChannelSubscriptionGifts, version),
+            "channel.subscription.new" => (EventType.ChannelSubscriptionNew, version),
+            _ => null
+        };
+    }
+
+    /// <summary>
+    ///     Get event name from event type.
+    /// </summary>
+    public static string GetEventName(this EventType type)
+    {
+        return type switch
+        {
+            EventType.ChatMessageSent => "chat.message.sent",
+            EventType.ChannelFollowed => "channel.followed",
+            EventType.ChannelSubscriptionRenewal => "channel.subscription.renewal",
+            EventType.ChannelSubscriptionGifts => "channel.subscription.gifts",
+            EventType.ChannelSubscriptionNew => "channel.subscription.new",
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+    }
+}

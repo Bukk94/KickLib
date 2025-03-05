@@ -26,11 +26,9 @@ public class Chat : ApiBase
     {
         ArgumentException.ThrowIfNullOrEmpty(message);
         
-        var input = new SendMessageInput
+        var input = new SendMessageInput(message, MessageType.User)
         {
-            Content = message,
-            BroadcasterId = broadcasterId,
-            Type = MessageType.User
+            BroadcasterId = broadcasterId
         };
         
         // v1/chat
@@ -54,12 +52,8 @@ public class Chat : ApiBase
         string? accessToken = null)
     {
         ArgumentException.ThrowIfNullOrEmpty(message);
-        
-        var input = new SendMessageInput
-        {
-            Content = message,
-            Type = MessageType.Bot
-        };
+
+        var input = new SendMessageInput(message, MessageType.Bot);
         
         // v1/chat
         var result = await PostAsync<SendChatMessageResponse, SendMessageInput>(ApiUrlPart, ApiVersion.v1, input, accessToken)

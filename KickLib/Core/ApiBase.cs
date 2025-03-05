@@ -166,6 +166,33 @@ public abstract class ApiBase
         return Result.Ok(true);
     }
     
+    protected async Task<Result<bool>> DeleteAsync(
+        string urlPart,
+        ApiVersion version,
+        List<KeyValuePair<string, string>>? queryParams = null,
+        string? accessToken = null)
+    {
+        var url = ConstructResourceUrl(urlPart, version, queryParams);
+
+        var token = ResolveAccessToken(accessToken);
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            return Result.Fail("Access token is missing.");
+        }
+        
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _client.DeleteAsync(url).ConfigureAwait(false);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return HandleErrorResponse((int)response.StatusCode, data, $"DELETE {url}");
+        }
+
+        return Result.Ok(true);
+    }
+    
     private string? ResolveAccessToken(string? accessToken)
     {
         if (!string.IsNullOrWhiteSpace(accessToken))
