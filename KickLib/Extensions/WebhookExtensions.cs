@@ -74,7 +74,7 @@ public static class WebhookExtensions
         (
             eventType,
             int.Parse(version),
-            DateTimeOffset.Parse(messageTimestamp),
+            messageTimestamp,
             eventSignature,
             subscriptionId,
             messageId
