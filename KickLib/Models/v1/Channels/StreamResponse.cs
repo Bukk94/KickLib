@@ -15,8 +15,6 @@ public class StreamResponse
     /// </summary>
     public string? Key { get; set; }
     
-    public required CategoryResponse Category { get; set; }
-
     public required string Language { get; set; }
     
     [JsonProperty(PropertyName = "is_live")]
@@ -27,9 +25,6 @@ public class StreamResponse
     
     [JsonProperty(PropertyName = "start_time")]
     public required DateTimeOffset StartTime { get; set; }
-    
-    [JsonProperty(PropertyName = "stream_title")]
-    public required string StreamTitle { get; set; }
     
     [JsonProperty(PropertyName = "viewer_count")]
     public int ViewerCount { get; set; }
