@@ -15,11 +15,12 @@
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Library overhault to support official endpoints.</PackageReleaseNotes>
-        <Version>1.0.0-preview</Version>
+        <PackageReleaseNotes>Library overhaul to support official endpoints and structures.</PackageReleaseNotes>
+        <Version>1.0.0</Version>
         <AssemblyVersion>1.0.0</AssemblyVersion>
-        <FileVersion>1.0.0-preview</FileVersion>
+        <FileVersion>1.0.0</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     </PropertyGroup>
 
     <ItemGroup>
@@ -39,13 +40,9 @@
         <ProjectReference Include="..\KickLib.Api.Unofficial\KickLib.Api.Unofficial.csproj" />
     </ItemGroup>
 
-    <PropertyGroup>
-        <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-    </PropertyGroup>
-    
-    <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
+    <Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
         <ItemGroup>
-            <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'All'))" />
+            <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))"/>
         </ItemGroup>
     </Target>
 </Project>
