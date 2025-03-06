@@ -21,11 +21,12 @@ public static class WebhookExtensions
 
         return type switch
         {
-            "chat.message.sent" => (EventType.ChatMessageSent, version),
-            "channel.followed" => (EventType.ChannelFollowed, version),
-            "channel.subscription.renewal" => (EventType.ChannelSubscriptionRenewal, version),
-            "channel.subscription.gifts" => (EventType.ChannelSubscriptionGifts, version),
-            "channel.subscription.new" => (EventType.ChannelSubscriptionNew, version),
+            WebhookEventTypes.ChatMessageSent => (EventType.ChatMessageSent, version),
+            WebhookEventTypes.ChannelFollowed => (EventType.ChannelFollowed, version),
+            WebhookEventTypes.ChannelSubscriptionRenewal => (EventType.ChannelSubscriptionRenewal, version),
+            WebhookEventTypes.ChannelGiftedSubscription => (EventType.ChannelSubscriptionGifts, version),
+            WebhookEventTypes.ChannelNewSubscription => (EventType.ChannelSubscriptionNew, version),
+            WebhookEventTypes.LivestreamStatusUpdated => (EventType.LivestreamStatusUpdated, version),
             _ => null
         };
     }
@@ -37,11 +38,12 @@ public static class WebhookExtensions
     {
         return type switch
         {
-            EventType.ChatMessageSent => "chat.message.sent",
-            EventType.ChannelFollowed => "channel.followed",
-            EventType.ChannelSubscriptionRenewal => "channel.subscription.renewal",
-            EventType.ChannelSubscriptionGifts => "channel.subscription.gifts",
-            EventType.ChannelSubscriptionNew => "channel.subscription.new",
+            EventType.ChatMessageSent => WebhookEventTypes.ChatMessageSent,
+            EventType.ChannelFollowed => WebhookEventTypes.ChannelFollowed,
+            EventType.ChannelSubscriptionRenewal => WebhookEventTypes.ChannelSubscriptionRenewal,
+            EventType.ChannelSubscriptionGifts => WebhookEventTypes.ChannelGiftedSubscription,
+            EventType.ChannelSubscriptionNew => WebhookEventTypes.ChannelNewSubscription,
+            EventType.LivestreamStatusUpdated => WebhookEventTypes.LivestreamStatusUpdated,
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }

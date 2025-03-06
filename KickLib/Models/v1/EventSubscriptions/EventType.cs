@@ -28,5 +28,10 @@ public enum EventType
     /// <summary>
     ///     Event type channel.subscription.new.
     /// </summary>
-    ChannelSubscriptionNew
+    ChannelSubscriptionNew,
+    
+    /// <summary>
+    ///     Event type livestream.status.updated.
+    /// </summary>
+    LivestreamStatusUpdated
 }

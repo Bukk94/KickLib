@@ -13,7 +13,7 @@ public static class WebhookEventParser
     public const string KickEventSubscriptionIdHeader = "Kick-Event-Subscription-Id";
     public const string KickEventMessageIdHeader = "Kick-Event-Message-Id";
     
-    public static WebhookEventBase? Parse(EventType eventType, string payload)
+    public static WebhookEventBase Parse(EventType eventType, string payload)
     {
         TryParse(eventType, payload, out var webhookEvent);
         return webhookEvent ?? throw new ArgumentException("Unknown event type");
@@ -28,6 +28,7 @@ public static class WebhookEventParser
             EventType.ChannelSubscriptionNew => ParseChannelNewSubscriptionEvent(payload),
             EventType.ChannelSubscriptionRenewal => ParseChannelSubscriptionRemovalEvent(payload),
             EventType.ChatMessageSent => ParseChatMessageSentEvent(payload),
+            EventType.LivestreamStatusUpdated => ParseLivestreamStatusUpdatedEvent(payload),
             _ => null
         };
         
@@ -57,5 +58,10 @@ public static class WebhookEventParser
     public static ChannelFollowedEvent? ParseChannelFollowedEvent(string payload)
     {
         return JsonConvert.DeserializeObject<ChannelFollowedEvent>(payload);
+    }
+    
+    public static LivestreamStatusUpdatedEvent? ParseLivestreamStatusUpdatedEvent(string payload)
+    {
+        return JsonConvert.DeserializeObject<LivestreamStatusUpdatedEvent>(payload);
     }
 }
