@@ -5,6 +5,8 @@ namespace KickLib.Webhooks;
 
 public class WebhookEventInfo
 {
+    private static readonly RSA DefaultPublicKey = ParsePublicKey(KickPublicKey);
+
     /// <summary>
     ///     Event Type.
     /// </summary>
@@ -53,7 +55,7 @@ public class WebhookEventInfo
         SubscriptionId = subscriptionId;
         MessageId = messageId;
     }
-
+    
     /// <summary>
     ///     Validates the sender signature against Kick Public Key.
     ///     When no signature key is provided, default Kick Public Key will be used.
@@ -63,17 +65,17 @@ public class WebhookEventInfo
     /// <returns>Returns true if payload is from valid Kick sender.</returns>
     public bool ValidateSender(string payload, string? publicKeySignature = null)
     {
-        var signatureKey = string.IsNullOrWhiteSpace(publicKeySignature) ? KickPublicKey : publicKeySignature;
-        
-        var publicKey = ParsePublicKey(signatureKey);
-        var signatureData = $"{MessageId}.{MessageTimestamp}.{payload}";
-        var signatureBytes = Encoding.UTF8.GetBytes(signatureData);
-        
+        var publicKey = !string.IsNullOrWhiteSpace(publicKeySignature) 
+            ? ParsePublicKey(publicKeySignature) 
+            : DefaultPublicKey;
+
+        var payloadBytes = Encoding.UTF8.GetBytes($"{MessageId}.{MessageTimestamp}.{payload}");
+        var hashedPayload = SHA256.HashData(payloadBytes);
+
         try
         {
             var signature = Convert.FromBase64String(Signature);
-            var hashed = SHA256.HashData(signatureBytes);
-            return publicKey.VerifyData(hashed, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            return publicKey.VerifyHash(hashedPayload, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
         }
         catch
         {
@@ -85,16 +87,8 @@ public class WebhookEventInfo
     {
         try
         {
-            var keyBytes = Convert.FromBase64String(
-                signatureKey
-                .Replace("-----BEGIN PUBLIC KEY-----", string.Empty)
-                .Replace("-----END PUBLIC KEY-----", string.Empty)
-                .Replace("\n", string.Empty)
-                .Replace("\r", string.Empty)
-            );
-
             var rsa = RSA.Create();
-            rsa.ImportSubjectPublicKeyInfo(keyBytes, out _);
+            rsa.ImportFromPem(signatureKey);
             return rsa;
         }
         catch (Exception ex)

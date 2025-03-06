@@ -9,10 +9,12 @@ public class EventPayloadsTests : BaseKickLibTests
     {
     }
     
-    [Fact]
-    public void CorrectlyDeserialize_ChatMessageSentEventPayload()
+    [Theory]
+    [InlineData("ChatMessageSentEventPayload")]
+    [InlineData("ChatMessageSentEventPayload_NoEmotes")]
+    public void CorrectlyDeserialize_ChatMessageSentEventPayload(string data)
     {
-        var payload = GetPayload("ChatMessageSentEventPayload");
+        var payload = GetPayload(data);
 
         var webhookEvent = WebhookEventParser.ParseChatMessageSentEvent(payload);
         

@@ -1,0 +1,11 @@
+{
+  "message_id": "unique_message_id_123",
+  "broadcaster": {
+    "is_anonymous": true
+  },
+  "sender": {
+    "is_anonymous": true
+  },
+  "content": "This is a test message with emotes!",
+  "emotes": null
+}

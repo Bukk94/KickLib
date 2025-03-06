@@ -31,6 +31,7 @@
       <EmbeddedResource Include="Data\WebhookPayloads\ChannelNewSubscriptionEventPayload.json" />
       <EmbeddedResource Include="Data\WebhookPayloads\ChannelSubscriptionRenewalEventPayload.json" />
       <EmbeddedResource Include="Data\WebhookPayloads\ChatMessageSentEventPayload.json" />
+      <EmbeddedResource Include="Data\WebhookPayloads\ChatMessageSentEventPayload_NoEmotes.json" />
       <EmbeddedResource Include="Data\WebhookPayloads\LivestreamStatusUpdatedEventPayload_Live.json" />
       <EmbeddedResource Include="Data\WebhookPayloads\LivestreamStatusUpdatedEventPayload_Offline.json" />
       <None Remove="Data\ChatMessageSentEventPayload.json" />
