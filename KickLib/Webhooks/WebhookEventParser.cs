@@ -26,7 +26,7 @@ public static class WebhookEventParser
             EventType.ChannelFollowed => ParseChannelFollowedEvent(payload),
             EventType.ChannelSubscriptionGifts => ParseChannelGiftedSubscriptionEvent(payload),
             EventType.ChannelSubscriptionNew => ParseChannelNewSubscriptionEvent(payload),
-            EventType.ChannelSubscriptionRenewal => ParseChannelSubscriptionRemovalEvent(payload),
+            EventType.ChannelSubscriptionRenewal => ParseChannelSubscriptionRenewalEvent(payload),
             EventType.ChatMessageSent => ParseChatMessageSentEvent(payload),
             EventType.LivestreamStatusUpdated => ParseLivestreamStatusUpdatedEvent(payload),
             _ => null
@@ -50,7 +50,7 @@ public static class WebhookEventParser
         return JsonConvert.DeserializeObject<ChannelGiftedSubscriptionEvent>(payload);
     }
     
-    public static ChannelSubscriptionRenewalEvent? ParseChannelSubscriptionRemovalEvent(string payload)
+    public static ChannelSubscriptionRenewalEvent? ParseChannelSubscriptionRenewalEvent(string payload)
     {
         return JsonConvert.DeserializeObject<ChannelSubscriptionRenewalEvent>(payload);
     }

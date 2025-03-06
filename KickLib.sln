@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{B0DA31F6-B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KickLib.Api.Unofficial", "KickLib.Api.Unofficial\KickLib.Api.Unofficial.csproj", "{F8BA691E-387D-4B85-BB2F-72E7298E756E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KickLib.Tests", "KickLib.Tests\KickLib.Tests.csproj", "{F2A58AD7-CD9B-493F-B26D-D0BBFF18E831}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{F8BA691E-387D-4B85-BB2F-72E7298E756E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8BA691E-387D-4B85-BB2F-72E7298E756E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8BA691E-387D-4B85-BB2F-72E7298E756E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2A58AD7-CD9B-493F-B26D-D0BBFF18E831}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2A58AD7-CD9B-493F-B26D-D0BBFF18E831}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2A58AD7-CD9B-493F-B26D-D0BBFF18E831}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2A58AD7-CD9B-493F-B26D-D0BBFF18E831}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

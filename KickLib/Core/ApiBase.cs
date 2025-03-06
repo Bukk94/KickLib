@@ -16,16 +16,6 @@ public abstract class ApiBase
     private readonly JsonSerializerSettings _serializerSettings;
     private readonly HttpClient _client;
 
-    private static readonly JsonSerializerSettings SerializerSettings = new()
-    {
-        NullValueHandling = NullValueHandling.Ignore,
-        ContractResolver = new CamelCasePropertyNamesContractResolver(),
-        Converters = new List<JsonConverter>
-        {
-            new StringEnumConverter(typeof(LowerCaseNamingStrategy))
-        }
-    };
-    
     internal const string BaseUrl = "https://api.kick.com/public/";
     
     protected ApiBase(ApiSettings settings, ILogger logger)
@@ -39,6 +29,12 @@ public abstract class ApiBase
 
         _serializerSettings = new JsonSerializerSettings
         {
+            NullValueHandling = NullValueHandling.Ignore,
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            Converters = new List<JsonConverter>
+            {
+                new StringEnumConverter(typeof(LowerCaseNamingStrategy))
+            },
             Error = delegate(object? sender, ErrorEventArgs args)
             {
                 logger.LogError("Deserialization failed in {Sender}! {Ex}", sender?.ToString() ?? "Unknown", args.ErrorContext.Error);
@@ -115,7 +111,7 @@ public abstract class ApiBase
         StringContent? payload = null;
         if (input is not null)
         {
-            var json = JsonConvert.SerializeObject(input, SerializerSettings);
+            var json = JsonConvert.SerializeObject(input, _serializerSettings);
             payload = new StringContent(json, Encoding.UTF8, "application/json");
         }
         
@@ -153,7 +149,7 @@ public abstract class ApiBase
         
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var json = JsonConvert.SerializeObject(input, SerializerSettings);
+        var json = JsonConvert.SerializeObject(input, _serializerSettings);
         var payload = new StringContent(json, Encoding.UTF8, "application/json");
         var response = await _client.PatchAsync(url, payload).ConfigureAwait(false);
 

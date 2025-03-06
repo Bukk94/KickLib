@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" Version="6.0.4"/>
+        <PackageReference Include="FluentAssertions" Version="[7.2.0]" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0"/>
+        <PackageReference Include="xunit" Version="2.9.3"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="3.0.2"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\KickLib\KickLib.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Data\ApiResponses\IntrospectTokenResponse_Inactive.json" />
+      <EmbeddedResource Include="Data\WebhookPayloads\ChannelFollowedEventPayload.json" />
+      <EmbeddedResource Include="Data\WebhookPayloads\ChannelGiftedSubscriptionEventPayload.json" />
+      <EmbeddedResource Include="Data\WebhookPayloads\ChannelGiftedSubscriptionEventPayload_Anonymous.json" />
+      <EmbeddedResource Include="Data\WebhookPayloads\ChannelNewSubscriptionEventPayload.json" />
+      <EmbeddedResource Include="Data\WebhookPayloads\ChannelSubscriptionRenewalEventPayload.json" />
+      <EmbeddedResource Include="Data\WebhookPayloads\ChatMessageSentEventPayload.json" />
+      <EmbeddedResource Include="Data\WebhookPayloads\LivestreamStatusUpdatedEventPayload_Live.json" />
+      <EmbeddedResource Include="Data\WebhookPayloads\LivestreamStatusUpdatedEventPayload_Offline.json" />
+      <None Remove="Data\ChatMessageSentEventPayload.json" />
+      <None Remove="Data\ChannelFollowedEventPayload.json" />
+      <None Remove="Data\ChannelGiftedSubscriptionEventPayload.json" />
+      <None Remove="Data\ChannelGiftedSubscriptionEventPayload_Anonymous.json" />
+      <None Remove="Data\ChannelNewSubscriptionEventPayload.json" />
+      <None Remove="Data\ChannelSubscriptionRenewalEventPayload.json" />
+      <None Remove="Data\LivestreamStatusUpdatedEventPayload_Live.json" />
+      <None Remove="Data\LivestreamStatusUpdatedEventPayload_Offline.json" />
+      <None Remove="Data\ApiResponses\GetUsersResponse.json" />
+      <EmbeddedResource Include="Data\ApiResponses\GetUsersResponse.json" />
+      <None Remove="Data\ApiResponses\WrapperResponse.json" />
+      <EmbeddedResource Include="Data\ApiResponses\WrapperResponse.json" />
+      <None Remove="Data\ApiResponses\GetChannelsResponse.json" />
+      <EmbeddedResource Include="Data\ApiResponses\GetChannelsResponse.json" />
+      <None Remove="Data\ApiResponses\GetCategoriesResponse.json" />
+      <EmbeddedResource Include="Data\ApiResponses\GetCategoriesResponse.json" />
+      <None Remove="Data\ApiResponses\SendChatMessageResponse.json" />
+      <EmbeddedResource Include="Data\ApiResponses\SendChatMessageResponse.json" />
+      <None Remove="Data\ApiResponses\GetPublicKeyResponse.json" />
+      <EmbeddedResource Include="Data\ApiResponses\GetPublicKeyResponse.json" />
+      <None Remove="Data\ApiResponses\IntrospectTokenResponse.json" />
+      <EmbeddedResource Include="Data\ApiResponses\IntrospectTokenResponse.json" />
+      <None Remove="Data\ApiResponses\SubscribeToEventResponse.json" />
+      <EmbeddedResource Include="Data\ApiResponses\SubscribeToEventResponse.json" />
+    </ItemGroup>
+
+</Project>

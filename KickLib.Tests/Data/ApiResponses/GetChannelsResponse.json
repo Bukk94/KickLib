@@ -1,0 +1,21 @@
+{
+  "banner_picture": "text",
+  "broadcaster_user_id": 1,
+  "category": {
+    "id": 1,
+    "name": "text",
+    "thumbnail": "text"
+  },
+  "channel_description": "text",
+  "slug": "text",
+  "stream": {
+    "is_live": true,
+    "is_mature": true,
+    "key": "text",
+    "language": "en",
+    "start_time": "2025-01-01T11:00:00+11:00",
+    "url": "text",
+    "viewer_count": 1
+  },
+  "stream_title": "text"
+}

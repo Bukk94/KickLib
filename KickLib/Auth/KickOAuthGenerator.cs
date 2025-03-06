@@ -1,7 +1,6 @@
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using FluentResults;
 using Newtonsoft.Json;
 
 namespace KickLib.Auth;
@@ -90,7 +89,7 @@ public static class KickOAuthGenerator
         string clientSecret,
         string redirectUrl,
         string state,
-        string verifier = null)
+        string? verifier = null)
     {
         ArgumentException.ThrowIfNullOrEmpty(code);
         ArgumentException.ThrowIfNullOrEmpty(clientId);
@@ -118,9 +117,9 @@ public static class KickOAuthGenerator
 
         var response = await client.PostAsync(
             ExchangeTokenUrl,
-            data);
+            data).ConfigureAwait(false);
 
-        var content = await response.Content.ReadAsStringAsync();
+        var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
         if (response.StatusCode != HttpStatusCode.OK)
         {
@@ -217,9 +216,9 @@ public static class KickOAuthGenerator
 
         var response = await client.PostAsync(
             RevokeTokenUrl,
-            data);
+            data).ConfigureAwait(false);
 
-        var message = await response.Content.ReadAsStringAsync();
+        var message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
         return response.StatusCode == HttpStatusCode.OK
             ? Result.Ok()

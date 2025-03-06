@@ -1,0 +1,7 @@
+{
+  "message": "This is a test message",
+  "data":
+  {
+    "test": "text"
+  }
+}

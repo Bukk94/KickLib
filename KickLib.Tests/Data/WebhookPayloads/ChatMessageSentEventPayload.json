@@ -1,0 +1,34 @@
+{
+  "message_id": "unique_message_id_123",
+  "broadcaster": {
+    "is_anonymous": false,
+    "user_id": 123456789,
+    "username": "broadcaster_name",
+    "is_verified": true,
+    "profile_picture": "https://example.com/broadcaster_avatar.jpg",
+    "channel_slug": "broadcaster_channel"
+  },
+  "sender": {
+    "is_anonymous": false,
+    "user_id": 987654321,
+    "username": "sender_name",
+    "is_verified": false,
+    "profile_picture": "https://example.com/sender_avatar.jpg",
+    "channel_slug": "sender_channel"
+  },
+  "content": "This is a test message with emotes!",
+  "emotes": [
+    {
+      "emote_id": "12345",
+      "positions": [
+        { "s": 0, "e": 7 }
+      ]
+    },
+    {
+      "emote_id": "67890",
+      "positions": [
+        { "s": 20, "e": 25 }
+      ]
+    }
+  ]
+}
