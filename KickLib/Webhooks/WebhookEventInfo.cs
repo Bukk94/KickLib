@@ -1,5 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
+using KickLib.Extensions;
+using KickLib.Models.v1.EventSubscriptions;
 
 namespace KickLib.Webhooks;
 
@@ -8,9 +10,14 @@ public class WebhookEventInfo
     private static readonly RSA DefaultPublicKey = ParsePublicKey(KickPublicKey);
 
     /// <summary>
+    ///     Event Type Name.
+    /// </summary>
+    public string EventTypeName { get; }
+    
+    /// <summary>
     ///     Event Type.
     /// </summary>
-    public string EventType { get; }
+    public EventType EventType { get; }
     
     /// <summary>
     ///     Event version.
@@ -41,14 +48,15 @@ public class WebhookEventInfo
     public string MessageId { get; }
     
     public WebhookEventInfo(
-        string eventType, 
+        string eventTypeName, 
         int eventVersion, 
         string messageTimestamp, 
         string signature, 
         string subscriptionId, 
         string messageId)
     {
-        EventType = eventType;
+        EventTypeName = eventTypeName;
+        EventType = eventTypeName.ToEventType();
         EventVersion = eventVersion;
         MessageTimestamp = messageTimestamp;
         Signature = signature;

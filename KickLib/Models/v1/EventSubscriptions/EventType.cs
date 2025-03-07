@@ -6,6 +6,12 @@ namespace KickLib.Models.v1.EventSubscriptions;
 public enum EventType
 {
     /// <summary>
+    ///     Unknown is NOT a valid Kick event type.
+    ///     Unknown is used to represent an event type that is not recognized by the SDK.
+    /// </summary>
+    Unknown,
+    
+    /// <summary>
     ///     Event type chat.message.sent.
     /// </summary>
     ChatMessageSent,

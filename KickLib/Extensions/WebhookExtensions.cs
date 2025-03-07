@@ -19,15 +19,29 @@ public static class WebhookExtensions
             return null;
         }
 
-        return type switch
+        var eventType = ToEventType(type);
+        
+        return eventType != EventType.Unknown
+            ? (eventType, version)
+            : null;
+    }
+
+    /// <summary>
+    ///     Converts event type name to EventType.
+    /// </summary>
+    /// <param name="eventTypeName">Input event type from headers.</param>
+    /// <returns>Returns parsed EventType or Unknown if event is not recognized.</returns>
+    public static EventType ToEventType(this string eventTypeName)
+    {
+        return eventTypeName switch
         {
-            WebhookEventTypes.ChatMessageSent => (EventType.ChatMessageSent, version),
-            WebhookEventTypes.ChannelFollowed => (EventType.ChannelFollowed, version),
-            WebhookEventTypes.ChannelSubscriptionRenewal => (EventType.ChannelSubscriptionRenewal, version),
-            WebhookEventTypes.ChannelGiftedSubscription => (EventType.ChannelSubscriptionGifts, version),
-            WebhookEventTypes.ChannelNewSubscription => (EventType.ChannelSubscriptionNew, version),
-            WebhookEventTypes.LivestreamStatusUpdated => (EventType.LivestreamStatusUpdated, version),
-            _ => null
+            WebhookEventTypes.ChatMessageSent => EventType.ChatMessageSent,
+            WebhookEventTypes.ChannelFollowed => EventType.ChannelFollowed,
+            WebhookEventTypes.ChannelSubscriptionRenewal => EventType.ChannelSubscriptionRenewal, 
+            WebhookEventTypes.ChannelGiftedSubscription => EventType.ChannelSubscriptionGifts,
+            WebhookEventTypes.ChannelNewSubscription => EventType.ChannelSubscriptionNew,
+            WebhookEventTypes.LivestreamStatusUpdated => EventType.LivestreamStatusUpdated,
+            _ => EventType.Unknown
         };
     }
 

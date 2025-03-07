@@ -14,14 +14,14 @@ Unofficial API is still available, but it was moved and renamed. I recommend usi
 
 ### Unofficial API changes
 
-Old API remains available, but it was moved to `KickLib.Unofficial` namespace. 
+Old API remains available, but it was moved to `KickLib.Api.Unofficial` namespace. 
 It was also renamed from `IKickApi` to `IUnofficialKickApi` (including implementation `KickApi` to `UnofficialKickApi`).
 
 From now on, `KickApi` will be primarily used for the official API.
 
 ### Namespace changes
 
-All structures for Unofficial API were moved to `KickLib.Unofficial` namespace.
+All structures for Unofficial API were moved to `KickLib.Api.Unofficial` namespace.
 
 ## 0.1.x -> 0.2.0
 
