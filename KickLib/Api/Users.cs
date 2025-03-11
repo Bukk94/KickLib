@@ -39,6 +39,12 @@ public class Users : ApiBase
     {
         // v1/users
         var result = await GetAsync<ICollection<UserResponse>>(ApiUrlPart, ApiVersion.v1, null, accessToken).ConfigureAwait(false);
+        
+        if (result.HasError(x => x.Message == "Response code: 403"))
+        {
+            result.WithError($"Missing scope: {KickScopes.UserRead}");
+        }
+        
         if (result.IsFailed)
         {
             return Result.Fail<UserResponse>(result.Errors);

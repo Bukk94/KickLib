@@ -50,7 +50,7 @@ public static class KickOAuthGenerator
             throw new ArgumentException("Scopes cannot be empty.", nameof(scopes));
         }
 
-        var scope = string.Join(" ", scopes);
+        var scope = string.Join(" ", scopes.Distinct());
 
         verifier = GenerateCodeVerifier();
         if (string.IsNullOrWhiteSpace(state))

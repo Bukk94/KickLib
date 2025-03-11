@@ -1,5 +1,8 @@
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
+using KickLib.Auth;
+using KickLib.Exceptions;
 using KickLib.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -56,7 +59,7 @@ public abstract class ApiBase
     {
         var url = ConstructResourceUrl(urlPart, version, queryParams);
 
-        var token = ResolveAccessToken(accessToken);
+        var token = await ResolveAccessTokenAsync(accessToken).ConfigureAwait(false);
         if (string.IsNullOrWhiteSpace(token))
         {
             return Result.Fail("Access token is missing.");
@@ -64,7 +67,9 @@ public abstract class ApiBase
         
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         
-        var response = await _client.GetAsync(url).ConfigureAwait(false);
+        var response = await ExecuteRequestAsync(
+            () => _client.GetAsync(url),
+            !string.IsNullOrWhiteSpace(accessToken)).ConfigureAwait(false);
 
         var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
@@ -100,7 +105,7 @@ public abstract class ApiBase
     {
         var url = ConstructResourceUrl(urlPart, version);
 
-        var token = ResolveAccessToken(accessToken);
+        var token = await ResolveAccessTokenAsync(accessToken).ConfigureAwait(false);
         if (string.IsNullOrWhiteSpace(token))
         {
             return Result.Fail("Access token is missing.");
@@ -115,7 +120,9 @@ public abstract class ApiBase
             payload = new StringContent(json, Encoding.UTF8, "application/json");
         }
         
-        var response = await _client.PostAsync(url, payload).ConfigureAwait(false);
+        var response = await ExecuteRequestAsync(
+            () => _client.PostAsync(url, payload),
+            !string.IsNullOrWhiteSpace(accessToken)).ConfigureAwait(false);
 
         var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
@@ -141,7 +148,7 @@ public abstract class ApiBase
     {
         var url = ConstructResourceUrl(urlPart, version);
 
-        var token = ResolveAccessToken(accessToken);
+        var token = await ResolveAccessTokenAsync(accessToken).ConfigureAwait(false);
         if (string.IsNullOrWhiteSpace(token))
         {
             return Result.Fail("Access token is missing.");
@@ -151,7 +158,10 @@ public abstract class ApiBase
 
         var json = JsonConvert.SerializeObject(input, _serializerSettings);
         var payload = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await _client.PatchAsync(url, payload).ConfigureAwait(false);
+        
+        var response = await ExecuteRequestAsync(
+            () => _client.PatchAsync(url, payload),
+            !string.IsNullOrWhiteSpace(accessToken)).ConfigureAwait(false);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -170,7 +180,7 @@ public abstract class ApiBase
     {
         var url = ConstructResourceUrl(urlPart, version, queryParams);
 
-        var token = ResolveAccessToken(accessToken);
+        var token = await ResolveAccessTokenAsync(accessToken).ConfigureAwait(false);
         if (string.IsNullOrWhiteSpace(token))
         {
             return Result.Fail("Access token is missing.");
@@ -178,7 +188,9 @@ public abstract class ApiBase
         
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var response = await _client.DeleteAsync(url).ConfigureAwait(false);
+        var response = await ExecuteRequestAsync(
+            () => _client.DeleteAsync(url),
+            !string.IsNullOrWhiteSpace(accessToken)).ConfigureAwait(false);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -189,7 +201,64 @@ public abstract class ApiBase
         return Result.Ok(true);
     }
     
-    private string? ResolveAccessToken(string? accessToken)
+    private async Task<HttpResponseMessage> ExecuteRequestAsync(
+        Func<Task<HttpResponseMessage>> requestFunc,
+        bool usingExternalToken)
+    {
+        var response = await requestFunc().ConfigureAwait(false);
+        if (response.StatusCode == HttpStatusCode.Unauthorized &&
+            CanRefreshToken(usingExternalToken))
+        {
+            var token = await RefreshAccessTokenAsync().ConfigureAwait(false);
+            // Retry the call if we get new access token
+            if (!string.IsNullOrWhiteSpace(token))
+            {
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                response = await requestFunc().ConfigureAwait(false);
+            }
+        }
+
+        return response;
+    }
+
+    private async Task<string?> RefreshAccessTokenAsync()
+    {
+        if (!_settings.CanRefreshToken)
+        {
+            return null;
+        }
+        
+        // TODO: Obtain it via App Access Token (once available)
+        var response = await KickOAuthGenerator.RefreshAccessTokenAsync(
+            _settings.RefreshToken!,
+            _settings.ClientId!,
+            _settings.ClientSecret!).ConfigureAwait(false);
+
+        if (response.IsFailed)
+        {
+            throw new KickLibException("Failed to refresh access token: " + string.Join(",", response.Errors.Select(x => x.Message)));
+        }
+        
+        _settings.AccessToken = response.Value.AccessToken;
+        _settings.RefreshToken = response.Value.RefreshToken;
+        _logger.LogInformation("Access token refreshed successfully.");
+        
+        return response.Value.AccessToken;
+    }
+
+    private bool CanRefreshToken(bool usingExternalToken)
+    {
+        if (usingExternalToken)
+        {
+            // Do not attempt to refresh token if overload is used
+            return false;
+        }
+        
+        // If we have refresh token, we can attempt to refresh the access token
+        return !string.IsNullOrWhiteSpace(_settings.RefreshToken);
+    }
+    
+    private async Task<string?> ResolveAccessTokenAsync(string? accessToken)
     {
         if (!string.IsNullOrWhiteSpace(accessToken))
         {
@@ -202,10 +271,8 @@ public abstract class ApiBase
             // We have accessToken in the settings
             return _settings.AccessToken;
         }
-        
-        // TODO: We are missing access token - Try to obtain it via App Access Token (once available)
-        
-        return null;
+
+        return await RefreshAccessTokenAsync().ConfigureAwait(false);
     }
 
     private static Result HandleErrorResponse(int statusCode, string data, string targetUrl, string? message = null)

@@ -39,6 +39,12 @@ public class Channels : ApiBase
     {
         // v1/channels
         var result = await GetAsync<ICollection<ChannelResponse>>(ApiUrlPart, ApiVersion.v1, null, accessToken).ConfigureAwait(false);
+        
+        if (result.HasError(x => x.Message == "Response code: 403"))
+        {
+            result.WithError($"Missing scope: {KickScopes.ChannelRead}");
+        }
+        
         if (result.IsFailed)
         {
             return Result.Fail<ChannelResponse>(result.Errors);

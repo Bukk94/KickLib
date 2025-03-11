@@ -80,7 +80,8 @@ public class WebhookExtensionsTests
         var eventInfo = headers.GetWebhookEventInfo();
 
         eventInfo.Should().NotBeNull();
-        eventInfo!.EventType.Should().Be(WebhookEventTypes.ChannelFollowed);
+        eventInfo.EventTypeName.Should().Be(WebhookEventTypes.ChannelFollowed);
+        eventInfo.EventType.Should().Be(EventType.ChannelFollowed);
         eventInfo.EventVersion.Should().Be(1);
         eventInfo.MessageTimestamp.Should().Be("2023-10-01T12:34:56Z");
         eventInfo.Signature.Should().Be("signature");

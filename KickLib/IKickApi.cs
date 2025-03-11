@@ -37,4 +37,9 @@ public interface IKickApi
     ///     User APIs allow apps to interact with user information. Scopes will vary and sensitive data will be available to User Access Tokens with the required scopes.
     /// </summary>
     public Users Users { get; }
+    
+    /// <summary>
+    ///     The settings for the Kick API (like ClientId, Secrets, etc).
+    /// </summary>
+    public ApiSettings ApiSettings { get; }
 }

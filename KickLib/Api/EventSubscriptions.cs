@@ -29,6 +29,16 @@ public class EventSubscriptions : ApiBase
     }
 
     /// <summary>
+    ///     Subscribe to all available event subscriptions for given account.
+    /// </summary>
+    public Task<Result<ICollection<SubscribeToEventResponse>>> SubscribeToAllEventsAsync(string? accessToken = null)
+    {
+        var eventTypes = Enum.GetValues<EventType>().ToList();
+        
+        return SubscribeToEventsAsync(eventTypes, 1, accessToken);
+    }
+    
+    /// <summary>
     ///     Subscribe to v1 event subscriptions for given account.
     /// </summary>
     public Task<Result<ICollection<SubscribeToEventResponse>>> SubscribeToEventsAsync(
@@ -76,6 +86,18 @@ public class EventSubscriptions : ApiBase
         return result;
     }
 
+    public Task<Result<bool>> UnsubscribeEventsAsync(
+        string subscriptionId,
+        string? accessToken = null)
+    {
+        if (string.IsNullOrWhiteSpace(subscriptionId))
+        {
+            throw new ArgumentNullException(nameof(subscriptionId));
+        }
+        
+        return UnsubscribeEventsAsync([subscriptionId], accessToken);
+    }
+    
     /// <summary>
     ///     Delete specific event subscriptions for given account.
     /// </summary>
