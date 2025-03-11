@@ -33,7 +33,9 @@ public class EventSubscriptions : ApiBase
     /// </summary>
     public Task<Result<ICollection<SubscribeToEventResponse>>> SubscribeToAllEventsAsync(string? accessToken = null)
     {
-        var eventTypes = Enum.GetValues<EventType>().ToList();
+        var eventTypes = Enum.GetValues<EventType>()
+            .Where(x => x != EventType.Unknown)
+            .ToList();
         
         return SubscribeToEventsAsync(eventTypes, 1, accessToken);
     }
@@ -66,12 +68,14 @@ public class EventSubscriptions : ApiBase
             throw new ArgumentException("Version must be at least 1!");
         }
         
-        var payload = eventTypes
+        var eventsToSubscribe = eventTypes
             .Select(type => new InputSubscribe(type, version))
             .ToList();
+
+        var payload = new SubscribeToEventRequest(eventsToSubscribe);
         
         // POST v1/events/subscriptions
-        var result = await PostAsync<ICollection<SubscribeToEventResponse>, ICollection<InputSubscribe>>(
+        var result = await PostAsync<ICollection<SubscribeToEventResponse>, SubscribeToEventRequest>(
                 ApiUrlPart, 
                 ApiVersion.v1, 
                 payload, 
@@ -81,6 +85,11 @@ public class EventSubscriptions : ApiBase
         if (result.HasError(x => x.Message == "Response code: 403"))
         {
             result.WithError($"Missing scope: {KickScopes.EventsSubscribe}");
+        }
+        
+        if (result.Value?.Any(x => x.Error?.Contains("webhooks are not enabled for app") == true) == true)
+        {
+            result.WithError("Webhooks are not enabled for your app! Visit https://kick.com/settings/developer to enable them.");
         }
 
         return result;

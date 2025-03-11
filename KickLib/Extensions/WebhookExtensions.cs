@@ -58,6 +58,7 @@ public static class WebhookExtensions
             EventType.ChannelSubscriptionGifts => WebhookEventTypes.ChannelGiftedSubscription,
             EventType.ChannelSubscriptionNew => WebhookEventTypes.ChannelNewSubscription,
             EventType.LivestreamStatusUpdated => WebhookEventTypes.LivestreamStatusUpdated,
+            EventType.Unknown => throw new ArgumentException("Unknown event type", nameof(type)),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
