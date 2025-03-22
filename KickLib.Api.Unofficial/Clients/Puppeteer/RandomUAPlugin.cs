@@ -1,7 +1,6 @@
 using System.Text.RegularExpressions;
 using PuppeteerExtraSharp.Plugins;
 using PuppeteerSharp;
-using RandomUserAgent;
 
 namespace KickLib.Api.Unofficial.Clients.Puppeteer
 {
@@ -16,7 +15,7 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
 
         public override async Task OnPageCreated(IPage page)
         {
-            var randomUa = RandomUa.RandomUserAgent;
+            var randomUa = UserAgentRandomizer.GetRandomUserAgent();
             var userAgent = Regex.Replace(
                 (await page.Browser.GetUserAgentAsync()).Replace("HeadlessChrome", "Chrome"), 
                 $"({randomUa})");

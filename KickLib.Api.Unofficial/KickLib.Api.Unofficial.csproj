@@ -6,8 +6,8 @@
         <Nullable>disable</Nullable>
         <LangVersion>latest</LangVersion>
         <Authors>Bukk94</Authors>
-        <AssemblyVersion>0.2.2</AssemblyVersion>
-        <FileVersion>0.2.2</FileVersion>
+        <AssemblyVersion>0.3.0</AssemblyVersion>
+        <FileVersion>0.3.0</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,7 +20,6 @@
         <PackageReference Include="PuppeteerExtraSharp" Version="2.0.0" />
         <PackageReference Include="PuppeteerSharp" Version="14.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.2" />
-        <PackageReference Include="RandomUserAgent" Version="1.1.2" />
         <PackageReference Include="WebSocketSharper" Version="1.0.42" />
     </ItemGroup>
 

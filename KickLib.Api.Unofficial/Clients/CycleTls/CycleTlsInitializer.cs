@@ -26,7 +26,7 @@ namespace KickLib.Api.Unofficial.Clients.CycleTls
             {
                 Ja3 = _settings.Ja3,
                 Url = url,
-                UserAgent = RandomUserAgent.RandomUa.RandomUserAgent,
+                UserAgent = UserAgentRandomizer.GetRandomUserAgent(),
                 Headers = new Dictionary<string, string>
                 {
                     { "Accept", "application/json" },
