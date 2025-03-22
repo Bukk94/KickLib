@@ -29,6 +29,19 @@ public class KickApi : IKickApi
     /// <inheritdoc />
     public ApiSettings ApiSettings { get; }
 
+    /// <summary>
+    ///     Create a new instance of the KickLib with default settings.
+    /// </summary>
+    public KickApi()
+        : this(ApiSettings.Default)
+    {
+    }
+    
+    /// <summary>
+    ///     Create a new instance of the KickLib with custom settings.
+    /// </summary>
+    /// <param name="settings">API Settings.</param>
+    /// <param name="logger">Logger (if null, default Console logger will be created).</param>
     public KickApi(
         ApiSettings settings,
         ILogger<KickApi>? logger = null)
