@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using KickLib.Client.Models.Args;
 
 namespace KickLib.Client.Interfaces;
@@ -127,6 +128,16 @@ public interface IKickClient
     ///     Socket ID is unique identifier of the client connection and is used for private pusher channels authentication.
     /// </remarks>
     string? SocketId { get; }
+    
+    /// <summary>
+    ///     List of channels the client is listening to.
+    /// </summary>
+    public ImmutableHashSet<int> ListeningToChannels { get; }
+    
+    /// <summary>
+    ///     List of chatrooms the client is listening to.
+    /// </summary>
+    public ImmutableHashSet<int> ListeningToChatRooms { get; }
     
     /// <summary>
     ///     Listens to events of specific channel.

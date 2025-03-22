@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using KickLib.Client.Interfaces;
 using KickLib.Client.Models.Args;
 using KickLib.Client.Models.Events.Channel;
@@ -16,6 +17,9 @@ public class KickClient : IKickClient
     private const string KickWsKey = "32cbd69e4b950bf97679";
     private readonly Pusher _pusher;
     private readonly ILogger? _logger;
+    
+    private readonly HashSet<int> _listeningToChannels = new();
+    private readonly HashSet<int> _listeningToChatRooms = new();
     
     public KickClient(ILogger? logger = null)
     {
@@ -52,15 +56,20 @@ public class KickClient : IKickClient
     
     public bool IsConnected => _pusher.State == ConnectionState.Connected;
     public string? SocketId => _pusher.SocketID;
+    public ImmutableHashSet<int> ListeningToChannels => _listeningToChannels.ToImmutableHashSet();
+    public ImmutableHashSet<int> ListeningToChatRooms => _listeningToChatRooms.ToImmutableHashSet();
     
     public async Task ListenToChannelAsync(int channelId)
     {
         var channel = await _pusher.SubscribeAsync($"channel.{channelId}");
         channel.BindAll(ChannelDataReader);
+        
+        _listeningToChannels.Add(channelId);
     }
     
     public Task StopListeningToChannelAsync(int channelId)
     {
+        _listeningToChannels.Remove(channelId);
         return _pusher.UnsubscribeAsync($"channel.{channelId}");
     }
     
@@ -68,10 +77,12 @@ public class KickClient : IKickClient
     {
         var channel = await _pusher.SubscribeAsync($"chatrooms.{chatroomId}.v2");
         channel.BindAll(ChatRoomDataReader);
+        _listeningToChatRooms.Add(chatroomId);
     }
     
     public Task StopListeningToChatRoomAsync(int chatroomId)
     {
+        _listeningToChatRooms.Remove(chatroomId);
         return _pusher.UnsubscribeAsync($"chatrooms.{chatroomId}.v2");
     }
     
