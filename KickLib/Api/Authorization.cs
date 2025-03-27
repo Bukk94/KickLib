@@ -1,16 +1,20 @@
+using KickLib.Auth;
 using KickLib.Models.v1.Auth;
 using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
+/// <inheritdoc />
 public class Authorization : ApiBase
 {
-    // TODO: OAuth 2.1
+    private readonly ApiSettings _settings;
     private const string PublicKeyApiUrlPart = "public-key";
     private const string IntrospectApiUrlPart = "token/introspect";
 
+    /// <inheritdoc />
     public Authorization(ApiSettings settings, ILogger logger) : base(settings, logger)
     {
+        _settings = settings;
     }
     
     /// <summary>
@@ -34,5 +38,45 @@ public class Authorization : ApiBase
     {
         // v1/public-key
         return GetAsync<PublicKeyResponse>(PublicKeyApiUrlPart, ApiVersion.v1, null, accessToken);
+    }
+    
+    /// <summary>
+    ///     Get app access token based on <see cref="ApiSettings.ClientId"/> and <see cref="ApiSettings.ClientSecret"/> API settings.
+    /// </summary>
+    /// <returns>Returns access token for the application, used for public endpoints.</returns>
+    public async Task<Result<KickAppTokenResponse>> GetAppAccessTokenAsync()
+    {
+        if (string.IsNullOrWhiteSpace(_settings.ClientId))
+        {
+            return Result.Fail("Client ID is required. Set it in the API settings.");
+        }
+        
+        if (string.IsNullOrWhiteSpace(_settings.ClientSecret))
+        {
+            return Result.Fail("Client Secret is required. Set it in the API settings.");
+        }
+        
+        return await GetAppAccessTokenAsync(_settings.ClientId, _settings.ClientSecret).ConfigureAwait(false);
+    }
+    
+    /// <summary>
+    ///     Get app access token.
+    /// </summary>
+    /// <returns>Returns access token for the application, used for public endpoints.</returns>
+    public async Task<Result<KickAppTokenResponse>> GetAppAccessTokenAsync(
+        string clientId,
+        string clientSecret)
+    {
+        if (string.IsNullOrWhiteSpace(_settings.ClientId))
+        {
+            return Result.Fail("ClientId is required");
+        }
+        
+        if (string.IsNullOrWhiteSpace(_settings.ClientSecret))
+        {
+            return Result.Fail("ClientSecret is required");
+        }
+
+        return await KickOAuthGenerator.GenerateAppAccessTokenAsync(clientId, clientSecret).ConfigureAwait(false);
     }
 }

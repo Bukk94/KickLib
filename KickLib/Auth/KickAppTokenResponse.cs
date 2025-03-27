@@ -3,9 +3,9 @@
 namespace KickLib.Auth
 {
     /// <summary>
-    ///     Response from the Kick API when requesting a new user access token.
+    ///     Response from the Kick API when requesting a new app access token.
     /// </summary>
-    public class KickTokenResponse
+    public class KickAppTokenResponse
     {
         /// <summary>
         ///     Access (Bearer) token.
@@ -13,12 +13,6 @@ namespace KickLib.Auth
         [JsonProperty("access_token")]
         public required string AccessToken { get; set; }
 
-        /// <summary>
-        ///     Refresh token (used for requesting more access tokens).
-        /// </summary>
-        [JsonProperty("refresh_token")]
-        public required string RefreshToken { get; set; }
-        
         /// <summary>
         ///     Type of the token.
         /// </summary>
@@ -30,10 +24,5 @@ namespace KickLib.Auth
         /// </summary>
         [JsonProperty("expires_in")]
         public int ExpiresIn { get; set; }
-
-        /// <summary>
-        ///     Allowed scopes.
-        /// </summary>
-        public required string Scope { get; set; }
     }
 }

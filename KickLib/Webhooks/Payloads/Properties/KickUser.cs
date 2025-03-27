@@ -2,6 +2,9 @@ using Newtonsoft.Json;
 
 namespace KickLib.Webhooks.Payloads;
 
+/// <summary>
+///     Contains user details.
+/// </summary>
 public class KickUser
 {
     /// <summary>

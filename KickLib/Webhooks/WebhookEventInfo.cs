@@ -5,6 +5,9 @@ using KickLib.Models.v1.EventSubscriptions;
 
 namespace KickLib.Webhooks;
 
+/// <summary>
+///     Contains Webhook response event information.
+/// </summary>
 public class WebhookEventInfo
 {
     private static readonly RSA DefaultPublicKey = ParsePublicKey(KickPublicKey);

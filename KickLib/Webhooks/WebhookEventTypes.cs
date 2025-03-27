@@ -1,5 +1,8 @@
 namespace KickLib.Webhooks;
 
+/// <summary>
+///     Contains the event types that can be received from a webhook.
+/// </summary>
 public static class WebhookEventTypes
 {
     public const string ChatMessageSent = "chat.message.sent";

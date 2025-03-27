@@ -11,6 +11,7 @@ public class Chat : ApiBase
 {
     private const string ApiUrlPart = "chat";
 
+    /// <inheritdoc />
     public Chat(ApiSettings settings, ILogger logger) : base(settings, logger)
     {
     }
@@ -26,13 +27,13 @@ public class Chat : ApiBase
     {
         ArgumentException.ThrowIfNullOrEmpty(message);
         
-        var input = new SendMessageInput(message, MessageType.User)
+        var input = new SendMessageRequest(message, MessageType.User)
         {
             BroadcasterId = broadcasterId
         };
         
         // v1/chat
-        var result = await PostAsync<SendChatMessageResponse, SendMessageInput>(ApiUrlPart, ApiVersion.v1, input, accessToken)
+        var result = await PostAsync<SendChatMessageResponse, SendMessageRequest>(ApiUrlPart, ApiVersion.v1, input, accessToken)
             .ConfigureAwait(false);
         
         if (result.HasError(x => x.Message == "Response code: 403"))
@@ -53,10 +54,10 @@ public class Chat : ApiBase
     {
         ArgumentException.ThrowIfNullOrEmpty(message);
 
-        var input = new SendMessageInput(message, MessageType.Bot);
+        var input = new SendMessageRequest(message, MessageType.Bot);
         
         // v1/chat
-        var result = await PostAsync<SendChatMessageResponse, SendMessageInput>(ApiUrlPart, ApiVersion.v1, input, accessToken)
+        var result = await PostAsync<SendChatMessageResponse, SendMessageRequest>(ApiUrlPart, ApiVersion.v1, input, accessToken)
             .ConfigureAwait(false);
         
         if (result.HasError(x => x.Message == "Response code: 403"))

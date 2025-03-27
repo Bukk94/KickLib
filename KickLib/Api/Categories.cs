@@ -3,10 +3,12 @@ using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
+/// <inheritdoc />
 public class Categories : ApiBase
 {
     private const string ApiUrlPart = "categories";
 
+    /// <inheritdoc />
     public Categories(ApiSettings settings, ILogger logger) : base(settings, logger)
     {
     }

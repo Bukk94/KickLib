@@ -3,10 +3,12 @@ using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
+/// <inheritdoc />
 public class EventSubscriptions : ApiBase
 {
     private const string ApiUrlPart = "events/subscriptions";
 
+    /// <inheritdoc />
     public EventSubscriptions(ApiSettings settings, ILogger logger) : base(settings, logger)
     {
     }

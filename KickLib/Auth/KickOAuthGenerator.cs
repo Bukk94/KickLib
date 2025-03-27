@@ -26,7 +26,7 @@ public static class KickOAuthGenerator
     public const string RevokeTokenUrl = "https://id.kick.com/oauth/revoke";
 
     /// <summary>
-    ///     Generate the OAuth authorization URL.
+    ///     [User Access Token] Generate the OAuth authorization URL.
     ///     When state is provided, it will be used. Otherwise Base64 encoded verifier will be used (unsafe).
     /// </summary>
     /// <param name="redirectUri">Callback redirect URL (must be registered in the app).</param>
@@ -74,7 +74,7 @@ public static class KickOAuthGenerator
     }
 
     /// <summary>
-    ///     Exchange the code from callback for an access token.
+    ///     [User Access Token] Exchange the code from callback for an access token.
     /// </summary>
     /// <param name="code">Code received from callback.</param>
     /// <param name="clientId">App client ID.</param>
@@ -135,6 +135,52 @@ public static class KickOAuthGenerator
         catch (Exception ex)
         {
             var message = $"ExchangeCodeForToken failed to deserialize response: {content}\nException:{ex}";
+            return Result.Fail(message);
+        }
+    }
+    
+    /// <summary>
+    ///     [App Access Token] Generate app access token for server-to-server communication.
+    ///     Can access publicly available data and are ideal for use when user login is not required.
+    /// </summary>
+    /// <param name="clientId">App client ID.</param>
+    /// <param name="clientSecret">App secret.</param>
+    /// <returns>Returns access token response.</returns>
+    public static async Task<Result<KickAppTokenResponse>> GenerateAppAccessTokenAsync(
+        string clientId,
+        string clientSecret)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(clientId);
+
+        using var client = new HttpClient();
+
+        var data = new FormUrlEncodedContent(
+        [
+            new KeyValuePair<string, string>("client_id", clientId),
+            new KeyValuePair<string, string>("client_secret", clientSecret),
+            new KeyValuePair<string, string>("grant_type", "client_credentials")
+        ]);
+
+        var response = await client.PostAsync(
+            ExchangeTokenUrl,
+            data).ConfigureAwait(false);
+
+        var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+        if (response.StatusCode != HttpStatusCode.OK)
+        {
+            var message =
+                $"ExchangeCodeForToken call returned non-Ok response. Reason: {response.ReasonPhrase}. Status: {response.StatusCode}. Data: {content}";
+            return Result.Fail(message);
+        }
+
+        try
+        {
+            return Result.Ok(JsonConvert.DeserializeObject<KickAppTokenResponse>(content));
+        }
+        catch (Exception ex)
+        {
+            var message = $"GenerateAppAccessTokenAsync failed to deserialize response: {content}\nException:{ex}";
             return Result.Fail(message);
         }
     }

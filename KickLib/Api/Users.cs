@@ -3,10 +3,12 @@ using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
+/// <inheritdoc />
 public class Users : ApiBase
 {
     private const string ApiUrlPart = "users";
 
+    /// <inheritdoc />
     public Users(ApiSettings settings, ILogger logger) 
         : base(settings, logger)
     {

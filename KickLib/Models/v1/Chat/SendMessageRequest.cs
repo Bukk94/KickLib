@@ -2,9 +2,9 @@ using Newtonsoft.Json;
 
 namespace KickLib.Models.v1.Chat;
 
-internal class SendMessageInput
+internal class SendMessageRequest
 {
-    public SendMessageInput(string content, MessageType type)
+    public SendMessageRequest(string content, MessageType type)
     {
         Content = content;
         Type = type;

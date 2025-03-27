@@ -3,10 +3,12 @@ using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
+/// <inheritdoc />
 public class Channels : ApiBase
 {
     private const string ApiUrlPart = "channels";
 
+    /// <inheritdoc />
     public Channels(ApiSettings settings, ILogger logger) 
         : base(settings, logger)
     {
@@ -54,13 +56,13 @@ public class Channels : ApiBase
     }
     
     public async Task<Result<bool>> UpdateChannelAsync(
-        UpdateChannelInput input,
+        UpdateChannelRequest request,
         string? accessToken = null)
     {
-        ArgumentNullException.ThrowIfNull(input);
+        ArgumentNullException.ThrowIfNull(request);
         
         // v1/channels
-        var result = await PatchAsync(ApiUrlPart, ApiVersion.v1, input, accessToken).ConfigureAwait(false);
+        var result = await PatchAsync(ApiUrlPart, ApiVersion.v1, request, accessToken).ConfigureAwait(false);
 
         if (result.HasError(x => x.Message == "Response code: 403"))
         {

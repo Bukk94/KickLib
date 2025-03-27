@@ -228,7 +228,6 @@ public abstract class ApiBase
             return null;
         }
         
-        // TODO: Obtain it via App Access Token (once available)
         var response = await KickOAuthGenerator.RefreshAccessTokenAsync(
             _settings.RefreshToken!,
             _settings.ClientId!,

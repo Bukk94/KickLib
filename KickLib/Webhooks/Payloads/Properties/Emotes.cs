@@ -2,6 +2,9 @@ using Newtonsoft.Json;
 
 namespace KickLib.Webhooks.Payloads;
 
+/// <summary>
+///     Contains information about emotes in a message.
+/// </summary>
 public class Emotes
 {
     /// <summary>
