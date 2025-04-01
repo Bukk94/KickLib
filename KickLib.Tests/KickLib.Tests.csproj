@@ -58,6 +58,8 @@
       <EmbeddedResource Include="Data\ApiResponses\IntrospectTokenResponse.json" />
       <None Remove="Data\ApiResponses\SubscribeToEventResponse.json" />
       <EmbeddedResource Include="Data\ApiResponses\SubscribeToEventResponse.json" />
+      <None Remove="Data\WebhookPayloads\ValidationPayload.json" />
+      <EmbeddedResource Include="Data\WebhookPayloads\ValidationPayload.json" />
     </ItemGroup>
 
 </Project>

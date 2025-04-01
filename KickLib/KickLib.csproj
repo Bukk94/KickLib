@@ -15,10 +15,10 @@
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Added App access token.</PackageReleaseNotes>
-        <Version>1.1.0</Version>
-        <AssemblyVersion>1.1.0</AssemblyVersion>
-        <FileVersion>1.1.0</FileVersion>
+        <PackageReleaseNotes>Corrected ChatMessageSentEvent webhook event.</PackageReleaseNotes>
+        <Version>1.1.1</Version>
+        <AssemblyVersion>1.1.1</AssemblyVersion>
+        <FileVersion>1.1.1</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
