@@ -60,12 +60,10 @@ public abstract class ApiBase
         var url = ConstructResourceUrl(urlPart, version, queryParams);
 
         var token = await ResolveAccessTokenAsync(accessToken).ConfigureAwait(false);
-        if (string.IsNullOrWhiteSpace(token))
+        if (!string.IsNullOrWhiteSpace(token))
         {
-            return Result.Fail("Access token is missing.");
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
-        
-        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         
         var response = await ExecuteRequestAsync(
             () => _client.GetAsync(url),

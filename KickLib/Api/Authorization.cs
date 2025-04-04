@@ -34,10 +34,10 @@ public class Authorization : ApiBase
     /// <summary>
     ///     Retrieve the public key used for verifying signatures.
     /// </summary>
-    public Task<Result<PublicKeyResponse>> GetPublicKeyAsync(string? accessToken = null)
+    public Task<Result<PublicKeyResponse>> GetPublicKeyAsync()
     {
         // v1/public-key
-        return GetAsync<PublicKeyResponse>(PublicKeyApiUrlPart, ApiVersion.v1, null, accessToken);
+        return GetAsync<PublicKeyResponse>(PublicKeyApiUrlPart, ApiVersion.v1);
     }
     
     /// <summary>
