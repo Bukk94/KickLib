@@ -1,0 +1,16 @@
+{
+  "broadcaster_user_id": 1,
+  "category": {
+    "id": 1,
+    "name": "text",
+    "thumbnail": "text"
+  },
+  "channel_id": 1,
+  "has_mature_content": true,
+  "language": "text",
+  "slug": "text",
+  "started_at": "2025-04-03T12:00:00+11:00",
+  "stream_title": "Test livestream",
+  "thumbnail": "text",
+  "viewer_count": 1
+}

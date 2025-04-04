@@ -34,6 +34,12 @@ public interface IKickApi
     public EventSubscriptions EventSubscriptions { get; }
     
     /// <summary>
+    ///     Livestreams APIs allow an app to interact with livestreams in the Kick website.
+    ///     Available data will depend on the scopes attached to the authorization token used.
+    /// </summary>
+    public Livestreams Livestreams { get; }
+    
+    /// <summary>
     ///     User APIs allow apps to interact with user information. Scopes will vary and sensitive data will be available to User Access Tokens with the required scopes.
     /// </summary>
     public Users Users { get; }

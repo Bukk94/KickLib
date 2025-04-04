@@ -24,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <EmbeddedResource Include="Data\ApiResponses\GetLivestreamResponse.json" />
       <EmbeddedResource Include="Data\ApiResponses\IntrospectTokenResponse_Inactive.json" />
       <EmbeddedResource Include="Data\WebhookPayloads\ChannelFollowedEventPayload.json" />
       <EmbeddedResource Include="Data\WebhookPayloads\ChannelGiftedSubscriptionEventPayload.json" />

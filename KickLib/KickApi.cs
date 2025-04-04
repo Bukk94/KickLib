@@ -24,6 +24,9 @@ public class KickApi : IKickApi
     public EventSubscriptions EventSubscriptions { get; }
     
     /// <inheritdoc />
+    public Livestreams Livestreams { get; }
+    
+    /// <inheritdoc />
     public Users Users { get; }
     
     /// <inheritdoc />
@@ -56,6 +59,7 @@ public class KickApi : IKickApi
         Chat = new Chat(settings, logger);
         Channels = new Channels(settings, logger);
         EventSubscriptions = new EventSubscriptions(settings, logger);
+        Livestreams = new Livestreams(settings, logger);
         Users = new Users(settings, logger);
     }
 }

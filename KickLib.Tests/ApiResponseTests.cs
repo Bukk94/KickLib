@@ -6,6 +6,7 @@ using KickLib.Models.v1.Categories;
 using KickLib.Models.v1.Channels;
 using KickLib.Models.v1.Chat;
 using KickLib.Models.v1.EventSubscriptions;
+using KickLib.Models.v1.Livestreams;
 using KickLib.Models.v1.Users;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -94,6 +95,18 @@ public class ApiResponseTests : BaseKickLibTests
         deserializedObject.Should().BeOfType(targetType);
     }
 
+    [Theory]
+    [InlineData("GetLivestreamResponse", typeof(LivestreamResponse))]
+    public void CorrectlyDeserialize_LivestreamResponses(string payloadResource, Type targetType)
+    {
+        var payload = GetPayload(payloadResource);
+        
+        var deserializedObject = JsonConvert.DeserializeObject(payload, targetType, SerializerSettings);
+        
+        deserializedObject.Should().NotBeNull();
+        deserializedObject.Should().BeOfType(targetType);
+    }
+    
     [Theory]
     [InlineData("GetUsersResponse", typeof(UserResponse))]
     public void CorrectlyDeserialize_UsersResponses(string payloadResource, Type targetType)
