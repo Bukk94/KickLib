@@ -16,10 +16,12 @@ public class EventSubscriptions : ApiBase
     /// <summary>
     ///     Get active event subscriptions for given account.
     /// </summary>
-    public async Task<Result<ICollection<EventSubscriptionResponse>>> GetEventSubscriptionsAsync(string? accessToken = null)
+    public async Task<Result<ICollection<EventSubscriptionResponse>>> GetEventSubscriptionsAsync(
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         // GET v1/events/subscriptions
-        var result = await GetAsync<ICollection<EventSubscriptionResponse>>(ApiUrlPart, ApiVersion.v1, null, accessToken)
+        var result = await GetAsync<ICollection<EventSubscriptionResponse>>(ApiUrlPart, ApiVersion.v1, null, accessToken, cancellationToken)
             .ConfigureAwait(false);
         
         if (result.HasError(x => x.Message == "Response code: 403"))
@@ -33,13 +35,15 @@ public class EventSubscriptions : ApiBase
     /// <summary>
     ///     Subscribe to all available event subscriptions for given account.
     /// </summary>
-    public Task<Result<ICollection<SubscribeToEventResponse>>> SubscribeToAllEventsAsync(string? accessToken = null)
+    public Task<Result<ICollection<SubscribeToEventResponse>>> SubscribeToAllEventsAsync(
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         var eventTypes = Enum.GetValues<EventType>()
             .Where(x => x != EventType.Unknown)
             .ToList();
         
-        return SubscribeToEventsAsync(eventTypes, 1, accessToken);
+        return SubscribeToEventsAsync(eventTypes, 1, accessToken, cancellationToken);
     }
     
     /// <summary>
@@ -47,9 +51,10 @@ public class EventSubscriptions : ApiBase
     /// </summary>
     public Task<Result<ICollection<SubscribeToEventResponse>>> SubscribeToEventsAsync(
         ICollection<EventType> eventTypes,
-        string? accessToken = null)
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
-        return SubscribeToEventsAsync(eventTypes, 1, accessToken);
+        return SubscribeToEventsAsync(eventTypes, 1, accessToken, cancellationToken);
     }
     
     /// <summary>
@@ -58,7 +63,8 @@ public class EventSubscriptions : ApiBase
     public async Task<Result<ICollection<SubscribeToEventResponse>>> SubscribeToEventsAsync(
         ICollection<EventType> eventTypes,
         int version,
-        string? accessToken = null)
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         if (eventTypes?.Any() != true)
         {
@@ -81,7 +87,8 @@ public class EventSubscriptions : ApiBase
                 ApiUrlPart, 
                 ApiVersion.v1, 
                 payload, 
-                accessToken)
+                accessToken,
+                cancellationToken)
             .ConfigureAwait(false);
         
         if (result.HasError(x => x.Message == "Response code: 403"))
@@ -99,14 +106,15 @@ public class EventSubscriptions : ApiBase
 
     public Task<Result<bool>> UnsubscribeEventsAsync(
         string subscriptionId,
-        string? accessToken = null)
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(subscriptionId))
         {
             throw new ArgumentNullException(nameof(subscriptionId));
         }
         
-        return UnsubscribeEventsAsync([subscriptionId], accessToken);
+        return UnsubscribeEventsAsync([subscriptionId], accessToken, cancellationToken);
     }
     
     /// <summary>
@@ -114,7 +122,8 @@ public class EventSubscriptions : ApiBase
     /// </summary>
     public async Task<Result<bool>> UnsubscribeEventsAsync(
         ICollection<string> subscriptionIds,
-        string? accessToken = null)
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         if (subscriptionIds?.Any() != true)
         {
@@ -131,7 +140,8 @@ public class EventSubscriptions : ApiBase
                 ApiUrlPart, 
                 ApiVersion.v1, 
                 query, 
-                accessToken)
+                accessToken,
+                cancellationToken)
             .ConfigureAwait(false);
         
         if (result.HasError(x => x.Message == "Response code: 403"))

@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Support for the `v1/livestreams` API.
 - Extended subscription webhook payload events with `ExpiresAt`
+- Added `CancellationToken` support to all API methods.
 
 ### Changed
 - `Api.Authorization.GetPublicKeyAsync()` no longer requires an access token.

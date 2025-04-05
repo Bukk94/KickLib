@@ -25,19 +25,21 @@ public class Authorization : ApiBase
     /// <remarks>
     ///     Find the full spec here: https://datatracker.ietf.org/doc/html/rfc7662
     /// </remarks>
-    public Task<Result<TokenIntrospectResponse>> IntrospectTokenAsync(string? accessToken = null)
+    public Task<Result<TokenIntrospectResponse>> IntrospectTokenAsync(
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         // v1/token/introspect
-        return PostAsync<TokenIntrospectResponse>(IntrospectApiUrlPart, ApiVersion.v1, accessToken);
+        return PostAsync<TokenIntrospectResponse>(IntrospectApiUrlPart, ApiVersion.v1, accessToken, cancellationToken);
     }
     
     /// <summary>
     ///     Retrieve the public key used for verifying signatures.
     /// </summary>
-    public Task<Result<PublicKeyResponse>> GetPublicKeyAsync()
+    public Task<Result<PublicKeyResponse>> GetPublicKeyAsync(CancellationToken cancellationToken = default)
     {
         // v1/public-key
-        return GetAsync<PublicKeyResponse>(PublicKeyApiUrlPart, ApiVersion.v1);
+        return GetAsync<PublicKeyResponse>(PublicKeyApiUrlPart, ApiVersion.v1, cancellationToken: cancellationToken);
     }
     
     /// <summary>

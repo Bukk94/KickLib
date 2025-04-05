@@ -27,7 +27,8 @@ public class Livestreams : ApiBase
         string? language = null,
         int? limit = null,
         LivestreamSorting? sort = null,
-        string? accessToken = null)
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         var query = new List<KeyValuePair<string, string>>();
         if (broadcasterId.HasValue)
@@ -68,6 +69,6 @@ public class Livestreams : ApiBase
         }
         
         // v1/livestreams
-        return GetAsync<ICollection<LivestreamResponse>>(ApiUrlPart, ApiVersion.v1, query, accessToken);
+        return GetAsync<ICollection<LivestreamResponse>>(ApiUrlPart, ApiVersion.v1, query, accessToken, cancellationToken);
     }
 }

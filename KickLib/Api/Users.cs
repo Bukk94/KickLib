@@ -18,7 +18,10 @@ public class Users : ApiBase
     ///     Retrieve user information based on provided user IDs.
     ///     If no user IDs are specified, the information for the currently authorised user will be returned by default.
     /// </summary>
-    public Task<Result<ICollection<UserResponse>>> GetUsersAsync(ICollection<int>? userIds, string? accessToken = null)
+    public Task<Result<ICollection<UserResponse>>> GetUsersAsync(
+        ICollection<int>? userIds, 
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         List<KeyValuePair<string, string>>? query = null;
         if (userIds?.Any() == true)
@@ -31,16 +34,19 @@ public class Users : ApiBase
         }
         
         // v1/users
-        return GetAsync<ICollection<UserResponse>>(ApiUrlPart, ApiVersion.v1, query, accessToken);
+        return GetAsync<ICollection<UserResponse>>(ApiUrlPart, ApiVersion.v1, query, accessToken, cancellationToken);
     }
     
     /// <summary>
     ///     Retrieve information for the currently authorised user.
     /// </summary>
-    public async Task<Result<UserResponse>> GetMeAsync(string? accessToken = null)
+    public async Task<Result<UserResponse>> GetMeAsync(
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         // v1/users
-        var result = await GetAsync<ICollection<UserResponse>>(ApiUrlPart, ApiVersion.v1, null, accessToken).ConfigureAwait(false);
+        var result = await GetAsync<ICollection<UserResponse>>(ApiUrlPart, ApiVersion.v1, null, accessToken, cancellationToken)
+            .ConfigureAwait(false);
         
         if (result.HasError(x => x.Message == "Response code: 403"))
         {

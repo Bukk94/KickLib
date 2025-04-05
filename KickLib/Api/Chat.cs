@@ -23,7 +23,8 @@ public class Chat : ApiBase
     public async Task<Result<SendChatMessageResponse>> SendMessageAsUserAsync(
         int broadcasterId, 
         string message,
-        string? accessToken = null)
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(message);
         
@@ -33,7 +34,7 @@ public class Chat : ApiBase
         };
         
         // v1/chat
-        var result = await PostAsync<SendChatMessageResponse, SendMessageRequest>(ApiUrlPart, ApiVersion.v1, input, accessToken)
+        var result = await PostAsync<SendChatMessageResponse, SendMessageRequest>(ApiUrlPart, ApiVersion.v1, input, accessToken, cancellationToken)
             .ConfigureAwait(false);
         
         if (result.HasError(x => x.Message == "Response code: 403"))
@@ -50,14 +51,15 @@ public class Chat : ApiBase
     /// </summary>
     public async Task<Result<SendChatMessageResponse>> SendMessageAsBotAsync(
         string message,
-        string? accessToken = null)
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(message);
 
         var input = new SendMessageRequest(message, MessageType.Bot);
         
         // v1/chat
-        var result = await PostAsync<SendChatMessageResponse, SendMessageRequest>(ApiUrlPart, ApiVersion.v1, input, accessToken)
+        var result = await PostAsync<SendChatMessageResponse, SendMessageRequest>(ApiUrlPart, ApiVersion.v1, input, accessToken, cancellationToken)
             .ConfigureAwait(false);
         
         if (result.HasError(x => x.Message == "Response code: 403"))

@@ -18,7 +18,10 @@ public class Channels : ApiBase
     ///     Retrieve channel information based on provided streamer IDs.
     ///     If no streamer IDs are specified, the information for the currently authorised streamer will be returned by default.
     /// </summary>
-    public Task<Result<ICollection<ChannelResponse>>> GetChannelsAsync(ICollection<int> broadcasterUserIds, string? accessToken = null)
+    public Task<Result<ICollection<ChannelResponse>>> GetChannelsAsync(
+        ICollection<int> broadcasterUserIds, 
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         List<KeyValuePair<string, string>>? query = null;
         if (broadcasterUserIds?.Any() == true)
@@ -31,16 +34,18 @@ public class Channels : ApiBase
         }
         
         // v1/channels
-        return GetAsync<ICollection<ChannelResponse>>(ApiUrlPart, ApiVersion.v1, query, accessToken);
+        return GetAsync<ICollection<ChannelResponse>>(ApiUrlPart, ApiVersion.v1, query, accessToken, cancellationToken);
     }
     
     /// <summary>
     ///     Retrieve channel information for the currently authorised user.
     /// </summary>
-    public async Task<Result<ChannelResponse>> GetMyChannelAsync(string? accessToken = null)
+    public async Task<Result<ChannelResponse>> GetMyChannelAsync(
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         // v1/channels
-        var result = await GetAsync<ICollection<ChannelResponse>>(ApiUrlPart, ApiVersion.v1, null, accessToken).ConfigureAwait(false);
+        var result = await GetAsync<ICollection<ChannelResponse>>(ApiUrlPart, ApiVersion.v1, null, accessToken, cancellationToken).ConfigureAwait(false);
         
         if (result.HasError(x => x.Message == "Response code: 403"))
         {
@@ -57,12 +62,13 @@ public class Channels : ApiBase
     
     public async Task<Result<bool>> UpdateChannelAsync(
         UpdateChannelRequest request,
-        string? accessToken = null)
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
         
         // v1/channels
-        var result = await PatchAsync(ApiUrlPart, ApiVersion.v1, request, accessToken).ConfigureAwait(false);
+        var result = await PatchAsync(ApiUrlPart, ApiVersion.v1, request, accessToken, cancellationToken).ConfigureAwait(false);
 
         if (result.HasError(x => x.Message == "Response code: 403"))
         {

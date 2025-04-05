@@ -12,6 +12,9 @@ using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 
 namespace KickLib.Core;
 
+/// <summary>
+///     Base implementation for all API calls via HTTP Client.
+/// </summary>
 public abstract class ApiBase
 {
     private readonly ApiSettings _settings;
@@ -19,8 +22,13 @@ public abstract class ApiBase
     private readonly JsonSerializerSettings _serializerSettings;
     private readonly HttpClient _client;
 
-    internal const string BaseUrl = "https://api.kick.com/public/";
+    private const string BaseUrl = "https://api.kick.com/public/";
     
+    /// <summary>
+    ///     Base constructor.
+    /// </summary>
+    /// <param name="settings">API Settings class.</param>
+    /// <param name="logger">Instance of a logger.</param>
     protected ApiBase(ApiSettings settings, ILogger logger)
     {
         ArgumentNullException.ThrowIfNull(settings);
@@ -50,11 +58,15 @@ public abstract class ApiBase
         };
     }
     
+    /// <summary>
+    ///     Perform GET request.
+    /// </summary>
     protected async Task<Result<TType>> GetAsync<TType>(
         string urlPart,
         ApiVersion version,
         List<KeyValuePair<string, string>>? queryParams = null,
-        string? accessToken = null)
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
         where TType : class
     {
         var url = ConstructResourceUrl(urlPart, version, queryParams);
@@ -66,13 +78,14 @@ public abstract class ApiBase
         }
         
         var response = await ExecuteRequestAsync(
-            () => _client.GetAsync(url),
+            () => _client.GetAsync(url, cancellationToken),
             !string.IsNullOrWhiteSpace(accessToken)).ConfigureAwait(false);
 
-        var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-        if (!response.IsSuccessStatusCode)
+        var (data, error) = await ProcessResponseAsync(response, $"GET {url}").ConfigureAwait(false);
+        if (data is null ||
+            response is null)
         {
-            return HandleErrorResponse((int)response.StatusCode, data, $"GET {url}");
+            return error;
         }
 
         var deserializedObject = JsonConvert.DeserializeObject<DataWrapper<TType>>(data, _serializerSettings);
@@ -83,21 +96,29 @@ public abstract class ApiBase
                 .WithSuccess(deserializedObject.Message ?? "Success")
             : HandleErrorResponse((int)response.StatusCode, data, $"GET {url}", $"Failed to deserialize response to type {typeof(TType)}. Received response from url '{url}': {data}");
     }
-
+    
+    /// <summary>
+    ///     Perform POST request without payload
+    /// </summary>
     protected Task<Result<TType>> PostAsync<TType>(
         string urlPart,
         ApiVersion version,
-        string? accessToken = null)
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
         where TType : class
     {
-        return PostAsync<TType, object>(urlPart, version, null, accessToken);
+        return PostAsync<TType, object>(urlPart, version, null, accessToken, cancellationToken);
     }
     
+    /// <summary>
+    ///     Perform POST request with input payload.
+    /// </summary>
     protected async Task<Result<TType>> PostAsync<TType, TInput>(
         string urlPart,
         ApiVersion version,
         TInput? input,
-        string? accessToken = null)
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
         where TType : class
         where TInput : class
     {
@@ -119,13 +140,14 @@ public abstract class ApiBase
         }
         
         var response = await ExecuteRequestAsync(
-            () => _client.PostAsync(url, payload),
+            () => _client.PostAsync(url, payload, cancellationToken),
             !string.IsNullOrWhiteSpace(accessToken)).ConfigureAwait(false);
-
-        var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-        if (!response.IsSuccessStatusCode)
+        
+        var (data, error) = await ProcessResponseAsync(response, $"POST {url}").ConfigureAwait(false);
+        if (data is null ||
+            response is null)
         {
-            return HandleErrorResponse((int)response.StatusCode, data, $"POST {url}");
+            return error;
         }
 
         var deserializedObject = JsonConvert.DeserializeObject<DataWrapper<TType>>(data, _serializerSettings);
@@ -137,11 +159,15 @@ public abstract class ApiBase
             : HandleErrorResponse((int)response.StatusCode, data, $"POST {url}", $"Failed to deserialize response to type {typeof(TType)}. Received response from url '{url}': {data}");
     }
 
+    /// <summary>
+    ///     Perform PATCH request.
+    /// </summary>
     protected async Task<Result<bool>> PatchAsync<TType>(
         string urlPart,
         ApiVersion version,
         TType input,
-        string? accessToken = null)
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
         where TType : class
     {
         var url = ConstructResourceUrl(urlPart, version);
@@ -158,23 +184,32 @@ public abstract class ApiBase
         var payload = new StringContent(json, Encoding.UTF8, "application/json");
         
         var response = await ExecuteRequestAsync(
-            () => _client.PatchAsync(url, payload),
+            () => _client.PatchAsync(url, payload, cancellationToken),
             !string.IsNullOrWhiteSpace(accessToken)).ConfigureAwait(false);
-
+        
+        if (response is null)
+        {
+            return Result.Fail("Request was cancelled via CancellationToken."); 
+        }
+        
         if (!response.IsSuccessStatusCode)
         {
-            var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var data = await response.Content.ReadAsStringAsync(CancellationToken.None).ConfigureAwait(false);
             return HandleErrorResponse((int)response.StatusCode, data, $"PATCH {url} | Payload: {json}");
         }
 
         return Result.Ok(true);
     }
     
+    /// <summary>
+    ///     Perform DELETE request.
+    /// </summary>
     protected async Task<Result<bool>> DeleteAsync(
         string urlPart,
         ApiVersion version,
         List<KeyValuePair<string, string>>? queryParams = null,
-        string? accessToken = null)
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         var url = ConstructResourceUrl(urlPart, version, queryParams);
 
@@ -187,23 +222,37 @@ public abstract class ApiBase
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var response = await ExecuteRequestAsync(
-            () => _client.DeleteAsync(url),
+            () => _client.DeleteAsync(url, cancellationToken),
             !string.IsNullOrWhiteSpace(accessToken)).ConfigureAwait(false);
 
+        if (response is null)
+        {
+            return Result.Fail("Request was cancelled via CancellationToken."); 
+        }
+        
         if (!response.IsSuccessStatusCode)
         {
-            var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var data = await response.Content.ReadAsStringAsync(CancellationToken.None).ConfigureAwait(false);
             return HandleErrorResponse((int)response.StatusCode, data, $"DELETE {url}");
         }
 
         return Result.Ok(true);
     }
     
-    private async Task<HttpResponseMessage> ExecuteRequestAsync(
+    private async Task<HttpResponseMessage?> ExecuteRequestAsync(
         Func<Task<HttpResponseMessage>> requestFunc,
         bool usingExternalToken)
     {
-        var response = await requestFunc().ConfigureAwait(false);
+        HttpResponseMessage response;
+        try
+        {
+            response = await requestFunc().ConfigureAwait(false);
+        }
+        catch (TaskCanceledException)
+        {
+            return default;
+        }
+        
         if (response.StatusCode == HttpStatusCode.Unauthorized &&
             CanRefreshToken(usingExternalToken))
         {
@@ -212,13 +261,39 @@ public abstract class ApiBase
             if (!string.IsNullOrWhiteSpace(token))
             {
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                response = await requestFunc().ConfigureAwait(false);
+
+                try
+                {
+                    response = await requestFunc().ConfigureAwait(false);
+                } 
+                catch (TaskCanceledException)
+                {
+                    return default;
+                }
             }
         }
 
         return response;
     }
 
+    private static async Task<(string? Data, Result? Error)> ProcessResponseAsync(
+        HttpResponseMessage? response,
+        string origin)
+    {
+        if (response is null)
+        {
+            return (null, Result.Fail("Request was cancelled via CancellationToken.")); 
+        }
+        
+        var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        if (!response.IsSuccessStatusCode)
+        {
+            return (null, HandleErrorResponse((int)response.StatusCode, data, origin));
+        }
+
+        return (data, null);
+    }
+    
     private async Task<string?> RefreshAccessTokenAsync()
     {
         if (!_settings.CanRefreshToken)

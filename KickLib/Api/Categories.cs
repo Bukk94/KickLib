@@ -16,7 +16,10 @@ public class Categories : ApiBase
     /// <summary>
     ///     Gets categories or search for category by name.
     /// </summary>
-    public Task<Result<ICollection<CategoryResponse>>> GetCategoriesAsync(string searchKeyword, string? accessToken = null)
+    public Task<Result<ICollection<CategoryResponse>>> GetCategoriesAsync(
+        string searchKeyword, 
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         List<KeyValuePair<string, string>>? query = null;
         if (!string.IsNullOrWhiteSpace(searchKeyword))
@@ -33,18 +36,21 @@ public class Categories : ApiBase
         }
         
         // v1/categories
-        return GetAsync<ICollection<CategoryResponse>>(ApiUrlPart, ApiVersion.v1, query, accessToken);
+        return GetAsync<ICollection<CategoryResponse>>(ApiUrlPart, ApiVersion.v1, query, accessToken, cancellationToken);
     }
     
     /// <summary>
     ///     Gets specific category by ID.
     /// </summary>
-    public Task<Result<CategoryResponse>> GetCategoryAsync(int id, string? accessToken = null)
+    public Task<Result<CategoryResponse>> GetCategoryAsync(
+        int id, 
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
     {
         // v1/categories/{id}
         var urlPart = $"{ApiUrlPart}/{id}";
         
         // v1/categories
-        return GetAsync<CategoryResponse>(urlPart, ApiVersion.v1, null, accessToken);
+        return GetAsync<CategoryResponse>(urlPart, ApiVersion.v1, null, accessToken, cancellationToken);
     }
 }
