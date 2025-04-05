@@ -1,5 +1,6 @@
 using KickLib.Api;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace KickLib;
 
@@ -51,7 +52,7 @@ public class KickApi : IKickApi
     {
         ArgumentNullException.ThrowIfNull(settings);
         ApiSettings = settings;
-        logger ??= LoggerFactory.Create(builder => { builder.AddConsole(); }).CreateLogger<KickApi>();
+        logger ??= NullLogger<KickApi>.Instance;
         
         // APIs
         Authorization = new Authorization(settings, logger);

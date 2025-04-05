@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - `Api.Authorization.GetPublicKeyAsync()` no longer requires an access token.
+- Reduced projects dependencies
 
 ---
 
