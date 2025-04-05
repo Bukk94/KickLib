@@ -20,6 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{B0DA31F6-B
 		LICENSE = LICENSE
 		README.md = README.md
 		Breaking Changes - Migration Guide.md = Breaking Changes - Migration Guide.md
+		CHANGELOG.md = CHANGELOG.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KickLib.Api.Unofficial", "KickLib.Api.Unofficial\KickLib.Api.Unofficial.csproj", "{F8BA691E-387D-4B85-BB2F-72E7298E756E}"

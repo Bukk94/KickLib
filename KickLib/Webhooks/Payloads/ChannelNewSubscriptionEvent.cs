@@ -10,4 +10,7 @@ public class ChannelNewSubscriptionEvent : WebhookEventBase
 
     [JsonProperty(PropertyName = "created_at")]
     public DateTimeOffset CreatedAt { get; set; }
+    
+    [JsonProperty(PropertyName = "expires_at")]
+    public DateTimeOffset ExpiresAt { get; set; }
 }
