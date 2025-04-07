@@ -14,7 +14,26 @@
     "username": "sender_name",
     "is_verified": false,
     "profile_picture": "https://example.com/sender_avatar.jpg",
-    "channel_slug": "sender_channel"
+    "channel_slug": "sender_channel",
+    "identity": {
+      "username_color": "#FF5733",
+      "badges": [
+        {
+          "text": "Moderator",
+          "type": "moderator"
+        },
+        {
+          "text": "Sub Gifter",
+          "type": "sub_gifter",
+          "count": 5
+        },
+        {
+          "text": "Subscriber",
+          "type": "subscriber",
+          "count": 3
+        }
+      ]
+    }
   },
   "content": "This is a test message with emotes!",
   "emotes": [

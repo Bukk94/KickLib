@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using KickLib.Webhooks;
+using KickLib.Webhooks.Payloads;
 
 namespace KickLib.Tests;
 
@@ -20,6 +21,22 @@ public class EventPayloadsTests : BaseKickLibTests
         
         payload.Should().NotBeNull();
         webhookEvent.Should().NotBeNull();
+    }
+    
+    [Fact]
+    public void ChatMessageSentEventPayload_ContainsCorrectValues()
+    {
+        var payload = GetPayload("ChatMessageSentEventPayload");
+
+        var webhookEvent = WebhookEventParser.ParseChatMessageSentEvent(payload);
+
+        payload.Should().NotBeNull();
+        webhookEvent.Should().NotBeNull();
+        webhookEvent.Sender.Identity.Should().NotBeNull();
+        webhookEvent.Sender.Identity.Badges.Should().Contain(x => x.Type == BadgeType.Moderator);
+        webhookEvent.Sender.Identity.Badges.Should().Contain(x => x.Type == BadgeType.Subscriber);
+        webhookEvent.Sender.Identity.Badges.Should().Contain(x => x.Type == BadgeType.SubGifter);
+        webhookEvent.Sender.Identity.Badges.Should().Contain(x => x.Type == BadgeType.SubGifter && x.Count == 5);
     }
     
     [Fact]

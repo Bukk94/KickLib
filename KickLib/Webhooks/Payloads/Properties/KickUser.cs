@@ -47,4 +47,9 @@ public class KickUser
     /// </summary>
     [JsonProperty(PropertyName = "channel_slug")]
     public string? ChannelSlug { get; set; }
+
+    /// <summary>
+    ///     Identity details like badges.
+    /// </summary>
+    public UserIdentity? Identity { get; set; }
 }
