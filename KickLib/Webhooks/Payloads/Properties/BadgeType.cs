@@ -1,5 +1,8 @@
 namespace KickLib.Webhooks.Payloads;
 
+/// <summary>
+///     Represents the type of user badge.
+/// </summary>
 public enum BadgeType
 {
     /// <summary>

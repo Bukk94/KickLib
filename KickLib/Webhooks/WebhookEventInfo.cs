@@ -50,6 +50,9 @@ public class WebhookEventInfo
     /// </summary>
     public string MessageId { get; }
     
+    /// <summary>
+    ///     Creates a new instance of <see cref="WebhookEventInfo"/>.
+    /// </summary>
     public WebhookEventInfo(
         string eventTypeName, 
         int eventVersion, 
