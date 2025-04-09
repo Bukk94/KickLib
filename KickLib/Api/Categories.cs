@@ -13,26 +13,31 @@ public class Categories : ApiBase
     {
     }
     
+    
     /// <summary>
     ///     Gets categories or search for category by name.
+    ///     Returns up to 100 results at a time; use the <paramref name="page"/> parameter to get more results.
     /// </summary>
     public Task<Result<ICollection<CategoryResponse>>> GetCategoriesAsync(
-        string searchKeyword, 
+        string searchKeyword,
+        int? page = 1,
         string? accessToken = null,
         CancellationToken cancellationToken = default)
     {
-        List<KeyValuePair<string, string>>? query = null;
-        if (!string.IsNullOrWhiteSpace(searchKeyword))
-        {
-            query = new List<KeyValuePair<string, string>>
-            {
-                new("q", searchKeyword)
-            };
-        }
-
         if (string.IsNullOrWhiteSpace(searchKeyword))
         {
             return Task.FromResult(Result.Fail<ICollection<CategoryResponse>>("searchKeyword is currently required by Kick API!"));
+        }
+        
+        var query = new List<KeyValuePair<string, string>>();
+        if (!string.IsNullOrWhiteSpace(searchKeyword))
+        {
+            query.Add(new("q", searchKeyword));
+        }
+
+        if (page > 1)
+        {
+            query.Add(new("page", page.Value.ToString()));
         }
         
         // v1/categories

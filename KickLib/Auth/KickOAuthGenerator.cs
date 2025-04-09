@@ -217,12 +217,17 @@ public static class KickOAuthGenerator
 
         var message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-        if (response.StatusCode == HttpStatusCode.OK)
+        if (response.StatusCode != HttpStatusCode.OK)
         {
-            return Result.Ok(JsonConvert.DeserializeObject<KickTokenResponse>(message));
+            var errorMessage =
+                $"RefreshAccessTokenAsync call returned non-Ok response. Reason: {response.ReasonPhrase}. Status: {response.StatusCode}. Data: {message}";
+            return Result.Fail(errorMessage);
         }
 
-        return Result.Fail("Refresh token failed: " + message);
+        var deserializeResponse = JsonConvert.DeserializeObject<KickTokenResponse>(message);
+        return deserializeResponse is not null 
+            ? Result.Ok(deserializeResponse) 
+            : Result.Fail("Refresh token failed due to deserialization issue. Payload: " + message);
     }
 
     /// <summary>

@@ -15,7 +15,8 @@
     "language": "en",
     "start_time": "2025-01-01T11:00:00+11:00",
     "url": "text",
-    "viewer_count": 1
+    "viewer_count": 1,
+    "thumbnail": "url"
   },
   "stream_title": "text"
 }

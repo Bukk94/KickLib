@@ -4,6 +4,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.1](https://www.nuget.org/packages/KickLib/1.2.1) - [diff](https://github.com/Bukk94/KickLib/compare/v1.2.0...v1.2.1)
+### Added
+- Search channels by `slug`
+- `GetChannelAsync` overloads
+- Thumbnail to Stream response
+- Paging for `GetCategoriesAsync` endpoint
+
 ## [1.2.0](https://www.nuget.org/packages/KickLib/1.2.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.1.1...v1.2.0)
 ### Added
 - Support for the `v1/livestreams` API.

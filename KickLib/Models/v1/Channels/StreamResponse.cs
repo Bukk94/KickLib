@@ -45,4 +45,9 @@ public class StreamResponse
     /// </summary>
     [JsonProperty(PropertyName = "viewer_count")]
     public int ViewerCount { get; set; }
+
+    /// <summary>
+    ///     URL to a stream thumbnail.
+    /// </summary>
+    public string Thumbnail { get; set; } = string.Empty;
 }
