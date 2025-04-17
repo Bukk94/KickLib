@@ -16,4 +16,7 @@ internal class SendMessageRequest
     
     [JsonProperty(PropertyName = "broadcaster_user_id")]
     public int? BroadcasterId { get; set; }
+    
+    [JsonProperty(PropertyName = "reply_to_message_id")]
+    public string? ReplyToMessageId { get; set; }
 }

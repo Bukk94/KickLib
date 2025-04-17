@@ -157,13 +157,10 @@ var exchangeResults = await KickOAuthGenerator.RefreshAccessTokenAsync(
   
 ### Using API to get information
 ```csharp
-IKickApi api = new KickApi(new ApiSettings
-{
-    AccessToken = accessToken
-});
+IKickApi api = new KickApi();
 
 // Get specific category by ID
-var category = await kickApi.Categories.GetCategoryAsync(28);
+var category = await kickApi.Categories.GetCategoryAsync(28, accessToken);
 ```
 
 ### Using Client to read chat messages
