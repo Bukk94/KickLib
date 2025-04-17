@@ -4,6 +4,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.2](https://www.nuget.org/packages/KickLib/1.2.2) - [diff](https://github.com/Bukk94/KickLib/compare/v1.2.1...v1.2.2)
+### Added
+- Support for message reply (`ReplyToMessageAsUserAsync`, `ReplyToMessageAsBotAsync`)
+- LivestreamMetadataUpdatedEvent webhook support
+- More unit tests covering new webhook types
+
 ## [1.2.1](https://www.nuget.org/packages/KickLib/1.2.1) - [diff](https://github.com/Bukk94/KickLib/compare/v1.2.0...v1.2.1)
 ### Added
 - Search channels by `slug`

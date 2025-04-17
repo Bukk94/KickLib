@@ -3,6 +3,9 @@ using KickLib.Webhooks;
 
 namespace KickLib.Extensions;
 
+/// <summary>
+///     Provides extension methods for working with webhook payloads and types.
+/// </summary>
 public static class WebhookExtensions
 {
     /// <summary>
@@ -41,6 +44,7 @@ public static class WebhookExtensions
             WebhookEventTypes.ChannelGiftedSubscription => EventType.ChannelSubscriptionGifts,
             WebhookEventTypes.ChannelNewSubscription => EventType.ChannelSubscriptionNew,
             WebhookEventTypes.LivestreamStatusUpdated => EventType.LivestreamStatusUpdated,
+            WebhookEventTypes.LivestreamMetadataUpdated => EventType.LivestreamMetadataUpdated,
             _ => EventType.Unknown
         };
     }
@@ -58,6 +62,7 @@ public static class WebhookExtensions
             EventType.ChannelSubscriptionGifts => WebhookEventTypes.ChannelGiftedSubscription,
             EventType.ChannelSubscriptionNew => WebhookEventTypes.ChannelNewSubscription,
             EventType.LivestreamStatusUpdated => WebhookEventTypes.LivestreamStatusUpdated,
+            EventType.LivestreamMetadataUpdated => WebhookEventTypes.LivestreamMetadataUpdated,
             EventType.Unknown => throw new ArgumentException("Unknown event type", nameof(type)),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };

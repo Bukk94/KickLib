@@ -84,6 +84,17 @@ public class EventPayloadsTests : BaseKickLibTests
         payload.Should().NotBeNull();
         webhookEvent.Should().NotBeNull();
     }
+    
+    [Fact]
+    public void CorrectlyDeserialize_LivestreamMetadataUpdatedEventPayload()
+    {
+        var payload = GetPayload("LivestreamMetadataUpdatedEventPayload");
+
+        var webhookEvent = WebhookEventParser.ParseLivestreamMetadataUpdatedEvent(payload);
+
+        payload.Should().NotBeNull();
+        webhookEvent.Should().NotBeNull();
+    }
 
     [Theory]
     [InlineData("LivestreamStatusUpdatedEventPayload_Live")]

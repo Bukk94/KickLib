@@ -46,6 +46,7 @@ public static class WebhookEventParser
             EventType.ChannelSubscriptionRenewal => ParseChannelSubscriptionRenewalEvent(payload),
             EventType.ChatMessageSent => ParseChatMessageSentEvent(payload),
             EventType.LivestreamStatusUpdated => ParseLivestreamStatusUpdatedEvent(payload),
+            EventType.LivestreamMetadataUpdated => ParseLivestreamMetadataUpdatedEvent(payload),
             _ => null
         };
         
@@ -110,5 +111,15 @@ public static class WebhookEventParser
     public static LivestreamStatusUpdatedEvent? ParseLivestreamStatusUpdatedEvent(string payload)
     {
         return JsonConvert.DeserializeObject<LivestreamStatusUpdatedEvent>(payload);
+    }
+    
+    /// <summary>
+    ///     Parse livestream.metadata.updated event.
+    /// </summary>
+    /// <param name="payload">Payload to parse.</param>
+    /// <returns>Returns parsed event or <c>null</c>.</returns>
+    public static LivestreamMetadataUpdatedEvent? ParseLivestreamMetadataUpdatedEvent(string payload)
+    {
+        return JsonConvert.DeserializeObject<LivestreamMetadataUpdatedEvent>(payload);
     }
 }

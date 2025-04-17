@@ -14,6 +14,7 @@ public class WebhookExtensionsTests
     [InlineData(EventType.ChannelSubscriptionGifts, WebhookEventTypes.ChannelGiftedSubscription)]
     [InlineData(EventType.ChannelSubscriptionNew, WebhookEventTypes.ChannelNewSubscription)]
     [InlineData(EventType.LivestreamStatusUpdated, WebhookEventTypes.LivestreamStatusUpdated)]
+    [InlineData(EventType.LivestreamMetadataUpdated, WebhookEventTypes.LivestreamMetadataUpdated)]
     public void CorrectlyExtractEventType(EventType eventType, string expected)
     {
         var eventName = eventType.GetEventName();
@@ -28,6 +29,7 @@ public class WebhookExtensionsTests
     [InlineData(WebhookEventTypes.ChannelGiftedSubscription, "1", EventType.ChannelSubscriptionGifts, 1)]
     [InlineData(WebhookEventTypes.ChannelNewSubscription, "1", EventType.ChannelSubscriptionNew, 1)]
     [InlineData(WebhookEventTypes.LivestreamStatusUpdated, "1", EventType.LivestreamStatusUpdated, 1)]
+    [InlineData(WebhookEventTypes.LivestreamMetadataUpdated, "1", EventType.LivestreamMetadataUpdated, 1)]
     public void GetEventType_ReturnsCorrectValue(string headerType, string version, EventType expectedType, int expectedVersion)
     {
         var headers = new Dictionary<string, string>

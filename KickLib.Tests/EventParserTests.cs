@@ -19,7 +19,8 @@ public class EventParserTests : BaseKickLibTests
             new object[] { "ChannelGiftedSubscriptionEventPayload", EventType.ChannelSubscriptionGifts, typeof(ChannelGiftedSubscriptionEvent) },
             new object[] { "ChannelNewSubscriptionEventPayload", EventType.ChannelSubscriptionNew, typeof(ChannelNewSubscriptionEvent) },
             new object[] { "ChannelSubscriptionRenewalEventPayload", EventType.ChannelSubscriptionRenewal, typeof(ChannelSubscriptionRenewalEvent) },
-            new object[] { "LivestreamStatusUpdatedEventPayload_Live", EventType.LivestreamStatusUpdated, typeof(LivestreamStatusUpdatedEvent) }
+            new object[] { "LivestreamStatusUpdatedEventPayload_Live", EventType.LivestreamStatusUpdated, typeof(LivestreamStatusUpdatedEvent) },
+            new object[] { "LivestreamMetadataUpdatedEventPayload", EventType.LivestreamMetadataUpdated, typeof(LivestreamMetadataUpdatedEvent) }
         };
     
     [Fact]
@@ -33,6 +34,25 @@ public class EventParserTests : BaseKickLibTests
         webhookEvent.Broadcaster.Should().NotBeNull();
         webhookEvent.Sender.Should().NotBeNull();
         webhookEvent.Content.Should().NotBeNull();
+    }
+    
+    [Fact]
+    public void WebhookEventParser_ParseLivestreamMetadataUpdatedPayload()
+    {
+        var payload = GetPayload("LivestreamMetadataUpdatedEventPayload");
+        var webhookEvent = WebhookEventParser.ParseLivestreamMetadataUpdatedEvent(payload);
+        
+        webhookEvent.Should().NotBeNull();
+        webhookEvent.Broadcaster.Should().NotBeNull();
+        webhookEvent.Metadata.Should().NotBeNull();
+        webhookEvent.Metadata.Title.Should().NotBeNull();
+        webhookEvent.Metadata.Category.Should().NotBeNull();
+        webhookEvent.Metadata.Category.Id.Should().BeGreaterThan(0);
+        webhookEvent.Metadata.Category.Name.Should().NotBeNull();
+        webhookEvent.Metadata.Category.Thumbnail.Should().NotBeNull();
+        webhookEvent.Metadata.Language.Should().NotBeNull();
+        webhookEvent.Metadata.Language.Should().Be("en");
+        webhookEvent.Metadata.HasMatureContent.Should().BeTrue();
     }
     
     [Theory]

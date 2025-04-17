@@ -11,4 +11,5 @@ public static class WebhookEventTypes
     public const string ChannelGiftedSubscription = "channel.subscription.gifts";
     public const string ChannelNewSubscription = "channel.subscription.new";
     public const string LivestreamStatusUpdated = "livestream.status.updated";
+    public const string LivestreamMetadataUpdated = "livestream.metadata.updated";
 }

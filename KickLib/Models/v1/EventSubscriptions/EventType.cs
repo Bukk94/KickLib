@@ -39,5 +39,10 @@ public enum EventType
     /// <summary>
     ///     Event type livestream.status.updated.
     /// </summary>
-    LivestreamStatusUpdated
+    LivestreamStatusUpdated,
+    
+    /// <summary>
+    ///     Event type livestream.metadata.updated.
+    /// </summary>
+    LivestreamMetadataUpdated
 }
