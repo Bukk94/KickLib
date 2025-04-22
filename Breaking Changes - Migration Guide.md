@@ -53,3 +53,7 @@ serviceCollection
 ### End of .NET 6 support
 
 Starting from version 0.2.0, KickLib will no longer support .NET 6.
+
+### End of .NET 7 support
+
+Starting from version 1.3.0, KickLib will no longer support .NET 7.

@@ -1,16 +1,17 @@
+using KickLib.Api.Interfaces;
+using KickLib.Auth;
 using KickLib.Models.v1.Channels;
 using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
 /// <inheritdoc />
-public class Channels : ApiBase
+public class Channels : ApiBase, IChannels
 {
     private const string ApiUrlPart = "channels";
 
     /// <inheritdoc />
-    public Channels(ApiSettings settings, ILogger logger) 
-        : base(settings, logger)
+    public Channels(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger logger) : base(settings, oauthGenerator, clientFactory, logger)
     {
     }
 
@@ -47,9 +48,9 @@ public class Channels : ApiBase
         CancellationToken cancellationToken = default)
     {
         List<KeyValuePair<string, string>>? query = null;
-        if (broadcasterUserIds?.Any() == true)
+        if (broadcasterUserIds?.Count > 0)
         {
-            query = new List<KeyValuePair<string, string>>();
+            query = [];
             foreach (var id in broadcasterUserIds.Distinct())
             {
                 query.Add(new("broadcaster_user_id", id.ToString()));
@@ -99,9 +100,9 @@ public class Channels : ApiBase
         CancellationToken cancellationToken = default)
     {
         List<KeyValuePair<string, string>>? query = null;
-        if (slugs?.Any() == true)
+        if (slugs?.Count > 0)
         {
-            query = new List<KeyValuePair<string, string>>();
+            query = [];
             foreach (var id in slugs.Distinct())
             {
                 query.Add(new("slug", id));

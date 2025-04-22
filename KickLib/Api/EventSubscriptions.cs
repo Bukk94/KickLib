@@ -1,15 +1,17 @@
+using KickLib.Api.Interfaces;
+using KickLib.Auth;
 using KickLib.Models.v1.EventSubscriptions;
 using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
 /// <inheritdoc />
-public class EventSubscriptions : ApiBase
+public class EventSubscriptions : ApiBase, IEventSubscriptions
 {
     private const string ApiUrlPart = "events/subscriptions";
 
     /// <inheritdoc />
-    public EventSubscriptions(ApiSettings settings, ILogger logger) : base(settings, logger)
+    public EventSubscriptions(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger logger) : base(settings, oauthGenerator, clientFactory, logger)
     {
     }
     
@@ -66,7 +68,7 @@ public class EventSubscriptions : ApiBase
         string? accessToken = null,
         CancellationToken cancellationToken = default)
     {
-        if (eventTypes?.Any() != true)
+        if (eventTypes?.Count == 0)
         {
             throw new ArgumentException("At least one event type must be provided!");
         }
@@ -104,6 +106,9 @@ public class EventSubscriptions : ApiBase
         return result;
     }
 
+    /// <summary>
+    /// Delete a specific subscription for given account.
+    /// </summary>
     public Task<Result<bool>> UnsubscribeEventsAsync(
         string subscriptionId,
         string? accessToken = null,
@@ -125,7 +130,7 @@ public class EventSubscriptions : ApiBase
         string? accessToken = null,
         CancellationToken cancellationToken = default)
     {
-        if (subscriptionIds?.Any() != true)
+        if (subscriptionIds?.Count == 0)
         {
             throw new ArgumentException("At least one subscription ID must be provided!");
         }

@@ -1,15 +1,17 @@
+using KickLib.Api.Interfaces;
+using KickLib.Auth;
 using KickLib.Models.v1.Livestreams;
 using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
 /// <inheritdoc />
-public class Livestreams : ApiBase
+public class Livestreams : ApiBase, ILivestreams
 {
     private const string ApiUrlPart = "livestreams";
 
     /// <inheritdoc />
-    public Livestreams(ApiSettings settings, ILogger logger) : base(settings, logger)
+    public Livestreams(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger logger) : base(settings, oauthGenerator, clientFactory, logger)
     {
     }
 

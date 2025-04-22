@@ -8,7 +8,7 @@ namespace KickLib.Auth;
 /// <summary>
 ///     KickLib service for generating OAuth 2.1 authorization flow (URLs, exchanging tokens, revokation).
 /// </summary>
-public static class KickOAuthGenerator
+public class KickOAuthGenerator : IKickOAuthGenerator
 {
     /// <summary>
     ///     Authorization URL
@@ -35,7 +35,7 @@ public static class KickOAuthGenerator
     /// <param name="verifier">Used verifier code value before hashing.</param>
     /// <param name="state">Validation state (if null, base64 encoded verifier code will be used).</param>
     /// <returns></returns>
-    public static Uri GetAuthorizationUri(
+    public Uri GetAuthorizationUri(
         string redirectUri,
         string clientId,
         ICollection<string> scopes,
@@ -83,7 +83,7 @@ public static class KickOAuthGenerator
     /// <param name="state">Received state from the callback.</param>
     /// <param name="verifier">Verifier code used for initial authentication call (if null, it will try to decode state value).</param>
     /// <returns>Returns Kick token response (access/refresh tokens).</returns>
-    public static async Task<Result<KickTokenResponse>> ExchangeCodeForTokenAsync(
+    public async Task<Result<KickTokenResponse>> ExchangeCodeForTokenAsync(
         string code,
         string clientId,
         string clientSecret,
@@ -146,7 +146,7 @@ public static class KickOAuthGenerator
     /// <param name="clientId">App client ID.</param>
     /// <param name="clientSecret">App secret.</param>
     /// <returns>Returns access token response.</returns>
-    public static async Task<Result<KickAppTokenResponse>> GenerateAppAccessTokenAsync(
+    public async Task<Result<KickAppTokenResponse>> GenerateAppAccessTokenAsync(
         string clientId,
         string clientSecret)
     {
@@ -192,7 +192,7 @@ public static class KickOAuthGenerator
     /// <param name="clientId">App Client ID.</param>
     /// <param name="clientSecret">App secret.</param>
     /// <returns>Returns refreshed access token.</returns>
-    public static async Task<Result<KickTokenResponse>> RefreshAccessTokenAsync(
+    public async Task<Result<KickTokenResponse>> RefreshAccessTokenAsync(
         string refreshToken,
         string clientId,
         string clientSecret)
@@ -235,14 +235,14 @@ public static class KickOAuthGenerator
     /// </summary>
     /// <param name="tokenToRevoke">Access token to revoke.</param>
     /// <returns>Returns true if successfully revoked.</returns>
-    public static Task<Result<bool>> RevokeAccessTokenAsync(string tokenToRevoke) => RevokeTokenAsync(tokenToRevoke, true);
+    public Task<Result<bool>> RevokeAccessTokenAsync(string tokenToRevoke) => RevokeTokenAsync(tokenToRevoke, true);
     
     /// <summary>
     ///     Revoke Refresh token.
     /// </summary>
     /// <param name="tokenToRevoke">Refresh token to revoke.</param>
     /// <returns>Returns true if successfully revoked.</returns>
-    public static Task<Result<bool>> RevokeRefreshTokenAsync(string tokenToRevoke) => RevokeTokenAsync(tokenToRevoke, false);
+    public Task<Result<bool>> RevokeRefreshTokenAsync(string tokenToRevoke) => RevokeTokenAsync(tokenToRevoke, false);
     
     /// <summary>
     ///     Revoke access/refresh token.
@@ -250,7 +250,7 @@ public static class KickOAuthGenerator
     /// <param name="tokenToRevoke">Token to revoke.</param>
     /// <param name="isAccessToken">Is passed token an Access Token?</param>
     /// <returns>Returns true if successfully revoked.</returns>
-    public static async Task<Result<bool>> RevokeTokenAsync(
+    public async Task<Result<bool>> RevokeTokenAsync(
         string tokenToRevoke,
         bool isAccessToken)
     {
