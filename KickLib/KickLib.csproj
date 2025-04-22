@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0;net8.0;net9.0</TargetFrameworks>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
@@ -16,22 +16,22 @@
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageReleaseNotes>LivestreamMetadataUpdated webhook event, reply to message support.</PackageReleaseNotes>
-        <Version>1.2.2</Version>
-        <AssemblyVersion>1.2.2</AssemblyVersion>
-        <FileVersion>1.2.2</FileVersion>
+        <Version>1.3.0</Version>
+        <AssemblyVersion>1.3.0</AssemblyVersion>
+        <FileVersion>1.3.0</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="FluentResults" Version="3.16.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.4" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
         <!-- References for NuGet package -->
         <PackageReference Include="JsonSubTypes" Version="2.0.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="Otp.NET" Version="1.3.0" />
-        <PackageReference Include="Polly" Version="8.5.2" />
-        <PackageReference Include="PuppeteerExtraSharp" Version="2.0.0" />
-        <PackageReference Include="PuppeteerSharp" Version="14.0.0" />
+        <PackageReference Include="RestSharp" Version="112.1.0" />
+        <PackageReference Include="System.Net.Security" Version="4.3.2" />
+        <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
         <PackageReference Include="WebSocketSharper" Version="1.0.42" />
         <PackageReference Include="PusherClient" Version="2.2.1" />
     </ItemGroup>
@@ -46,8 +46,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\KickLib.Api.Unofficial\KickLib.Api.Unofficial.csproj" PrivateAssets="all"/>
-        <ProjectReference Include="..\KickLib.Client\KickLib.Client.csproj" PrivateAssets="all"/>
+        <ProjectReference Include="..\KickLib.Api.Unofficial\KickLib.Api.Unofficial.csproj" PrivateAssets="all" />
+        <ProjectReference Include="..\KickLib.Client\KickLib.Client.csproj" PrivateAssets="all" />
     </ItemGroup>
 
     <PropertyGroup>
@@ -56,7 +56,7 @@
 
     <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
         <ItemGroup>
-            <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')->WithMetadataValue('PrivateAssets', 'All'))" />
+            <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'All'))" />
         </ItemGroup>
     </Target>
 </Project>

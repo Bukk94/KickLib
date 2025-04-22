@@ -1,3 +1,4 @@
+using KickLib.Api.Interfaces;
 using KickLib.Auth;
 using KickLib.Models.v1.Auth;
 using Microsoft.Extensions.Logging;
@@ -5,15 +6,17 @@ using Microsoft.Extensions.Logging;
 namespace KickLib.Api;
 
 /// <inheritdoc />
-public class Authorization : ApiBase
+public class Authorization : ApiBase, IAuthorization
 {
     private readonly ApiSettings _settings;
+    private readonly IKickOAuthGenerator _kickOAuthGenerator;
     private const string PublicKeyApiUrlPart = "public-key";
     private const string IntrospectApiUrlPart = "token/introspect";
 
     /// <inheritdoc />
-    public Authorization(ApiSettings settings, ILogger logger) : base(settings, logger)
+    public Authorization(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger logger) : base(settings, oauthGenerator, clientFactory, logger)
     {
+        _kickOAuthGenerator = oauthGenerator;
         _settings = settings;
     }
     
@@ -79,6 +82,6 @@ public class Authorization : ApiBase
             return Result.Fail("ClientSecret is required");
         }
 
-        return await KickOAuthGenerator.GenerateAppAccessTokenAsync(clientId, clientSecret).ConfigureAwait(false);
+        return await _kickOAuthGenerator.GenerateAppAccessTokenAsync(clientId, clientSecret).ConfigureAwait(false);
     }
 }

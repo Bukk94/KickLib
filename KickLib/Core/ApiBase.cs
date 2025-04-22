@@ -20,6 +20,7 @@ public abstract class ApiBase
     private readonly ApiSettings _settings;
     private readonly ILogger _logger;
     private readonly JsonSerializerSettings _serializerSettings;
+    private readonly IKickOAuthGenerator _kickOAuthGenerator;
     private readonly HttpClient _client;
 
     private const string BaseUrl = "https://api.kick.com/public/";
@@ -28,24 +29,27 @@ public abstract class ApiBase
     ///     Base constructor.
     /// </summary>
     /// <param name="settings">API Settings class.</param>
+    /// <param name="oauthGenerator">Manages OAuth tokens.</param>
+    /// <param name="clientFactory">Http Client Factory</param>
     /// <param name="logger">Instance of a logger.</param>
-    protected ApiBase(ApiSettings settings, ILogger logger)
+    protected ApiBase(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger logger)
     {
         ArgumentNullException.ThrowIfNull(settings);
         ArgumentNullException.ThrowIfNull(logger);
 
         _settings = settings;
         _logger = logger;
-        _client = new HttpClient();
+        _kickOAuthGenerator = oauthGenerator;
+        _client = clientFactory.CreateClient();
 
         _serializerSettings = new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore,
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            Converters = new List<JsonConverter>
-            {
+            Converters =
+            [
                 new StringEnumConverter(typeof(LowerCaseNamingStrategy))
-            },
+            ],
             Error = delegate(object? sender, ErrorEventArgs args)
             {
                 logger.LogError("Deserialization failed in {Sender}! {Ex}", sender?.ToString() ?? "Unknown", args.ErrorContext.Error);
@@ -301,7 +305,7 @@ public abstract class ApiBase
             return null;
         }
         
-        var response = await KickOAuthGenerator.RefreshAccessTokenAsync(
+        var response = await _kickOAuthGenerator.RefreshAccessTokenAsync(
             _settings.RefreshToken!,
             _settings.ClientId!,
             _settings.ClientSecret!).ConfigureAwait(false);

@@ -1,15 +1,17 @@
+using KickLib.Api.Interfaces;
+using KickLib.Auth;
 using KickLib.Models.v1.Categories;
 using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
 /// <inheritdoc />
-public class Categories : ApiBase
+public class Categories : ApiBase, ICategories
 {
     private const string ApiUrlPart = "categories";
 
     /// <inheritdoc />
-    public Categories(ApiSettings settings, ILogger logger) : base(settings, logger)
+    public Categories(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger logger) : base(settings, oauthGenerator, clientFactory, logger)
     {
     }
     

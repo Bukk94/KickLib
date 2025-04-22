@@ -1,6 +1,4 @@
-using KickLib.Api;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
+using KickLib.Api.Interfaces;
 
 namespace KickLib;
 
@@ -10,57 +8,62 @@ namespace KickLib;
 public class KickApi : IKickApi
 {
     /// <inheritdoc />
-    public Authorization Authorization { get; }
+    public IAuthorization Authorization { get; }
     
     /// <inheritdoc />
-    public Categories Categories { get; }
+    public ICategories Categories { get; }
     
     /// <inheritdoc />
-    public Chat Chat { get; }
+    public IChat Chat { get; }
     
     /// <inheritdoc />
-    public Channels Channels { get; }
+    public IChannels Channels { get; }
     
     /// <inheritdoc />
-    public EventSubscriptions EventSubscriptions { get; }
+    public IEventSubscriptions EventSubscriptions { get; }
     
     /// <inheritdoc />
-    public Livestreams Livestreams { get; }
+    public ILivestreams Livestreams { get; }
     
     /// <inheritdoc />
-    public Users Users { get; }
+    public IUsers Users { get; }
     
     /// <inheritdoc />
     public ApiSettings ApiSettings { get; }
 
     /// <summary>
-    ///     Create a new instance of the KickLib with default settings.
+    ///     Create a new instance of the KickLib.
     /// </summary>
-    public KickApi()
-        : this(ApiSettings.Default)
-    {
-    }
-    
-    /// <summary>
-    ///     Create a new instance of the KickLib with custom settings.
-    /// </summary>
-    /// <param name="settings">API Settings.</param>
-    /// <param name="logger">Logger (if null, default Console logger will be created).</param>
+    /// <param name="authorization">Authorization api implementation.</param>
+    /// <param name="categories">Category api implementation.</param>
+    /// <param name="channels">Channel api implementation.</param>
+    /// <param name="chat">Chat api implementation.</param>
+    /// <param name="eventSubscriptions">Event subscription api implementation.</param>
+    /// <param name="livestreams">Live stream api implementation.</param>
+    /// <param name="users">User api implementation.</param>
+    /// <param name="settings">API Settings.  {(If null, default settings will be used}.</param>
     public KickApi(
-        ApiSettings settings,
-        ILogger<KickApi>? logger = null)
+        IAuthorization authorization,
+        ICategories categories,
+        IChat chat,
+        IChannels channels,
+        IEventSubscriptions eventSubscriptions,
+        ILivestreams livestreams,
+        IUsers users,
+        ApiSettings? settings = null)
     {
-        ArgumentNullException.ThrowIfNull(settings);
-        ApiSettings = settings;
-        logger ??= NullLogger<KickApi>.Instance;
-        
+        if (settings == null)
+            ApiSettings = ApiSettings.Default;
+        else 
+            ApiSettings = settings;
+
         // APIs
-        Authorization = new Authorization(settings, logger);
-        Categories = new Categories(settings, logger);
-        Chat = new Chat(settings, logger);
-        Channels = new Channels(settings, logger);
-        EventSubscriptions = new EventSubscriptions(settings, logger);
-        Livestreams = new Livestreams(settings, logger);
-        Users = new Users(settings, logger);
+        Authorization = authorization;
+        Categories = categories;
+        Chat = chat;
+        Channels = channels;
+        EventSubscriptions = eventSubscriptions;
+        Livestreams = livestreams;
+        Users = users;
     }
 }
