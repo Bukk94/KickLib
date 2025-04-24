@@ -1,4 +1,5 @@
 using KickLib.Api;
+using KickLib.Api.Interfaces;
 
 namespace KickLib;
 
@@ -10,39 +11,39 @@ public interface IKickApi
     /// <summary>
     ///     Authorization-related APIs to allow you to interact with OAuth endpoints.
     /// </summary>
-    public Authorization Authorization { get; }
+    public IAuthorization Authorization { get; }
 
     /// <summary>
     ///     Categories APIs allow you to use and interact with the categories that are available on the Kick website.
     /// </summary>
-    public Categories Categories { get; }
+    public ICategories Categories { get; }
     
     /// <summary>
     ///     Chat APIs allow you to use and interact with the chat that is available on the Kick website. You can send a message as a Bot account or your User account.
     /// </summary>
-    public Chat Chat { get; }
+    public IChat Chat { get; }
     
     /// <summary>
     ///     Channels APIs allow an app to interact with channels in the Kick website. Available data will depend on the scopes attached to the authorization token used.
     /// </summary>
-    public Channels Channels { get; }
+    public IChannels Channels { get; }
     
     /// <summary>
     ///     [WEBHOOKS] Event Subscriptions APIs allow you to subscribe to events on Kick e.g. chat messages, follows, subscriptions.
     ///     Those events are then sent to a webhook URL that you provide.
     /// </summary>
-    public EventSubscriptions EventSubscriptions { get; }
+    public IEventSubscriptions EventSubscriptions { get; }
     
     /// <summary>
     ///     Livestreams APIs allow an app to interact with livestreams in the Kick website.
     ///     Available data will depend on the scopes attached to the authorization token used.
     /// </summary>
-    public Livestreams Livestreams { get; }
+    public ILivestreams Livestreams { get; }
     
     /// <summary>
     ///     User APIs allow apps to interact with user information. Scopes will vary and sensitive data will be available to User Access Tokens with the required scopes.
     /// </summary>
-    public Users Users { get; }
+    public IUsers Users { get; }
     
     /// <summary>
     ///     The settings for the Kick API (like ClientId, Secrets, etc).

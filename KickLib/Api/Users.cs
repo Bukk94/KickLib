@@ -1,16 +1,17 @@
+using KickLib.Api.Interfaces;
+using KickLib.Auth;
 using KickLib.Models.v1.Users;
 using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
 /// <inheritdoc />
-public class Users : ApiBase
+public class Users : ApiBase, IUsers
 {
     private const string ApiUrlPart = "users";
 
     /// <inheritdoc />
-    public Users(ApiSettings settings, ILogger logger) 
-        : base(settings, logger)
+    public Users(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger logger) : base(settings, oauthGenerator, clientFactory, logger)
     {
     }
     
@@ -24,9 +25,9 @@ public class Users : ApiBase
         CancellationToken cancellationToken = default)
     {
         List<KeyValuePair<string, string>>? query = null;
-        if (userIds?.Any() == true)
+        if (userIds?.Count > 0)
         {
-            query = new List<KeyValuePair<string, string>>();
+            query = [];
             foreach (var id in userIds.Distinct())
             {
                 query.Add(new("id", id.ToString()));
