@@ -4,6 +4,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0](https://www.nuget.org/packages/KickLib/1.3.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.2.2...v1.3.0)
+### Changed
+- KickLib constructor was changed to fit Dependency Injection pattern
+  - To use "simple" constructor, use `KickApi.Create()` method
+### Removed
+- .NET 7 support
+
 ## [1.2.2](https://www.nuget.org/packages/KickLib/1.2.2) - [diff](https://github.com/Bukk94/KickLib/compare/v1.2.1...v1.2.2)
 ### Added
 - Support for message reply (`ReplyToMessageAsUserAsync`, `ReplyToMessageAsBotAsync`)

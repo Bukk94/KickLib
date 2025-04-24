@@ -5,13 +5,14 @@ using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
-/// <inheritdoc />
+/// <inheritdoc cref="IChannels" />
 public class Channels : ApiBase, IChannels
 {
     private const string ApiUrlPart = "channels";
 
     /// <inheritdoc />
-    public Channels(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger logger) : base(settings, oauthGenerator, clientFactory, logger)
+    public Channels(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger<Channels> logger) 
+        : base(settings, oauthGenerator, clientFactory, logger)
     {
     }
 

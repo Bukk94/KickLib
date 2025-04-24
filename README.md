@@ -157,7 +157,7 @@ var exchangeResults = await KickOAuthGenerator.RefreshAccessTokenAsync(
   
 ### Using API to get information
 ```csharp
-IKickApi api = new KickApi();
+IKickApi api = KickApi.Create();
 
 // Get specific category by ID
 var category = await kickApi.Categories.GetCategoryAsync(28, accessToken);
@@ -185,10 +185,10 @@ KickLib provides tools for generating OAuth URLs, exchanging code for tokens, an
 
 To perform calls with authentication, set `AccessToken` in settings object or pass it via method call.
 ```csharp
-IKickApi api = new KickApi(new ApiSettings
+IKickApi api = KickApi.Create(new ApiSettings
 {
     AccessToken = accessToken
-}, logger);
+}, loggerFactory);
 
 var category = await kickApi.Categories.GetCategoryAsync(28);
 ```

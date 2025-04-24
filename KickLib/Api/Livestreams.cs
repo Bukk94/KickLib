@@ -5,13 +5,14 @@ using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
-/// <inheritdoc />
+/// <inheritdoc cref="ILivestreams" />
 public class Livestreams : ApiBase, ILivestreams
 {
     private const string ApiUrlPart = "livestreams";
 
     /// <inheritdoc />
-    public Livestreams(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger logger) : base(settings, oauthGenerator, clientFactory, logger)
+    public Livestreams(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger<Livestreams> logger) 
+        : base(settings, oauthGenerator, clientFactory, logger)
     {
     }
 

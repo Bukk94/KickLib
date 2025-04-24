@@ -1,7 +1,6 @@
 using KickLib;
 using KickLib.Api.Interfaces;
 using KickLib.Auth;
-using System.Net;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
@@ -19,7 +18,9 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddKickLib(this IServiceCollection services)
         {
             return services
+                .AddHttpClient()
                 .AddScoped<IKickApi, KickApi>()
+                .AddScoped<ApiSettings>(_ => ApiSettings.Default)
                 .AddScoped<IAuthorization, KickLib.Api.Authorization>()
                 .AddScoped<ICategories, KickLib.Api.Categories>()
                 .AddScoped<IChannels, KickLib.Api.Channels>()

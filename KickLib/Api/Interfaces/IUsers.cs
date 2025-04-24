@@ -3,7 +3,7 @@
 namespace KickLib.Api.Interfaces;
 
 /// <summary>
-/// Retrieve user information.
+///     Retrieve user information.
 /// </summary>
 public interface IUsers
 {
@@ -11,10 +11,10 @@ public interface IUsers
     ///     Retrieve user information based on provided user IDs.
     ///     If no user IDs are specified, the information for the currently authorised user will be returned by default.
     /// </summary>
-    Task<Result<ICollection<UserResponse>>> GetUsersAsync(ICollection<int>? userIds, string? accessToken, CancellationToken cancellationToken);
+    Task<Result<ICollection<UserResponse>>> GetUsersAsync(ICollection<int>? userIds, string? accessToken = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Retrieve information for the currently authorised user.
     /// </summary>
-    Task<Result<UserResponse>> GetMeAsync(string? accessToken, CancellationToken cancellationToken);
+    Task<Result<UserResponse>> GetMeAsync(string? accessToken = null, CancellationToken cancellationToken = default);
 }

@@ -5,16 +5,14 @@ using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
-/// <summary>
-///     Chat APIs allow you to use and interact with the chat that is available on the Kick website.
-///     You can send a message as a Bot account or your User account.
-/// </summary>
+/// <inheritdoc cref="IChat" />
 public class Chat : ApiBase, IChat
 {
     private const string ApiUrlPart = "chat";
 
     /// <inheritdoc />
-    public Chat(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger logger) : base(settings, oauthGenerator, clientFactory, logger)
+    public Chat(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger<Chat> logger) 
+        : base(settings, oauthGenerator, clientFactory, logger)
     {
     }
     

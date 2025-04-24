@@ -4,7 +4,7 @@ using KickLib.Models.v1.Auth;
 namespace KickLib.Api.Interfaces;
 
 /// <summary>
-/// Authorization operations
+///     Authorization operations.
 /// </summary>
 public interface IAuthorization
 {
@@ -16,20 +16,19 @@ public interface IAuthorization
     /// <remarks>
     ///     Find the full spec here: https://datatracker.ietf.org/doc/html/rfc7662
     /// </remarks>
-    Task<Result<TokenIntrospectResponse>> IntrospectTokenAsync(string? accessToken, CancellationToken cancellationToken);
+    Task<Result<TokenIntrospectResponse>> IntrospectTokenAsync(string? accessToken = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Retrieve the public key used for verifying signatures.
     /// </summary>
-    Task<Result<PublicKeyResponse>> GetPublicKeyAsync(CancellationToken cancellationToken);
+    Task<Result<PublicKeyResponse>> GetPublicKeyAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Get app access token based on <see cref="ApiSettings.ClientId"/> and <see cref="ApiSettings.ClientSecret"/> API settings.
     /// </summary>
     /// <returns>Returns access token for the application, used for public endpoints.</returns>
     Task<Result<KickAppTokenResponse>> GetAppAccessTokenAsync();
-
-
+    
     /// <summary>
     ///     Get app access token.
     /// </summary>

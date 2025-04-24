@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
-/// <inheritdoc />
+/// <inheritdoc cref="IAuthorization" />
 public class Authorization : ApiBase, IAuthorization
 {
     private readonly ApiSettings _settings;
@@ -14,7 +14,8 @@ public class Authorization : ApiBase, IAuthorization
     private const string IntrospectApiUrlPart = "token/introspect";
 
     /// <inheritdoc />
-    public Authorization(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger logger) : base(settings, oauthGenerator, clientFactory, logger)
+    public Authorization(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger<Authorization> logger) 
+        : base(settings, oauthGenerator, clientFactory, logger)
     {
         _kickOAuthGenerator = oauthGenerator;
         _settings = settings;

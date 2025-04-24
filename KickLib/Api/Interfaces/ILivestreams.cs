@@ -3,7 +3,7 @@
 namespace KickLib.Api.Interfaces;
 
 /// <summary>
-/// Interact with livestreams on kick.com
+///     Interact with livestreams on Kick.com.
 /// </summary>
 public interface ILivestreams
 {
@@ -15,7 +15,12 @@ public interface ILivestreams
     /// <paramref name="language">Limit results to specific language.</paramref>
     /// <paramref name="limit">Number of results to return (default: 25, maximum: 100).</paramref>
     /// <paramref name="sort">Result sorting.</paramref>
-    Task<Result<ICollection<LivestreamResponse>>> GetLivestreamsAsync(int? broadcasterId, int? categoryId, string? language, int? limit, LivestreamSorting? sort, string? accessToken, CancellationToken cancellationToken);
-
-
+    Task<Result<ICollection<LivestreamResponse>>> GetLivestreamsAsync(
+        int? broadcasterId = null, 
+        int? categoryId = null, 
+        string? language = null, 
+        int? limit = null, 
+        LivestreamSorting? sort = null, 
+        string? accessToken = null, 
+        CancellationToken cancellationToken = default);
 }

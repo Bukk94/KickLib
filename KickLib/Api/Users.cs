@@ -5,13 +5,14 @@ using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api;
 
-/// <inheritdoc />
+/// <inheritdoc cref="IUsers" />
 public class Users : ApiBase, IUsers
 {
     private const string ApiUrlPart = "users";
 
     /// <inheritdoc />
-    public Users(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger logger) : base(settings, oauthGenerator, clientFactory, logger)
+    public Users(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger<Users> logger) 
+        : base(settings, oauthGenerator, clientFactory, logger)
     {
     }
     

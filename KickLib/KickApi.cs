@@ -1,4 +1,8 @@
+using KickLib.Api;
 using KickLib.Api.Interfaces;
+using KickLib.Auth;
+using KickLib.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace KickLib;
 
@@ -52,10 +56,7 @@ public class KickApi : IKickApi
         IUsers users,
         ApiSettings? settings = null)
     {
-        if (settings == null)
-            ApiSettings = ApiSettings.Default;
-        else 
-            ApiSettings = settings;
+        ApiSettings = settings ?? ApiSettings.Default;
 
         // APIs
         Authorization = authorization;
@@ -65,5 +66,29 @@ public class KickApi : IKickApi
         EventSubscriptions = eventSubscriptions;
         Livestreams = livestreams;
         Users = users;
+    }
+
+    /// <summary>
+    ///     Creates an instance of the Kick API.
+    /// </summary>
+    /// <param name="settings">Optional API settings (if not provided, defaults will be used).</param>
+    /// <param name="loggerFactory">Logger factory for logging (if not provided, NullLogger will be used).</param>
+    public static IKickApi Create(
+        ApiSettings? settings = null,
+        ILoggerFactory? loggerFactory = null)
+    {
+        var apiSettings = settings ?? ApiSettings.Default;
+        var oauthGenerator = new KickOAuthGenerator();
+        var clientFactory = new KickLibHttpClientFactory();
+        
+        return new KickApi(
+            new Authorization(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Authorization>()),
+            new Categories(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Categories>()),
+            new Chat(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Chat>()),
+            new Channels(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Channels>()),
+            new EventSubscriptions(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<EventSubscriptions>()),
+            new Livestreams(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Livestreams>()),
+            new Users(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Users>()),
+            apiSettings);
     }
 }
