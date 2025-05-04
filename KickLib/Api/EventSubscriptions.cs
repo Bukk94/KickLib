@@ -69,7 +69,7 @@ public class EventSubscriptions : ApiBase, IEventSubscriptions
         string? accessToken = null,
         CancellationToken cancellationToken = default)
     {
-        if (eventTypes?.Count == 0)
+        if (eventTypes?.Any() != true)
         {
             throw new ArgumentException("At least one event type must be provided!");
         }
@@ -131,7 +131,7 @@ public class EventSubscriptions : ApiBase, IEventSubscriptions
         string? accessToken = null,
         CancellationToken cancellationToken = default)
     {
-        if (subscriptionIds?.Count == 0)
+        if (subscriptionIds?.Any() != true)
         {
             throw new ArgumentException("At least one subscription ID must be provided!");
         }

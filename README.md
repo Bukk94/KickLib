@@ -18,7 +18,7 @@
 # About
 
 KickLib is a C# library that allows for interaction with both official and unofficial (undocumented) Kick API (https://kick.com) 
- and WebSocket. KickLib eases implementation for various chatbots by providing simple to use methods.
+ and WebSocket (pusher). KickLib eases implementation for various chatbots by providing simple to use methods.
 
 ## KickLib Highlights ✨
 
@@ -26,8 +26,9 @@ KickLib is a C# library that allows for interaction with both official and unoff
 * Real-time chat reading
 * Stream state detection
 * Authentication flow
+* Webhook payload parsing
 * Message sending
-* API Endpoint calls
+* Official and unofficial API endpoints
 
 <details>
 <summary>Click here to see Complete Features List</summary>
@@ -88,7 +89,7 @@ KickLib is a C# library that allows for interaction with both official and unoff
 
 ## Unofficial API support
 
-KickLib provides support for unofficial API calls via `IKickUnofficialApi` interface.
+KickLib provides support for unofficial API calls via `IKickUnofficialApi` and `IKickClient` interfaces.
 Documentation for unofficial API can be found [here](KickLib.Api.Unofficial/README_UnofficialAPI.md).
 
 ## Installing ⏫
@@ -111,9 +112,10 @@ If you are using Dependency Injection, you can easily add KickLib via extension 
 
 ## Examples 💡
 
-### OAuth flow
+### OAuth flow / Authenticated API calls
 
-Simple OAuth flow using KickLib OAuth generator.
+Almost all calls requires authentication. Kick officially supports OAuth 2.1 flow.
+KickLib provides tools for generating OAuth URLs, exchanging code for tokens, and refreshing tokens.
 
 > NOTE: If no state is provided, it will automatically generate state for you as base64 encoded verifier code! 
 
@@ -121,26 +123,36 @@ Simple OAuth flow using KickLib OAuth generator.
 var callbackUrl = "https://localhost:5001/auth/kick/callback"; 
 var clientId = "01AAAAA0EXAMPLE66YG2HD9R";
 var clientSecret = "aaac0000EXAMPLE8ebe4dc223d0c45187";
-var url = KickOAuthGenerator.GetAuthorizationUri(
+var authGenerator = new KickOAuthGenerator();
+
+var url = authGenerator.GetAuthorizationUri(
   callbackUrl, 
   clientId, 
   new List<string>
   {
-      "user:read",
-      "channel:read"
+      KickScopes.UserRead,
+      KickScopes.ChannelWrite
   }, out var verifier);
 
-// TODO: Perform URL redirect for user and pass OAuth process
-// Via callback URL, you will receive code and state
+// TODO: Perform URL redirect for the user and pass OAuth process
+// By using callback URL, you will receive code and state, which can be used for Token exchange.
  
 var code = "NAAAAAAY5YZQ00STATE000ZZTFHM2I1NJLK";
 var state = "ZXhhbXBsZSB2YWx1ZQ=="; 
-var exchangeResults = await KickOAuthGenerator.ExchangeCodeForTokenAsync(
+var exchangeResults = await authGenerator.ExchangeCodeForTokenAsync(
     state,
     clientId,
     clientSecret,
     callbackUrl,
     state);
+    
+if (exchangeResults.IsSuccess)
+{
+    Console.WriteLine($"Access Token: {exchangeResults.Value.AccessToken}");
+    Console.WriteLine($"Refresh Token: {exchangeResults.Value.RefreshToken}");
+    // TODO: Store access and refresh token for further use
+    // Keep in mind: Access token is short lived, while refresh token is long lived (and should be stored)
+}
 ```
 
 ### Refreshing Access Token
@@ -149,48 +161,112 @@ var exchangeResults = await KickOAuthGenerator.ExchangeCodeForTokenAsync(
 var clientId = "01AAAAA0EXAMPLE66YG2HD9R";
 var clientSecret = "aaac0000EXAMPLE8ebe4dc223d0c45187";
 var refreshToken = "NAAAAAAY5YZQ00REFRESHTOKEN000ZZTFHM2I1NJLK";
-var exchangeResults = await KickOAuthGenerator.RefreshAccessTokenAsync(
+var authGenerator = new KickOAuthGenerator();
+
+var exchangeResults = await authGenerator.RefreshAccessTokenAsync(
     refreshToken,
     clientId,
     clientSecret);
+
+// After every successful refresh, you will receive new access and refresh tokens
+if (exchangeResults.IsSuccess)
+{
+    Console.WriteLine($"Access Token: {exchangeResults.Value.AccessToken}");
+    Console.WriteLine($"Refresh Token: {exchangeResults.Value.RefreshToken}");
+}
 ```
-  
-### Using API to get information
+
+### Using API to get category details
 ```csharp
-IKickApi api = KickApi.Create();
+var api = KickApi.Create();
+var accessToken = "XXXXXXXXXX";
 
 // Get specific category by ID
-var category = await kickApi.Categories.GetCategoryAsync(28, accessToken);
+var category = await api.Categories.GetCategoryAsync(28, accessToken);
 ```
+
+### Subscribing to webhook events
+
+To subscribe to events (reading chat messages or channel follow events),
+you must first have **public** webhook URL set up in your [Kick settings](https://kick.com/settings/developer),
+have webhooks enabled in your developer account, and lastly, your access token must
+contain webhook scope (`KickScopes.EventsSubscribe`).
+
+```csharp
+var api = KickApi.Create(new ApiSettings
+{
+    AccessToken = "XXXXXXXXXX"
+});
+
+// Subscript to events (webhooks) for chat messages and channel follow events
+var result = await api.EventSubscriptions.SubscribeToEventsAsync(
+  new List<EventType> 
+  { 
+    EventType.ChatMessageSent,
+    EventType.ChannelFollowed
+  });
+  
+// Each event will be assigned own SubscriptionId
+// Events will be delivered to your **public** webhook URL (set up in [Kick settings](https://kick.com/settings/developer)).
+```
+
+This will subscribe to selected events. Once those events are triggered, Kick will send
+them to your webhook URL. You can then use `KickWebhookParser` to validate and parse the payload.
+
+You should always validate the payload signature to ensure the webhook payload is really coming from Kick.
+
+Kick will retry sending the webhook 3 times, until 200 response is made by your server.
+If your server is unreachable or non-OK response is returned, Kick automatically unsubscribe the event!
+
+### Automatically refreshing access token
+
+KickLib allows automatic access token refresh. When RefreshToken, ClientId, and ClientSecret are provided,
+KickLib will automatically try to refresh access token when needed.
+
+```csharp
+var settings = new ApiSettings
+{
+    RefreshToken = "XXXXXXXXXXXXXXXX",
+    ClientId = "YYYYYYYYYYYYYYYY",
+    ClientSecret = "ZZZZZZZZZZZZZZZZ"
+};
+
+settings.RefreshTokenChanged += (sender, args) =>
+{
+    Console.WriteLine($"Refresh token changed! New value: {args.NewToken}");
+};
+
+settings.AccessTokenChanged += (sender, args) =>
+{
+    Console.WriteLine($"Access token changed! New value: {args.NewToken}");
+};
+
+var api = KickApi.Create(settings);
+// TODO: use `api` for calling endpoints
+```
+
+> Keep in mind that refreshing access token also changes the refresh token!
+> KickLib is automatically refreshing those and will notify you via `RefreshTokenChanged` event.
+> But you need to make sure you are storing the new refresh token for further use.
 
 ### Using Client to read chat messages
 
+> This is using Kick's undocumented (unofficial) pusher! IDs and values **may** differ from official API.
+
 ```csharp
 IKickClient client = new KickClient();
+var chatroomId = 123456; // This ID can be obtained by using IUnofficialKickApi or by manually extracting from web netwowk tab.
 
 client.OnMessage += delegate(object sender, ChatMessageEventArgs e)
 {
-    Console.WriteLine(e.Data.Content);
+    Console.WriteLine($"Received message: {e.Data.Content}");
 };
 
-await client.ListenToChatRoomAsync(123456);
+await client.ListenToChatRoomAsync(chatroomId);
 await client.ConnectAsync();
-```
 
-### Authenticated API calls
-
-All calls require authentication. Kick officially supports OAuth 2.1 flow.
-
-KickLib provides tools for generating OAuth URLs, exchanging code for tokens, and refreshing tokens.
-
-To perform calls with authentication, set `AccessToken` in settings object or pass it via method call.
-```csharp
-IKickApi api = KickApi.Create(new ApiSettings
-{
-    AccessToken = accessToken
-}, loggerFactory);
-
-var category = await kickApi.Categories.GetCategoryAsync(28);
+// TODO: Make sure this is in endless loop and program won't exit immediately
+// otherwise you won't be able to receive messages.
 ```
 
 # Disclaimer

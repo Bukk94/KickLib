@@ -2,7 +2,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace KickLib.Core;
 
-public class LowerCaseNamingStrategy : NamingStrategy
+internal class LowerCaseNamingStrategy : NamingStrategy
 {
     public LowerCaseNamingStrategy(bool processDictionaryKeys, bool overrideSpecifiedNames)
     {

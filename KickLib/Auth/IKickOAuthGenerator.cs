@@ -1,7 +1,7 @@
 ﻿namespace KickLib.Auth;
 
 /// <summary>
-/// KickLib service for generating OAuth 2.1 authorization flow (URLs, exchanging tokens, revokation).
+///     KickLib service for generating OAuth 2.1 authorization flow (URLs, exchanging tokens, revocation).
 /// </summary>
 public interface IKickOAuthGenerator
 {
@@ -14,9 +14,8 @@ public interface IKickOAuthGenerator
     /// <param name="scopes">A list of scopes to grant.</param>
     /// <param name="verifier">Used verifier code value before hashing.</param>
     /// <param name="state">Validation state (if null, base64 encoded verifier code will be used).</param>
-    /// <returns></returns>
+    /// <returns>Returns authorization Uri.</returns>
     Uri GetAuthorizationUri(string redirectUri, string clientId, ICollection<string> scopes, out string verifier, string? state = null);
-
 
     /// <summary>
     ///     [User Access Token] Exchange the code from callback for an access token.
@@ -38,7 +37,6 @@ public interface IKickOAuthGenerator
     /// <param name="clientSecret">App secret.</param>
     /// <returns>Returns access token response.</returns>
     Task<Result<KickAppTokenResponse>> GenerateAppAccessTokenAsync(string clientId, string clientSecret);
-
 
     /// <summary>
     ///     Refresh the access token using the refresh token.
@@ -70,6 +68,4 @@ public interface IKickOAuthGenerator
     /// <param name="isAccessToken">True if token is an access token.</param>
     /// <returns>Returns true if successfully revoked.</returns>
     Task<Result<bool>> RevokeTokenAsync(string tokenToRevoke, bool isAccessToken);
-
-
 }

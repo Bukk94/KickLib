@@ -34,7 +34,7 @@ public class KickOAuthGenerator : IKickOAuthGenerator
     /// <param name="scopes">A list of scopes to grant.</param>
     /// <param name="verifier">Used verifier code value before hashing.</param>
     /// <param name="state">Validation state (if null, base64 encoded verifier code will be used).</param>
-    /// <returns></returns>
+    /// <returns>Returns authorization Uri.</returns>
     public Uri GetAuthorizationUri(
         string redirectUri,
         string clientId,
@@ -45,9 +45,10 @@ public class KickOAuthGenerator : IKickOAuthGenerator
         ArgumentException.ThrowIfNullOrEmpty(clientId);
         ArgumentException.ThrowIfNullOrEmpty(redirectUri);
         ArgumentNullException.ThrowIfNull(scopes, nameof(scopes));
+        
         if (scopes.Count == 0)
         {
-            throw new ArgumentException("Scopes cannot be empty.", nameof(scopes));
+            throw new ArgumentException("Scopes cannot be empty (select at least one of `KickScopes`).", nameof(scopes));
         }
 
         var scope = string.Join(" ", scopes.Distinct());
