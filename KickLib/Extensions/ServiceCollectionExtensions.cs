@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         ///     Adds KickLib services for Official Kick API to the DI.
         ///
-        ///     If you want to use the Unofficial/Private Kick API, use <see cref="AddUnofficialKickLib"/>.
+        ///     If you want to use the Unofficial/Private Kick API, use <see cref="M:AddUnofficialKickLib(IServiceCollection)" />.
         /// </summary>
         public static IServiceCollection AddKickLib(this IServiceCollection services)
         {

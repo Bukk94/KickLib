@@ -41,9 +41,9 @@ namespace KickLib.Api.Unofficial.Clients
         /// <inheritdoc />
         public async Task<KeyValuePair<int, string>> SendRequestAsync(string url)
         {
-            await using var browser = await BrowserInitializer.LaunchBrowserAsync(_settings);
+            await using var browser = await BrowserInitializer.LaunchBrowserAsync(_settings).ConfigureAwait(false);
         
-            await using var page = await browser.NewPageAsync();
+            await using var page = await browser.NewPageAsync().ConfigureAwait(false);
             await page.GoToAsync(url);
 
             try
@@ -59,7 +59,7 @@ namespace KickLib.Api.Unofficial.Clients
                 throw new KickLibException("KickLib failed to get response from Kick.com. See inner exception for details.", ex);
             }
         
-            var content = await page.GetContentAsync();
+            var content = await page.GetContentAsync().ConfigureAwait(false);
 
             var match = _regex.Match(content);
             if (!match.Success)
@@ -78,11 +78,11 @@ namespace KickLib.Api.Unofficial.Clients
                 throw new ArgumentException($"Cannot send authenticated request without authenticating first! Call '{nameof(AuthenticateAsync)}' first.");
             }
         
-            await using var browser = await BrowserInitializer.LaunchBrowserAsync(_settings);
+            await using var browser = await BrowserInitializer.LaunchBrowserAsync(_settings).ConfigureAwait(false);
         
             try
             {
-                await using var page = await browser.NewPageAsync();
+                await using var page = await browser.NewPageAsync().ConfigureAwait(false);
             
                 var method = payload is not null ? "POST" : "GET";
                 var body = payload is not null
@@ -99,7 +99,7 @@ namespace KickLib.Api.Unofficial.Clients
                     })
                     .ExecuteAsync(async () =>
                     {
-                        response = await GetApiResponseAsync(page, url, method, body);
+                        response = await GetApiResponseAsync(page, url, method, body).ConfigureAwait(false);
                     });
 
                 if (response is null)
@@ -151,7 +151,7 @@ namespace KickLib.Api.Unofficial.Clients
                         }});
                         return response.text();
                     }}
-                ");
+                ").ConfigureAwait(false);
 
                     if (response.Contains("CSRF token mismatch"))
                     {

@@ -32,7 +32,7 @@ namespace KickLib.Api.Unofficial.Api
             var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channelSlug)}";
 
             // Version 2 contains much less information which is sufficient for this method
-            var data = await GetAsync<LivestreamResponseV2>(urlPart, ApiVersion.V2, "livestream");
+            var data = await GetAsync<LivestreamResponseV2>(urlPart, ApiVersion.V2, "livestream").ConfigureAwait(false);
 
             return data is not null && data.IsLive;
         }

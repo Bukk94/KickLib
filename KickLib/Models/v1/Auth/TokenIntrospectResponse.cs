@@ -2,6 +2,9 @@ using Newtonsoft.Json;
 
 namespace KickLib.Models.v1.Auth;
 
+/// <summary>
+///     Introspect response data.
+/// </summary>
 public class TokenIntrospectResponse
 {
     /// <summary>

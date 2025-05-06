@@ -14,7 +14,7 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
             while (string.IsNullOrEmpty(xsrfToken) && attempts > 0)
             {
                 // Go to Kick's main page
-                var pageResponse = await page.GoToAsync(Constants.CsrfUrl);
+                var pageResponse = await page.GoToAsync(Constants.CsrfUrl).ConfigureAwait(false);
                 await Task.Delay(500);
                 var responseHeaders = pageResponse.Headers;
 

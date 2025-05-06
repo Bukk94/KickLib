@@ -5,11 +5,38 @@ namespace KickLib.Webhooks;
 /// </summary>
 public static class WebhookEventTypes
 {
+    /// <summary>
+    ///     Event type for a chat message being sent.
+    /// </summary>
     public const string ChatMessageSent = "chat.message.sent";
+
+    /// <summary>
+    ///     Event type for a channel being followed.
+    /// </summary>
     public const string ChannelFollowed = "channel.followed";
+
+    /// <summary>
+    ///     Event type for a channel subscription being renewed.
+    /// </summary>
     public const string ChannelSubscriptionRenewal = "channel.subscription.renewal";
+
+    /// <summary>
+    ///     Event type for a gifted subscription in a channel.
+    /// </summary>
     public const string ChannelGiftedSubscription = "channel.subscription.gifts";
+
+    /// <summary>
+    ///     Event type for a new subscription to a channel.
+    /// </summary>
     public const string ChannelNewSubscription = "channel.subscription.new";
+
+    /// <summary>
+    ///     Event type for a livestream status update.
+    /// </summary>
     public const string LivestreamStatusUpdated = "livestream.status.updated";
+
+    /// <summary>
+    ///     Event type for a livestream metadata update.
+    /// </summary>
     public const string LivestreamMetadataUpdated = "livestream.metadata.updated";
 }

@@ -9,11 +9,34 @@ namespace KickLib.Webhooks;
 /// </summary>
 public static class WebhookEventParser
 {
+    /// <summary>
+    ///     Header name for the Kick event type.
+    /// </summary>
     public const string KickEventTypeHeader = "Kick-Event-Type";
+
+    /// <summary>
+    ///     Header name for the Kick event version.
+    /// </summary>
     public const string KickEventVersionHeader = "Kick-Event-Version";
+
+    /// <summary>
+    ///     Header name for the Kick event message timestamp.
+    /// </summary>
     public const string KickEventMessageTimestampHeader = "Kick-Event-Message-Timestamp";
+
+    /// <summary>
+    ///     Header name for the Kick event signature.
+    /// </summary>
     public const string KickEventSignatureHeader = "Kick-Event-Signature";
+
+    /// <summary>
+    ///     Header name for the Kick event subscription ID.
+    /// </summary>
     public const string KickEventSubscriptionIdHeader = "Kick-Event-Subscription-Id";
+
+    /// <summary>
+    ///     Header name for the Kick event message ID.
+    /// </summary>
     public const string KickEventMessageIdHeader = "Kick-Event-Message-Id";
     
     /// <summary>

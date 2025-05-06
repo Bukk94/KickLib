@@ -20,7 +20,7 @@ namespace KickLib.Api.Unofficial
         public Users Users { get; }
         public Videos Videos { get; }
 
-        public KickUnofficialApi(IApiCaller? client = null, ILogger? logger = null)
+        public KickUnofficialApi(IApiCaller client = null, ILogger logger = null)
         {
             var browserSettings = BrowserSettings.Empty;
             client ??= new BrowserClient(new PuppeteerAuthenticationService(browserSettings, logger), browserSettings, logger);

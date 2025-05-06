@@ -88,7 +88,7 @@ namespace KickLib.Api.Unofficial.Core
         {
             var url = ConstructResourceUrl(urlPart, version);
 
-            var data = await _client.SendAuthenticatedRequestAsync(url, null);
+            var data = await _client.SendAuthenticatedRequestAsync(url, null).ConfigureAwait(false);
             if (data.Key != 200 && 
                 data.Key != 204)
             {

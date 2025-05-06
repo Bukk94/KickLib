@@ -131,7 +131,11 @@ public class KickOAuthGenerator : IKickOAuthGenerator
 
         try
         {
-            return Result.Ok(JsonConvert.DeserializeObject<KickTokenResponse>(content));
+            var deserialized = JsonConvert.DeserializeObject<KickTokenResponse>(content);
+            
+            return deserialized is not null 
+                ? Result.Ok(deserialized) 
+                : Result.Fail($"ExchangeCodeForToken failed due to deserialization issue. Payload: {content}");
         }
         catch (Exception ex)
         {
@@ -177,7 +181,11 @@ public class KickOAuthGenerator : IKickOAuthGenerator
 
         try
         {
-            return Result.Ok(JsonConvert.DeserializeObject<KickAppTokenResponse>(content));
+            var deserialized = JsonConvert.DeserializeObject<KickAppTokenResponse>(content);
+            
+            return deserialized is not null 
+                ? Result.Ok(deserialized) 
+                : Result.Fail($"GenerateAppAccessTokenAsync failed due to deserialization issue. Payload: {content}");
         }
         catch (Exception ex)
         {

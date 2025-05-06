@@ -32,13 +32,13 @@ namespace KickLib.Api.Unofficial.Clients.CycleTls
         {
             _logger?.LogInformation("Starting authentication process. This might take a while...");
 
-            var xsrfToken = await GetXsrfTokenAsync();
+            var xsrfToken = await GetXsrfTokenAsync().ConfigureAwait(false);
             XsrfToken = xsrfToken;
 
             // Call kick-token-provider to get data required for login process
             var tokenProviderOptions = CycleTlsInitializer.GetOptions("https://kick.com/kick-token-provider");
             tokenProviderOptions.Method = "GET";
-            var response = await CycleTlsInitializer.Client.SendAsync(tokenProviderOptions);
+            var response = await CycleTlsInitializer.Client.SendAsync(tokenProviderOptions).ConfigureAwait(false);
 
             var tokenProviderResponse = response.Body;
             var tokenProvider = JToken.Parse(tokenProviderResponse);
@@ -63,7 +63,7 @@ namespace KickLib.Api.Unofficial.Clients.CycleTls
             loginOptions.Method = "POST";
             loginOptions.Body = loginPayload;
             loginOptions.Headers.Add("X-Xsrf-Token", xsrfToken);
-            var loginResponseData = await CycleTlsInitializer.Client.SendAsync(loginOptions);
+            var loginResponseData = await CycleTlsInitializer.Client.SendAsync(loginOptions).ConfigureAwait(false);
 
             var loginResponse = loginResponseData.Body;
 
@@ -103,13 +103,13 @@ namespace KickLib.Api.Unofficial.Clients.CycleTls
                 throw new ArgumentNullException(nameof(targetPage));
             }
 
-            XsrfToken = await GetXsrfTokenAsync();
+            XsrfToken = await GetXsrfTokenAsync().ConfigureAwait(false);
         }
 
         private async Task<string> GetXsrfTokenAsync()
         {
             var options = CycleTlsInitializer.GetOptions(Constants.CsrfUrl);
-            var xsrfTokenResponse = await CycleTlsInitializer.Client.SendAsync(options);
+            var xsrfTokenResponse = await CycleTlsInitializer.Client.SendAsync(options).ConfigureAwait(false);
 
             if (xsrfTokenResponse.Status != 200)
             {

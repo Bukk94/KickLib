@@ -25,7 +25,7 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
         /// <inheritdoc />
         public bool IsAuthenticated => BearerToken is not null;
 
-        public PuppeteerAuthenticationService(BrowserSettings? browserSettings, ILogger? logger = null)
+        public PuppeteerAuthenticationService(BrowserSettings browserSettings, ILogger logger = null)
         {
             _logger = logger;
             _browserSettings = browserSettings ?? BrowserSettings.Empty;
@@ -35,10 +35,10 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
         {
             _logger?.LogInformation("Starting authentication process. This might take a while...");
 
-            await using var browser = await BrowserInitializer.LaunchBrowserAsync(_browserSettings);
+            await using var browser = await BrowserInitializer.LaunchBrowserAsync(_browserSettings).ConfigureAwait(false);
         
-            await using var page = await browser.NewPageAsync();
-            var xsrfToken = await page.GetXsrfTokenAsync(_logger);
+            await using var page = await browser.NewPageAsync().ConfigureAwait(false);
+            var xsrfToken = await page.GetXsrfTokenAsync(_logger).ConfigureAwait(false);
             XsrfToken = xsrfToken;
 
             // Call kick-token-provider to get data required for login process
@@ -54,7 +54,7 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
 
                 return response.text();
             }
-        ");
+        ").ConfigureAwait(false);
         
             var tokenProvider = JToken.Parse(tokenProviderResponse);
 
@@ -87,7 +87,7 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
                 }});
                 return response.text();
             }}
-        ");
+        ").ConfigureAwait(false);
 
             if (loginResponse.Contains("CSRF token mismatch"))
             {
@@ -126,7 +126,7 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
                 throw new ArgumentNullException(nameof(targetPage));
             }
 
-            XsrfToken = await page.GetXsrfTokenAsync(_logger);
+            XsrfToken = await page.GetXsrfTokenAsync(_logger).ConfigureAwait(false);
         }
 
         private static string GenerateTotp(string twoFaAuthCode)

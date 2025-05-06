@@ -52,6 +52,10 @@
     <ItemGroup>
         <ProjectReference Include="..\KickLib.Api.Unofficial\KickLib.Api.Unofficial.csproj" PrivateAssets="all" />
         <ProjectReference Include="..\KickLib.Client\KickLib.Client.csproj" PrivateAssets="all" />
+
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>KickLib.Tests</_Parameter1>
+        </AssemblyAttribute>
     </ItemGroup>
 
     <PropertyGroup>

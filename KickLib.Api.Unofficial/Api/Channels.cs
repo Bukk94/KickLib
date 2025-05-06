@@ -69,7 +69,7 @@ namespace KickLib.Api.Unofficial.Api
             }
 
             var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channelSlug)}/followers-count";
-            var response = await GetAsync<DataWrapper<CountResponse>>(urlPart, ApiVersion.V1Internal);
+            var response = await GetAsync<DataWrapper<CountResponse>>(urlPart, ApiVersion.V1Internal).ConfigureAwait(false);
         
             return response?.Data?.Count;
         }
@@ -103,7 +103,7 @@ namespace KickLib.Api.Unofficial.Api
         
             var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channelSlug)}/chatroom/rules";
         
-            var response = await GetAsync<DataWrapper<ChatroomRulesResponse>>(urlPart, ApiVersion.V2);
+            var response = await GetAsync<DataWrapper<ChatroomRulesResponse>>(urlPart, ApiVersion.V2).ConfigureAwait(false);
             return response?.Data;
         }
     
@@ -175,7 +175,7 @@ namespace KickLib.Api.Unofficial.Api
                 query.Add(new("next", nextCursor));
             }
         
-            var wrapper = await GetAsync<DataWrapper<MessagesResponse>>(urlPart, ApiVersion.V2, query);
+            var wrapper = await GetAsync<DataWrapper<MessagesResponse>>(urlPart, ApiVersion.V2, query).ConfigureAwait(false);
 
             if (wrapper is null ||
                 wrapper.Status.Code != 200)
@@ -200,7 +200,7 @@ namespace KickLib.Api.Unofficial.Api
 
             var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channelSlug)}/polls";
         
-            var response = await GetAsync<DataWrapper<PollResponse>>(urlPart, ApiVersion.V2);
+            var response = await GetAsync<DataWrapper<PollResponse>>(urlPart, ApiVersion.V2).ConfigureAwait(false);
             return response?.Data;
         }
     
@@ -233,7 +233,7 @@ namespace KickLib.Api.Unofficial.Api
 
             var urlPart = $"{ApiUrlPart}{Uri.EscapeDataString(channelSlug)}/videos/latest";
         
-            var response = await GetAsync<DataWrapper<LatestVideoResponse>>(urlPart, ApiVersion.V2);
+            var response = await GetAsync<DataWrapper<LatestVideoResponse>>(urlPart, ApiVersion.V2).ConfigureAwait(false);
 
             return response?.Data;
         }

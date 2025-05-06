@@ -40,7 +40,7 @@ namespace KickLib.Api.Unofficial.Clients
             try
             {
                 var options = CycleTlsInitializer.GetOptions(url);
-                var response = await CycleTlsInitializer.Client.SendAsync(options);
+                var response = await CycleTlsInitializer.Client.SendAsync(options).ConfigureAwait(false);
 
                 return new KeyValuePair<int, string>(response.Status, response.Body);
             }
@@ -79,7 +79,7 @@ namespace KickLib.Api.Unofficial.Clients
                     })
                     .ExecuteAsync(async () =>
                     {
-                        response = await CycleTlsInitializer.Client.SendAsync(options);
+                        response = await CycleTlsInitializer.Client.SendAsync(options).ConfigureAwait(false);
                     });
 
                 if (response is null)

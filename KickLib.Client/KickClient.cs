@@ -61,7 +61,7 @@ public class KickClient : IKickClient
     
     public async Task ListenToChannelAsync(int channelId)
     {
-        var channel = await _pusher.SubscribeAsync($"channel.{channelId}");
+        var channel = await _pusher.SubscribeAsync($"channel.{channelId}").ConfigureAwait(false);
         channel.BindAll(ChannelDataReader);
         
         _listeningToChannels.Add(channelId);
@@ -75,7 +75,7 @@ public class KickClient : IKickClient
     
     public async Task ListenToChatRoomAsync(int chatroomId)
     {
-        var channel = await _pusher.SubscribeAsync($"chatrooms.{chatroomId}.v2");
+        var channel = await _pusher.SubscribeAsync($"chatrooms.{chatroomId}.v2").ConfigureAwait(false);
         channel.BindAll(ChatRoomDataReader);
         _listeningToChatRooms.Add(chatroomId);
     }
@@ -271,6 +271,6 @@ public class KickClient : IKickClient
 
     private static TType ParseData<TType>(string data)
     {
-        return JsonConvert.DeserializeObject<TType>(data);
+        return JsonConvert.DeserializeObject<TType>(data)!;
     }
 }

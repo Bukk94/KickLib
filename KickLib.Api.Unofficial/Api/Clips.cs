@@ -51,14 +51,14 @@ namespace KickLib.Api.Unofficial.Api
     
         public async Task<byte[]> DownloadClipAsync(int clipId)
         {
-            var clip = await GetClipAsync(clipId);
+            var clip = await GetClipAsync(clipId).ConfigureAwait(false);
             if (clip is null)
             {
                 return null;
             }
         
             using var client = new HttpClient();
-            var response = await client.GetAsync(clip.VideoUrl);
+            var response = await client.GetAsync(clip.VideoUrl).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
             using var memoryStream = new MemoryStream();
