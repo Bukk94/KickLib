@@ -1,4 +1,3 @@
-using KickLib.Api;
 using KickLib.Api.Interfaces;
 
 namespace KickLib;
@@ -39,6 +38,12 @@ public interface IKickApi
     ///     Available data will depend on the scopes attached to the authorization token used.
     /// </summary>
     public ILivestreams Livestreams { get; }
+    
+    /// <summary>
+    ///     Moderation APIs enable you to restrict user participation in chat rooms through temporary timeouts or permanent bans,
+    ///     as well as reverse these actions by removing timeouts or unbanning specific users.
+    /// </summary>
+    public IModeration Moderation { get; }
     
     /// <summary>
     ///     User APIs allow apps to interact with user information. Scopes will vary and sensitive data will be available to User Access Tokens with the required scopes.

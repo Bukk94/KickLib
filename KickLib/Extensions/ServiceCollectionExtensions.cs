@@ -27,6 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<IChat, KickLib.Api.Chat>()
                 .AddScoped<IEventSubscriptions, KickLib.Api.EventSubscriptions>()
                 .AddScoped<ILivestreams, KickLib.Api.Livestreams>()
+                .AddScoped<IModeration, KickLib.Api.Moderation>()
                 .AddScoped<IUsers, KickLib.Api.Users>()
                 .AddSingleton<IKickOAuthGenerator, KickOAuthGenerator>();
         }

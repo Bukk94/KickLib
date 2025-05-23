@@ -4,6 +4,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0](https://www.nuget.org/packages/KickLib/1.3.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.3.0...v1.4.0)
+### Added
+- Support for new webhook Event Type `moderation.banned`
+- Support for chat moderation endpoints
+- Missing docs
+- New `moderation:ban` scope
+### Changed
+- Fixed project warnings
+- Updated README
+- Updated NuGet packages to latest versions
+
 ## [1.3.0](https://www.nuget.org/packages/KickLib/1.3.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.2.2...v1.3.0)
 ### Changed
 - KickLib constructor was changed to fit Dependency Injection pattern

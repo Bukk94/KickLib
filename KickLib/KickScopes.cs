@@ -52,4 +52,9 @@ public static class KickScopes
     ///     Subscribe to all channel events on Kick e.g. chat messages, follows, subscriptions.
     /// </remarks>
     public const string EventsSubscribe = "events:subscribe";
+    
+    /// <summary>
+    ///     Execute moderation actions for moderators.
+    /// </summary>
+    public const string ModerationBan = "moderation:ban";
 }

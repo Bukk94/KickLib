@@ -243,6 +243,55 @@ public abstract class ApiBase
         return Result.Ok(true);
     }
     
+    /// <summary>
+    ///     Perform DELETE request with payload.
+    /// </summary>
+    protected async Task<Result<bool>> DeleteAsync<TPayload>(
+        string urlPart,
+        ApiVersion version,
+        TPayload? input = null,
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
+        where TPayload : class
+    {
+        var url = ConstructResourceUrl(urlPart, version);
+
+        var token = await ResolveAccessTokenAsync(accessToken).ConfigureAwait(false);
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            return Result.Fail("Access token is missing.");
+        }
+        
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        StringContent? payload = null;
+        if (input is not null)
+        {
+            var json = JsonConvert.SerializeObject(input, _serializerSettings);
+            payload = new StringContent(json, Encoding.UTF8, "application/json");
+        }
+        
+        var response = await ExecuteRequestAsync(
+            () => _client.SendAsync(new HttpRequestMessage(HttpMethod.Delete, url)
+            {
+                Content = payload
+            }, cancellationToken),
+            !string.IsNullOrWhiteSpace(accessToken)).ConfigureAwait(false);
+
+        if (response is null)
+        {
+            return Result.Fail("Request was cancelled via CancellationToken."); 
+        }
+        
+        if (!response.IsSuccessStatusCode)
+        {
+            var data = await response.Content.ReadAsStringAsync(CancellationToken.None).ConfigureAwait(false);
+            return HandleErrorResponse((int)response.StatusCode, data, $"DELETE {url}");
+        }
+
+        return Result.Ok(true);
+    }
+    
     private async Task<HttpResponseMessage?> ExecuteRequestAsync(
         Func<Task<HttpResponseMessage>> requestFunc,
         bool usingExternalToken)
