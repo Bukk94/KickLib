@@ -44,5 +44,10 @@ public enum EventType
     /// <summary>
     ///     Event type livestream.metadata.updated.
     /// </summary>
-    LivestreamMetadataUpdated
+    LivestreamMetadataUpdated,
+    
+    /// <summary>
+    ///     Event type moderation.banned.
+    /// </summary>
+    ModerationUserBanned
 }

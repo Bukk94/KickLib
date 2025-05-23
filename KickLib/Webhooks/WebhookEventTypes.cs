@@ -39,4 +39,9 @@ public static class WebhookEventTypes
     ///     Event type for a livestream metadata update.
     /// </summary>
     public const string LivestreamMetadataUpdated = "livestream.metadata.updated";
+    
+    /// <summary>
+    ///     Event type for a moderation when user is banned (or timed-out).
+    /// </summary>
+    public const string ModerationUserBanned = "moderation.banned";
 }

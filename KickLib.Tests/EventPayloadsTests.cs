@@ -108,4 +108,21 @@ public class EventPayloadsTests : BaseKickLibTests
         payload.Should().NotBeNull();
         webhookEvent.Should().NotBeNull();
     }
+    
+    [Theory]
+    [InlineData("ModerationUserBannedEventPayload")]
+    [InlineData("ModerationUserTimedOutEventPayload")]
+    public void CorrectlyDeserialize_ModerationUserBannedEventPayload(string data)
+    {
+        var payload = GetPayload(data);
+
+        var webhookEvent = WebhookEventParser.ParseModerationUserBannedSentEvent(payload);
+        
+        payload.Should().NotBeNull();
+        webhookEvent.Should().NotBeNull();
+        webhookEvent.Moderator.Should().NotBeNull();
+        webhookEvent.BannedUser.Should().NotBeNull();
+        webhookEvent.Metadata.Should().NotBeNull();
+        webhookEvent.Metadata.Reason.Should().NotBeNull();
+    }
 }
