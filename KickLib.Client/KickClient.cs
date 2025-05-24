@@ -287,6 +287,6 @@ public class KickClient : IKickClient
 
     private static TType ParseData<TType>(string data)
     {
-        return JsonConvert.DeserializeObject<TType>(data);
+        return JsonConvert.DeserializeObject<TType>(data)!;
     }
 }
