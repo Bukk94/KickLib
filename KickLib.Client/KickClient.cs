@@ -52,6 +52,7 @@ public class KickClient : IKickClient
     public event EventHandler<UnknownEventArgs>? OnUnknownEvent;
     public event EventHandler<PinnedMessageCreatedEventArgs>? OnPinnedMessageCreated;
     public event EventHandler<PinnedMessageDeletedEventArgs>? OnPinnedMessageDeleted;
+    public event EventHandler<RewardRedeemedEventArgs>? OnRewardRedeemed;
     #endregion
     
     public bool IsConnected => _pusher.State == ConnectionState.Connected;
@@ -75,15 +76,22 @@ public class KickClient : IKickClient
     
     public async Task ListenToChatRoomAsync(int chatroomId)
     {
-        var channel = await _pusher.SubscribeAsync($"chatrooms.{chatroomId}.v2").ConfigureAwait(false);
-        channel.BindAll(ChatRoomDataReader);
+        var channelV2 = await _pusher.SubscribeAsync($"chatrooms.{chatroomId}.v2").ConfigureAwait(false);
+        channelV2.BindAll(ChatRoomDataReader);
+
+        var channelV1 = await _pusher.SubscribeAsync($"chatroom_{chatroomId}").ConfigureAwait(false);
+        channelV1.BindAll(ChatRoomDataReader);
+        
         _listeningToChatRooms.Add(chatroomId);
     }
-    
+
     public Task StopListeningToChatRoomAsync(int chatroomId)
     {
         _listeningToChatRooms.Remove(chatroomId);
-        return _pusher.UnsubscribeAsync($"chatrooms.{chatroomId}.v2");
+        return Task.WhenAll(
+            _pusher.UnsubscribeAsync($"chatrooms.{chatroomId}.v2"),
+            _pusher.UnsubscribeAsync($"chatroom_{chatroomId}")
+        );
     }
     
     public Task ConnectAsync()
@@ -254,6 +262,14 @@ public class KickClient : IKickClient
                 OnPinnedMessageDeleted?.Invoke(this, new PinnedMessageDeletedEventArgs
                 {
                     Data = pinnedMessageDeleted
+                });
+                break;
+
+            case "RewardRedeemedEvent":
+                var rewardRedeemedEvent = ParseData<RewardRedeemedEvent>(e.Data);
+                OnRewardRedeemed?.Invoke(this, new RewardRedeemedEventArgs
+                {
+                    Data = rewardRedeemedEvent
                 });
                 break;
             
