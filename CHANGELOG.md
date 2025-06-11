@@ -4,7 +4,16 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.4.0](https://www.nuget.org/packages/KickLib/1.3.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.3.0...v1.4.0)
+## [1.4.2](https://www.nuget.org/packages/KickLib/1.4.2) - [diff](https://github.com/Bukk94/KickLib/compare/v1.4.1...v1.4.2)
+### Changed
+- Rolled back PuppeteerSharp version from 20.x to 14.0.0
+  - This was done to ensure compatibility with `PuppeteerExtraSharp` library 
+
+## [1.4.1](https://www.nuget.org/packages/KickLib/1.4.1) - [diff](https://github.com/Bukk94/KickLib/compare/v1.4.0...v1.4.1)
+### Added
+- Extended KickClient with `OnRewardRedeemed` event
+
+## [1.4.0](https://www.nuget.org/packages/KickLib/1.4.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.3.0...v1.4.0)
 ### Added
 - Support for new webhook Event Type `moderation.banned`
 - Support for chat moderation endpoints
