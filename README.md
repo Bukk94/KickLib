@@ -140,12 +140,12 @@ var url = authGenerator.GetAuthorizationUri(
 var code = "NAAAAAAY5YZQ00STATE000ZZTFHM2I1NJLK";
 var state = "ZXhhbXBsZSB2YWx1ZQ=="; 
 var exchangeResults = await authGenerator.ExchangeCodeForTokenAsync(
-    state,
+    code,
     clientId,
     clientSecret,
     callbackUrl,
     state);
-    
+        
 if (exchangeResults.IsSuccess)
 {
     Console.WriteLine($"Access Token: {exchangeResults.Value.AccessToken}");
@@ -183,6 +183,21 @@ var accessToken = "XXXXXXXXXX";
 
 // Get specific category by ID
 var category = await api.Categories.GetCategoryAsync(28, accessToken);
+```
+
+### Sending a chat message
+```csharp
+var settings = new ApiSettings
+{
+    RefreshToken = "ZZZZZZZZZZZZZZZZ",
+    ClientId = "XXXXXX",
+    ClientSecret = "YYYYYYYYYYYYYY"
+};
+
+var api = KickApi.Create(settings);
+var channelInfo = await api.Channels.GetChannelAsync("foo");
+var broadcasterId = channelInfo.Value.BroadcasterUserId;
+await api.Chat.SendMessageAsUserAsync(broadcasterId, "Hello World");
 ```
 
 ### Subscribing to webhook events
