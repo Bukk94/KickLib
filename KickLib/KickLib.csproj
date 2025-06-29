@@ -16,10 +16,10 @@
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Fixed Puppeteer version reference</PackageReleaseNotes>
-        <Version>1.4.2</Version>
-        <AssemblyVersion>1.4.2</AssemblyVersion>
-        <FileVersion>1.4.2</FileVersion>
+        <PackageReleaseNotes>Added HTTP response details to errors</PackageReleaseNotes>
+        <Version>1.4.3</Version>
+        <AssemblyVersion>1.4.3</AssemblyVersion>
+        <FileVersion>1.4.3</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 

@@ -3,7 +3,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using KickLib.Auth;
 using KickLib.Exceptions;
+using KickLib.Extensions;
 using KickLib.Models;
+using KickLib.Models.Errors;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -98,7 +100,7 @@ public abstract class ApiBase
             ? Result.Ok(deserializedObject.Data!)
                 .WithSuccess(((int)response.StatusCode).ToString())
                 .WithSuccess(deserializedObject.Message ?? "Success")
-            : HandleErrorResponse((int)response.StatusCode, data, $"GET {url}", $"Failed to deserialize response to type {typeof(TType)}. Received response from url '{url}': {data}");
+            : HandleErrorResponse(response, data, $"GET {url}", $"Failed to deserialize response to type {typeof(TType)}. Received response from url '{url}': {data}");
     }
     
     /// <summary>
@@ -160,7 +162,7 @@ public abstract class ApiBase
             ? Result.Ok(deserializedObject.Data!)
                 .WithSuccess(((int)response.StatusCode).ToString())
                 .WithSuccess(deserializedObject.Message ?? "Success")
-            : HandleErrorResponse((int)response.StatusCode, data, $"POST {url}", $"Failed to deserialize response to type {typeof(TType)}. Received response from url '{url}': {data}");
+            : HandleErrorResponse(response, data, $"POST {url}", $"Failed to deserialize response to type {typeof(TType)}. Received response from url '{url}': {data}");
     }
 
     /// <summary>
@@ -199,7 +201,7 @@ public abstract class ApiBase
         if (!response.IsSuccessStatusCode)
         {
             var data = await response.Content.ReadAsStringAsync(CancellationToken.None).ConfigureAwait(false);
-            return HandleErrorResponse((int)response.StatusCode, data, $"PATCH {url} | Payload: {json}");
+            return HandleErrorResponse(response, data, $"PATCH {url} | Payload: {json}");
         }
 
         return Result.Ok(true);
@@ -237,7 +239,7 @@ public abstract class ApiBase
         if (!response.IsSuccessStatusCode)
         {
             var data = await response.Content.ReadAsStringAsync(CancellationToken.None).ConfigureAwait(false);
-            return HandleErrorResponse((int)response.StatusCode, data, $"DELETE {url}");
+            return HandleErrorResponse(response, data, $"DELETE {url}");
         }
 
         return Result.Ok(true);
@@ -286,7 +288,7 @@ public abstract class ApiBase
         if (!response.IsSuccessStatusCode)
         {
             var data = await response.Content.ReadAsStringAsync(CancellationToken.None).ConfigureAwait(false);
-            return HandleErrorResponse((int)response.StatusCode, data, $"DELETE {url}");
+            return HandleErrorResponse(response, data, $"DELETE {url}");
         }
 
         return Result.Ok(true);
@@ -341,7 +343,7 @@ public abstract class ApiBase
         var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            return (null, HandleErrorResponse((int)response.StatusCode, data, origin));
+            return (null, HandleErrorResponse(response, data, origin));
         }
 
         return (data, null);
@@ -361,7 +363,10 @@ public abstract class ApiBase
 
         if (response.IsFailed)
         {
-            throw new KickLibException("Failed to refresh access token: " + string.Join(",", response.Errors.Select(x => x.Message)));
+            var error = response.GetResponseError()!;
+            throw new KickLibRefreshTokenException(
+                "Failed to refresh access token: " + string.Join(",", response.Errors.Select(x => x.Message)),
+                error.HttpResponseMessage);
         }
         
         _settings.AccessToken = response.Value.AccessToken;
@@ -400,8 +405,9 @@ public abstract class ApiBase
         return await RefreshAccessTokenAsync().ConfigureAwait(false);
     }
 
-    private static Result HandleErrorResponse(int statusCode, string data, string targetUrl, string? message = null)
+    private static Result HandleErrorResponse(HttpResponseMessage response, string data, string targetUrl, string? message = null)
     {
+        var statusCode = (int)response.StatusCode;
         List<string> errors =
         [
             message ?? $"Failed to fetch Kick API data. API response: {data}",
@@ -414,7 +420,8 @@ public abstract class ApiBase
             errors.Add("Unauthorized. Please check your access token. It might be invalid or expired.");
         }
 
-        return Result.Fail(errors);
+        return Result.Fail(errors)
+            .WithError(new KickLibHttpResponseError(response));
     }
     
     private static string ConstructResourceUrl(

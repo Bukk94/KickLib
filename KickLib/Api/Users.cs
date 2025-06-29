@@ -17,6 +17,31 @@ public class Users : ApiBase, IUsers
     }
     
     /// <summary>
+    ///     Retrieve user information based on provided user ID.
+    /// </summary>
+    public async Task<Result<UserResponse>> GetUserAsync(
+        int userId, 
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
+    {
+        List<KeyValuePair<string, string>> query =
+        [
+            new("id", userId.ToString())
+        ];
+        
+        // v1/users
+        var result = await GetAsync<ICollection<UserResponse>>(ApiUrlPart, ApiVersion.v1, query, accessToken, cancellationToken)
+            .ConfigureAwait(false);
+        
+        if (result.IsFailed)
+        {
+            return Result.Fail<UserResponse>(result.Errors);
+        }
+
+        return Result.Ok(result.Value.First()).WithSuccesses(result.Successes);
+    }
+    
+    /// <summary>
     ///     Retrieve user information based on provided user IDs.
     ///     If no user IDs are specified, the information for the currently authorised user will be returned by default.
     /// </summary>

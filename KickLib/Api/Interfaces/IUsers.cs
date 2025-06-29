@@ -8,6 +8,14 @@ namespace KickLib.Api.Interfaces;
 public interface IUsers
 {
     /// <summary>
+    ///     Retrieve user information based on provided user ID.
+    /// </summary>
+    Task<Result<UserResponse>> GetUserAsync(
+        int userId,
+        string? accessToken = null,
+        CancellationToken cancellationToken = default);
+    
+    /// <summary>
     ///     Retrieve user information based on provided user IDs.
     ///     If no user IDs are specified, the information for the currently authorised user will be returned by default.
     /// </summary>

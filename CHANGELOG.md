@@ -4,6 +4,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.3](https://www.nuget.org/packages/KickLib/1.4.3) - [diff](https://github.com/Bukk94/KickLib/compare/v1.4.2...v1.4.3)
+### Added
+- Added `KickLibRefreshTokenException` that is fired, when refresh token fails to refresh (usually because token expired or is invalid)
+- Extended all Result classes with `KickLibHttpResponseError` object, which contains error details if the request failed, including original HTTP response message
+- Added `GetUserAsync` to `Users` API to get single user by ID
+
 ## [1.4.2](https://www.nuget.org/packages/KickLib/1.4.2) - [diff](https://github.com/Bukk94/KickLib/compare/v1.4.1...v1.4.2)
 ### Changed
 - Rolled back PuppeteerSharp version from 20.x to 14.0.0

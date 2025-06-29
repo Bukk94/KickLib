@@ -1,6 +1,7 @@
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using KickLib.Models.Errors;
 using Newtonsoft.Json;
 
 namespace KickLib.Auth;
@@ -230,13 +231,14 @@ public class KickOAuthGenerator : IKickOAuthGenerator
         {
             var errorMessage =
                 $"RefreshAccessTokenAsync call returned non-Ok response. Reason: {response.ReasonPhrase}. Status: {response.StatusCode}. Data: {message}";
-            return Result.Fail(errorMessage);
+            return Result.Fail(errorMessage).WithError(new KickLibHttpResponseError(errorMessage, response));
         }
 
         var deserializeResponse = JsonConvert.DeserializeObject<KickTokenResponse>(message);
         return deserializeResponse is not null 
             ? Result.Ok(deserializeResponse) 
-            : Result.Fail("Refresh token failed due to deserialization issue. Payload: " + message);
+            : Result.Fail("Refresh token failed due to deserialization issue. Payload: " + message)
+                .WithError(new KickLibHttpResponseError(message, response));
     }
 
     /// <summary>
