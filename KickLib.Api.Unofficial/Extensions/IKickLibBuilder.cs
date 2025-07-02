@@ -1,3 +1,4 @@
+using KickLib.Api.Unofficial.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace KickLib.Api.Unofficial.Extensions
@@ -16,5 +17,10 @@ namespace KickLib.Api.Unofficial.Extensions
         ///     Adds client that uses Puppeteer to spin headless browser.
         /// </summary>
         IServiceCollection WithPuppeteerClient();
+
+        /// <summary>
+        ///     Adds optimized client that uses shared Puppeteer browser instance with multi-user support.
+        /// </summary>
+        IServiceCollection WithOptimizedPuppeteerClient(BrowserSettings browserSettings = null);
     }
 }
