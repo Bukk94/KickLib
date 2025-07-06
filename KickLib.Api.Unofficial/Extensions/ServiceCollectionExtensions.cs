@@ -25,23 +25,11 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services
                 .AddScoped<IUnofficialKickApi, KickUnofficialApi>()
+                .AddSingleton<SessionManager>()
+                .AddSingleton<BrowserManager>()
+                .AddSingleton<IKickUnofficialApiFactory, KickUnofficialApiFactory>()
                 .AddScoped<IKickClient, KickClient>();
         
-            return new KickLibBuilder(services);
-        }
-    
-        /// <summary>
-        ///     Adds KickLib services for Unofficial/Private Kick API to the DI with optimized multi-user support.
-        ///     Uses shared browser instance and session management for better performance.
-        /// </summary>
-        public static IKickLibBuilder AddOptimizedUnofficialKickLib(this IServiceCollection services)
-        {
-            services
-                .AddSingleton<Core.BrowserManager>()
-                .AddSingleton<Core.SessionManager>()
-                .AddSingleton<IOptimizedKickUnofficialApiFactory, OptimizedKickUnofficialApiFactory>()
-                .AddScoped<IKickClient, KickClient>();
-
             return new KickLibBuilder(services);
         }
 
@@ -71,23 +59,30 @@ namespace Microsoft.Extensions.DependencyInjection
                     .AddScoped<SpoofSettings>();
             }
     
-            public IServiceCollection WithPuppeteerClient()
+            public IServiceCollection WithPuppeteerClient(BrowserSettings browserSettings = null)
             {
                 if (_isClientAdded)
                 {
                     throw new InvalidOperationException("You can only add one KickLib client implementation.");    
                 }
             
-                // services.Configure<BrowserSettings>(configuration.GetSection(nameof(BrowserSettings)));
                 _isClientAdded = true;
+
+                if (browserSettings != null)
+                {
+                    _services.AddSingleton(browserSettings);
+                }
+                else
+                {
+                    _services.AddScoped<BrowserSettings>();
+                }
             
                 return _services
                     .AddScoped<IApiCaller, BrowserClient>()
-                    .AddScoped<IAuthenticationService, PuppeteerAuthenticationService>()
-                    .AddScoped<BrowserSettings>();
+                    .AddScoped<IAuthenticationService, PuppeteerAuthenticationService>();
             }
 
-            public IServiceCollection WithOptimizedPuppeteerClient(BrowserSettings browserSettings = null)
+            public IServiceCollection WithSessionPuppeteerClient(BrowserSettings browserSettings = null)
             {
                 if (_isClientAdded)
                 {
@@ -106,7 +101,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
             
                 return _services
-                    .AddScoped<IApiCaller, OptimizedBrowserClient>()
+                    .AddScoped<IApiCaller, SessionBrowserClient>()
                     .AddScoped<IAuthenticationService, OptimizedPuppeteerAuthenticationService>();
             }
         }

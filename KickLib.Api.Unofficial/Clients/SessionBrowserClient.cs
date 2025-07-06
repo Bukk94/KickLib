@@ -4,27 +4,24 @@ using KickLib.Api.Unofficial.Exceptions;
 using KickLib.Api.Unofficial.Interfaces;
 using KickLib.Api.Unofficial.Models;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 using Polly;
 
 namespace KickLib.Api.Unofficial.Clients
 {
     /// <summary>
-    /// Optimized browser client that uses shared browser instance and supports multiple users
+    ///     Optimized session-based browser client that uses shared browser instance and supports multiple users
     /// </summary>
-    public class OptimizedBrowserClient : IApiCaller
+    public class SessionBrowserClient : IApiCaller
     {
         private readonly Regex _regex = new(@"<body>(?<json>.+)<\/body>", RegexOptions.Compiled);
         private readonly IAuthenticationService _authenticationService;
-        private readonly BrowserSettings _settings;
         private readonly ILogger _logger;
         private readonly string _sessionId;
         private readonly SessionManager _sessionManager;
         private readonly BrowserManager _browserManager;
 
-        public OptimizedBrowserClient(
+        public SessionBrowserClient(
             IAuthenticationService authenticationService,
-            BrowserSettings settings,
             string sessionId,
             BrowserManager browserManager,
             SessionManager sessionManager,
@@ -32,7 +29,6 @@ namespace KickLib.Api.Unofficial.Clients
         {
             _authenticationService = authenticationService;
             _logger = logger;
-            _settings = settings ?? BrowserSettings.Empty;
             _sessionId = sessionId ?? throw new ArgumentNullException(nameof(sessionId));
             _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
             _browserManager = browserManager ?? throw new ArgumentNullException(nameof(browserManager));
@@ -206,7 +202,6 @@ namespace KickLib.Api.Unofficial.Clients
             }
         }
 
-        /// <inheritdoc />
         public async Task<string> SendPostRequestAsync(string url, object jsonPayload, bool useAuthentication = true)
         {
             var session = _sessionManager.GetSession(_sessionId);

@@ -10,7 +10,7 @@ using PuppeteerSharp;
 namespace KickLib.Api.Unofficial.Clients.Puppeteer
 {
     /// <summary>
-    /// Optimized authentication service that supports multiple users with shared browser instance
+    ///     Optimized authentication service that supports multiple users with shared browser instance
     /// </summary>
     public class OptimizedPuppeteerAuthenticationService : IAuthenticationService
     {
@@ -24,7 +24,12 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
         public string XsrfToken => _sessionManager.GetSession(_sessionId)?.XsrfToken;
         public bool IsAuthenticated => _sessionManager.GetSession(_sessionId)?.IsAuthenticated ?? false;
 
-        public OptimizedPuppeteerAuthenticationService(string sessionId, BrowserSettings browserSettings, BrowserManager browserManager, SessionManager sessionManager, ILogger logger = null)
+        public OptimizedPuppeteerAuthenticationService(
+            string sessionId, 
+            BrowserSettings browserSettings, 
+            BrowserManager browserManager, 
+            SessionManager sessionManager, 
+            ILogger logger = null)
         {
             _sessionId = sessionId ?? throw new ArgumentNullException(nameof(sessionId));
             _logger = logger;
@@ -99,6 +104,12 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
                 if (loginResponseBody.Contains("CSRF token mismatch"))
                 {
                     throw new ArgumentException("Something went wrong: CSRF token mismatch");
+                }
+
+                var loginStatus = (int?)loginResult.status;
+                if (loginStatus is not null && loginStatus != 200)
+                {
+                    throw new ArgumentException($"Login failed with status code {loginStatus}. Response: {loginResponseBody}");
                 }
 
                 var parsedLoginResponse = JToken.Parse(loginResponseBody);

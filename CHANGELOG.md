@@ -4,6 +4,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0](https://www.nuget.org/packages/KickLib/1.5.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.4.4...v1.5.0)
+### Added
+- Session-based browser client for unofficial API
+
+### Changed
+- Added proper handling for Unofficial API, when request fails due to Cloudflare protection
+- Safe parsing of the authentication response to prevent exceptions when the response is not in the expected format.
+
 ## [1.4.3](https://www.nuget.org/packages/KickLib/1.4.3) - [diff](https://github.com/Bukk94/KickLib/compare/v1.4.2...v1.4.3)
 ### Added
 - Added `KickLibRefreshTokenException` that is fired, when refresh token fails to refresh (usually because token expired or is invalid)

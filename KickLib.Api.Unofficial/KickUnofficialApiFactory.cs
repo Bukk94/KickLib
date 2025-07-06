@@ -6,15 +6,15 @@ using Microsoft.Extensions.Logging;
 namespace KickLib.Api.Unofficial
 {
     /// <summary>
-    /// Factory for creating OptimizedKickUnofficialApi instances
+    ///     Factory for creating Unofficial Api instances
     /// </summary>
-    public class OptimizedKickUnofficialApiFactory : IOptimizedKickUnofficialApiFactory
+    public class KickUnofficialApiFactory : IKickUnofficialApiFactory
     {
         private readonly SessionManager _sessionManager;
         private readonly BrowserManager _browserManager;
         private readonly ILoggerFactory _loggerFactory;
 
-        public OptimizedKickUnofficialApiFactory(
+        public KickUnofficialApiFactory(
             SessionManager sessionManager, 
             BrowserManager browserManager, 
             ILoggerFactory loggerFactory)
@@ -24,10 +24,20 @@ namespace KickLib.Api.Unofficial
             _loggerFactory = loggerFactory;
         }
 
-        public OptimizedKickUnofficialApi CreateInstance(string sessionId = null, BrowserSettings browserSettings = null, ILogger logger = null)
+        public IUnofficialSessionKickApi CreateSessionInstance(
+            string sessionId = null, 
+            BrowserSettings browserSettings = null, 
+            ILogger logger = null)
         {
-            logger ??= _loggerFactory?.CreateLogger<OptimizedKickUnofficialApi>();
-            return new OptimizedKickUnofficialApi(_sessionManager, _browserManager, sessionId, browserSettings, logger);
+            logger ??= _loggerFactory?.CreateLogger<SessionKickUnofficialApi>();
+            return new SessionKickUnofficialApi(_sessionManager, _browserManager, sessionId, browserSettings, logger);
+        }
+
+        public IUnofficialKickApi CreateInstance(
+            IApiCaller client = null, 
+            ILogger logger = null)
+        {
+            return new KickUnofficialApi(client, logger);
         }
     }
 }

@@ -11,7 +11,7 @@ using KickLib.Api.Unofficial;
 using KickLib.Api.Unofficial.Models;
 
 // Create optimized API instance
-var kickApi = new OptimizedKickUnofficialApi();
+var kickApi = new SessionKickUnofficialApi();
 
 // User authentication
 var authSettings = new AuthenticationSettings
@@ -25,7 +25,7 @@ var authSettings = new AuthenticationSettings
 await kickApi.AuthenticateAsync(authSettings);
 
 // API usage
-var channels = await kickApi.Channels.GetChannelsAsync();
+var channel = await kickApi.Channels.GetChannelInfoAsync("userA");
 ```
 
 ### Multiple Users
@@ -35,7 +35,7 @@ using KickLib.Api.Unofficial;
 using KickLib.Api.Unofficial.Models;
 
 // API instance for User A
-var userAApi = OptimizedKickUnofficialApi.CreateForUser("userA");
+var userAApi = SessionKickUnofficialApi.CreateForUser("userA");
 var authSettingsA = new AuthenticationSettings
 {
     Username = "userA@email.com",
@@ -44,7 +44,7 @@ var authSettingsA = new AuthenticationSettings
 await userAApi.AuthenticateAsync(authSettingsA);
 
 // API instance for User B (uses same browser instance)
-var userBApi = OptimizedKickUnofficialApi.CreateForUser("userB");
+var userBApi = SessionKickUnofficialApi.CreateForUser("userB");
 var authSettingsB = new AuthenticationSettings
 {
     Username = "userB@email.com",
@@ -53,8 +53,8 @@ var authSettingsB = new AuthenticationSettings
 await userBApi.AuthenticateAsync(authSettingsB);
 
 // Each user can operate independently with their own session
-var userAChannels = await userAApi.Channels.GetChannelsAsync();
-var userBChannels = await userBApi.Channels.GetChannelsAsync();
+var userAChannels = await userAApi.Channels.GetChannelInfoAsync("userA");
+var userBChannels = await userBApi.Channels.GetChannelInfoAsync("userB");
 ```
 
 ## Dependency Injection Usage
@@ -91,15 +91,15 @@ var app = builder.Build();
 [Route("api/[controller]")]
 public class KickController : ControllerBase
 {
-    private readonly IOptimizedKickUnofficialApiFactory _apiFactory;
-    private OptimizedKickUnofficialApi _kickApi;
+    private readonly IKickUnofficialApiFactory _apiFactory;
+    private readonly IUnofficialSessionKickApi _kickApi;
 
-    public KickController(IOptimizedKickUnofficialApiFactory apiFactory)
+    public KickController(IKickUnofficialApiFactory apiFactory)
     {
         _apiFactory = apiFactory;
         // Separate session for each user
         var userId = HttpContext.User.Identity.Name ?? Guid.NewGuid().ToString();
-        _kickApi = _apiFactory.CreateInstance(userId);
+        _kickApi = _apiFactory.CreateSessionInstance(userId);
     }
 
     [HttpPost("authenticate")]
@@ -116,16 +116,16 @@ public class KickController : ControllerBase
         }
     }
 
-    [HttpGet("channels")]
-    public async Task<IActionResult> GetChannels()
+    [HttpGet("videos")]
+    public async Task<IActionResult> GetVideos()
     {
         if (!_kickApi.IsAuthenticated)
         {
             return Unauthorized("Please authenticate first");
         }
 
-        var channels = await _kickApi.Channels.GetChannelsAsync();
-        return Ok(channels);
+        var videos = await _kickApi.Channels.GetChannelVideosAsync("kicklib");
+        return Ok(videos);
     }
 }
 ```
@@ -136,7 +136,7 @@ public class KickController : ControllerBase
 
 ```csharp
 // Get all active sessions
-var activeSessions = OptimizedKickUnofficialApi.GetActiveSessions();
+var activeSessions = SessionKickUnofficialApi.GetActiveSessions();
 Console.WriteLine($"Active sessions: {string.Join(", ", activeSessions)}");
 ```
 
@@ -144,14 +144,14 @@ Console.WriteLine($"Active sessions: {string.Join(", ", activeSessions)}");
 
 ```csharp
 // Clean up sessions older than 30 minutes
-OptimizedKickUnofficialApi.CleanupExpiredSessions(TimeSpan.FromMinutes(30));
+SessionKickUnofficialApi.CleanupExpiredSessions(TimeSpan.FromMinutes(30));
 ```
 
 ### Remove Specific Session
 
 ```csharp
 // Remove a specific session
-OptimizedKickUnofficialApi.RemoveSession("userA");
+SessionKickUnofficialApi.RemoveSession("userA");
 ```
 
 ## Performance Optimizations
@@ -179,7 +179,7 @@ var optimizedBrowserSettings = new BrowserSettings
     }
 };
 
-var kickApi = new OptimizedKickUnofficialApi(browserSettings: optimizedBrowserSettings);
+var kickApi = new SessionKickUnofficialApi(browserSettings: optimizedBrowserSettings);
 ```
 
 ### Get Session Info
@@ -214,9 +214,9 @@ using KickLib.Api.Unofficial.Interfaces;
 // Inject the factory
 public class MyService
 {
-    private readonly IOptimizedKickUnofficialApiFactory _apiFactory;
+    private readonly IKickUnofficialApiFactory _apiFactory;
 
-    public MyService(IOptimizedKickUnofficialApiFactory apiFactory)
+    public MyService(IKickUnofficialApiFactory apiFactory)
     {
         _apiFactory = apiFactory;
     }
@@ -224,12 +224,12 @@ public class MyService
     public async Task<string> ProcessUserData(string userId)
     {
         // Create API instance for specific user
-        var userApi = _apiFactory.CreateInstance(userId);
+        var userApi = _apiFactory.CreateSessionInstance(userId);
         
         // Use the API
-        var channels = await userApi.Channels.GetChannelsAsync();
+        var videos = await userApi.Channels.GetChannelVideosAsync("kicklib");
         
-        return $"User {userId} has {channels.Count()} channels";
+        return $"User {userId} has {videos.Count()} videos";
     }
 }
 ```

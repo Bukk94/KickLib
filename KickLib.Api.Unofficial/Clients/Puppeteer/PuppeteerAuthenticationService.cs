@@ -54,9 +54,17 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
 
                 return response.text();
             }
-        ").ConfigureAwait(false);
+            ").ConfigureAwait(false);
         
-            var tokenProvider = JToken.Parse(tokenProviderResponse);
+            JToken tokenProvider;
+            try
+            {
+                tokenProvider = JToken.Parse(tokenProviderResponse);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException($"Failed to request token provider. Actual response: {tokenProviderResponse}", ex);
+            }
 
             // Construct login payload
             var payloadPrep = new ExpandoObject() as IDictionary<string, object>;
@@ -87,14 +95,22 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
                 }});
                 return response.text();
             }}
-        ").ConfigureAwait(false);
+            ").ConfigureAwait(false);
 
             if (loginResponse.Contains("CSRF token mismatch"))
             {
                 throw new ArgumentException("Something went wrong: CSRF token mismatch");
             }
 
-            var parsedLoginResponse = JToken.Parse(loginResponse);
+            JToken parsedLoginResponse;
+            try
+            {
+                parsedLoginResponse = JToken.Parse(loginResponse);
+            } 
+            catch (Exception ex)
+            {
+                throw new ArgumentException($"Failed to perform login request. Actual response: {loginResponse}", ex);
+            }
         
             var token = parsedLoginResponse["token"]?.ToString();
             bool.TryParse(parsedLoginResponse["2fa_required"]?.ToString() ?? string.Empty, out var faRequired);

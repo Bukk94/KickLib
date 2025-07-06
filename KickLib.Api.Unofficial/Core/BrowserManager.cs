@@ -7,7 +7,7 @@ using System.Collections.Concurrent;
 namespace KickLib.Api.Unofficial.Core
 {
     /// <summary>
-    /// Browser manager to optimize Puppeteer usage
+    ///     Browser manager to optimize Puppeteer usage.
     /// </summary>
     public class BrowserManager : IDisposable
     {
@@ -19,7 +19,9 @@ namespace KickLib.Api.Unofficial.Core
         private readonly ConcurrentDictionary<string, IPage> _sessionPages = new();
         private bool _disposed;
 
-        public BrowserManager(BrowserSettings settings = null, ILogger<BrowserManager> logger = null)
+        public BrowserManager(
+            BrowserSettings settings = null, 
+            ILogger<BrowserManager> logger = null)
         {
             _settings = settings ?? BrowserSettings.Empty;
             _logger = logger;
