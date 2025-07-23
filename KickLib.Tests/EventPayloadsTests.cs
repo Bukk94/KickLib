@@ -32,6 +32,7 @@ public class EventPayloadsTests : BaseKickLibTests
 
         payload.Should().NotBeNull();
         webhookEvent.Should().NotBeNull();
+        webhookEvent.CreatedAt.Should().NotBe(DateTimeOffset.MinValue);
         webhookEvent.Sender.Identity.Should().NotBeNull();
         webhookEvent.Sender.Identity.Badges.Should().Contain(x => x.Type == BadgeType.Moderator);
         webhookEvent.Sender.Identity.Badges.Should().Contain(x => x.Type == BadgeType.Subscriber);

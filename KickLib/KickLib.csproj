@@ -8,7 +8,7 @@
         <Title>KickLib</Title>
         <Authors>Bukk94</Authors>
         <Description>C# library for accessing API from Kick.com livestreaming platform.</Description>
-        <PackageTags>api,kick,chat,client,csharp,data,livestream</PackageTags>
+        <PackageTags>api,kick,sdk,chat,client,csharp,data,livestream</PackageTags>
         <PackageIcon>KickLibLogo.png</PackageIcon>
         <License>https://github.com/Bukk94/KickLib/blob/master/LICENSE</License>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -16,17 +16,17 @@
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Added safe parsing for Unofficial API authentication</PackageReleaseNotes>
-        <Version>1.5.0</Version>
-        <AssemblyVersion>1.5.0</AssemblyVersion>
-        <FileVersion>1.5.0</FileVersion>
+        <PackageReleaseNotes>Extended Chat models for Client and webhook</PackageReleaseNotes>
+        <Version>1.5.1</Version>
+        <AssemblyVersion>1.5.1</AssemblyVersion>
+        <FileVersion>1.5.1</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="FluentResults" Version="3.16.0" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.5" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.5" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.7" />
         <!-- References for NuGet package -->
         <PackageReference Include="JsonSubTypes" Version="2.0.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

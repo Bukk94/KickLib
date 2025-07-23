@@ -4,6 +4,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.1](https://www.nuget.org/packages/KickLib/1.5.1) - [diff](https://github.com/Bukk94/KickLib/compare/v1.5.0...v1.5.1)
+### Added
+- Reply message metadata to `KickLib.Client` Message data
+- `CreatedAt` field to `ChatMessageSentEvent` webhook event
+
 ## [1.5.0](https://www.nuget.org/packages/KickLib/1.5.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.4.4...v1.5.0)
 ### Added
 - Session-based browser client for unofficial API

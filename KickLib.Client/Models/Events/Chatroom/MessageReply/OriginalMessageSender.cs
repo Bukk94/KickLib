@@ -4,6 +4,8 @@ public class OriginalMessageSender
 {
     public required int Id { get; set; }
 
-    // The username of the original message sender.
+    /// <summary>
+    ///     The username of the original message sender.
+    /// </summary>
     public required string Username { get; set; }
 }
