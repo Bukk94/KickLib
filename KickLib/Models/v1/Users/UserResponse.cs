@@ -16,16 +16,16 @@ public class UserResponse
     /// <summary>
     ///     User's email address.
     /// </summary>
-    public required string Email { get; set; }
+    public string Email { get; set; } = string.Empty;
     
     /// <summary>
     ///     User's display name.
     /// </summary>
-    public required string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
     
     /// <summary>
     ///     User's profile picture URL.
     /// </summary>
     [JsonProperty(PropertyName = "profile_picture")]
-    public required string ProfilePicture { get; set; }
+    public string ProfilePicture { get; set; } = string.Empty;
 }

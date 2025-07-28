@@ -4,7 +4,7 @@ public class User
 {
     public int Id { get; set; }
 
-    public required string Username { get; set; }
+    public string Username { get; set; } = string.Empty;
 
-    public required string Slug { get; set; }
+    public string Slug { get; set; } = string.Empty;
 }

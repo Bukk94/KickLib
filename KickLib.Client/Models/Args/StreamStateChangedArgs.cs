@@ -8,5 +8,5 @@ public class StreamStateChangedArgs : EventArgs
 
     public int ChannelId { get; set; }
     
-    public required LivestreamChangedEvent Data { get; set; }
+    public LivestreamChangedEvent Data { get; set; } = new();
 }

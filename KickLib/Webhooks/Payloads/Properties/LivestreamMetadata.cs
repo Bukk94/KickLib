@@ -10,21 +10,21 @@ public class LivestreamMetadata
     /// <summary>
     ///     Livestream title.
     /// </summary>
-    public required string Title { get; set; }
+    public string Title { get; set; } = string.Empty;
     
     /// <summary>
     ///     Livestream language.
     /// </summary>
-    public required string Language { get; set; }
+    public string Language { get; set; } = string.Empty;
+    
+    /// <summary>
+    ///     Livestream category.
+    /// </summary>
+    public Category Category { get; set; } = new();
     
     /// <summary>
     ///     Does livestream have mature content?
     /// </summary>
     [JsonProperty(PropertyName = "has_mature_content")]
     public bool HasMatureContent { get; set; }
-
-    /// <summary>
-    ///     Livestream category.
-    /// </summary>
-    public required Category Category { get; set; }
 }

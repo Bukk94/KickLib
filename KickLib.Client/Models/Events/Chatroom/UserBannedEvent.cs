@@ -6,10 +6,10 @@ public class UserBannedEvent
 {
     public Guid Id { get; set; }
 
-    public required User User { get; set; }
-    
+    public User User { get; set; } = new();
+
     [JsonProperty(PropertyName = "banned_by")]
-    public required User BannedBy { get; set; }
+    public User BannedBy { get; set; } = new();
 
     public bool Permanent { get; set; }
 }

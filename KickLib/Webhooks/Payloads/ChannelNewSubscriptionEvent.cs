@@ -10,8 +10,8 @@ public class ChannelNewSubscriptionEvent : WebhookEventBase
     /// <summary>
     ///     The user who subscribed to the channel.
     /// </summary>
-    public required KickUser Gifter { get; set; }
-
+    public KickUser Gifter { get; set; } = new();
+    
     /// <summary>
     ///     The duration of the subscription in months.
     /// </summary>

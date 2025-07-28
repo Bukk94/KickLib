@@ -13,11 +13,11 @@ public class LivestreamResponse
     /// </summary>
     [JsonProperty(PropertyName = "broadcaster_user_id")]
     public int BroadcasterUserId { get; set; }
-    
+
     /// <summary>
     ///     Livestream Category.
     /// </summary>
-    public required CategoryResponse Category { get; set; }
+    public CategoryResponse Category { get; set; } = new();
     
     /// <summary>
     ///     Channel identifier where the livestream is hosted.
@@ -39,7 +39,7 @@ public class LivestreamResponse
     /// <summary>
     ///     Slug identifier of the livestream host.
     /// </summary>
-    public required string Slug { get; set; }
+    public string Slug { get; set; } = string.Empty;
     
     /// <summary>
     ///     When the livestream started.

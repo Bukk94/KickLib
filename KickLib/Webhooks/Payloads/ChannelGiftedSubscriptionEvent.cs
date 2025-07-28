@@ -10,13 +10,13 @@ public class ChannelGiftedSubscriptionEvent : WebhookEventBase
     /// <summary>
     ///     The user who gifted the subscription.
     /// </summary>
-    public required KickUser Gifter { get; set; }
-    
+    public KickUser Gifter { get; set; } = new();
+
     /// <summary>
     ///     Users who received the gifted subscription.
     /// </summary>
-    public required ICollection<KickUser> Giftees { get; set; }
-
+    public ICollection<KickUser> Giftees { get; set; } = [];
+    
     /// <summary>
     ///     When the subscription was created.
     /// </summary>

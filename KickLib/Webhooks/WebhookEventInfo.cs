@@ -84,7 +84,15 @@ public class WebhookEventInfo
             : DefaultPublicKey;
 
         var payloadBytes = Encoding.UTF8.GetBytes($"{MessageId}.{MessageTimestamp}.{payload}");
+#if NET8_0_OR_GREATER
         var hashedPayload = SHA256.HashData(payloadBytes);
+#else
+        byte[] hashedPayload;
+        using (var sha256 = SHA256.Create())
+        {
+            hashedPayload = sha256.ComputeHash(payloadBytes);
+        }
+#endif
 
         try
         {
@@ -102,7 +110,20 @@ public class WebhookEventInfo
         try
         {
             var rsa = RSA.Create();
+#if NET8_0_OR_GREATER
             rsa.ImportFromPem(signatureKey);
+#else
+            // Parse PEM manually for .NET Standard 2.1
+            var base64 = signatureKey
+                .Replace("-----BEGIN PUBLIC KEY-----", "")
+                .Replace("-----END PUBLIC KEY-----", "")
+                .Replace("\r", "")
+                .Replace("\n", "")
+                .Trim();
+            
+            var keyBytes = Convert.FromBase64String(base64);
+            rsa.ImportSubjectPublicKeyInfo(keyBytes, out _);
+#endif
             return rsa;
         }
         catch (Exception ex)

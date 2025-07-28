@@ -4,14 +4,14 @@ namespace KickLib.Client.Models.Events.Chatroom.MessageReply;
 
 public class MessageMetadata
 {
-    public required string Id { get; set; }
+    public string Id { get; set; } = string.Empty;
 
     [JsonProperty(PropertyName = "original_sender")]
-    public required OriginalMessageSender OriginalSender { get; set; }
+    public OriginalMessageSender OriginalSender { get; set; } = new();
 
     [JsonProperty(PropertyName = "original_message")]
-    public required OriginalMessage OriginalMessage { get; set; }
+    public OriginalMessage OriginalMessage { get; set; } = new();
 
     [JsonProperty(PropertyName = "message_ref")] 
-    public required string MessageReference { get; set; }
+    public string MessageReference { get; set; } = string.Empty;
 }

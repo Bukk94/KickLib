@@ -8,7 +8,7 @@ public class Badge
     [JsonConverter(typeof(BadgeTypeConverter))]
     public BadgeType Type { get; set; }
     
-    public required string Text { get; set; }
+    public string Text { get; set; } = string.Empty;
     
     /// <summary>
     ///     Optional count value (e.g. number of months for a subscriber badge).

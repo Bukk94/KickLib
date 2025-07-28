@@ -13,10 +13,10 @@ public class CategoryResponse
     /// <summary>
     ///     Name of the category.
     /// </summary>
-    public required string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
     
     /// <summary>
     ///     Thumbnail image URL of the category.
     /// </summary>
-    public required string Thumbnail { get; set; }
+    public string Thumbnail { get; set; } = string.Empty;
 }

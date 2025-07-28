@@ -10,13 +10,13 @@ public class EventSubscriptionResponse
     /// <summary>
     ///    ID of the subscription.
     /// </summary>
-    public required string Id { get; set; }
+    public string Id { get; set; } = string.Empty;
     
     /// <summary>
     ///     Application ID used for the subscription.
     /// </summary>
     [JsonProperty("app_id")]
-    public required string AppId { get; set; }
+    public string AppId { get; set; } = string.Empty;
     
     /// <summary>
     ///     User ID of the broadcaster associated with the subscription.
@@ -28,17 +28,17 @@ public class EventSubscriptionResponse
     ///     Date and time when the subscription was created.
     /// </summary>
     [JsonProperty("created_at")]
-    public required string CreatedAt { get; set; }
+    public string CreatedAt { get; set; } = string.Empty;
     
     /// <summary>
     ///     Event type of the subscription.
     /// </summary>
-    public required string Event { get; set; }
+    public string Event { get; set; } = string.Empty;
     
     /// <summary>
     ///     Subscription method.
     /// </summary>
-    public required string Method { get; set; }
+    public string Method { get; set; } = string.Empty;
     
     /// <summary>
     ///     Date and time when the subscription was last updated.

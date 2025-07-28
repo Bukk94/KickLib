@@ -4,7 +4,7 @@ internal class SubscribeToEventRequest
 {
     public IEnumerable<InputSubscribe> Events { get; }
 
-    public string Method { get; init; } = "webhook";
+    public string Method { get; set; } = "webhook";
     
     public SubscribeToEventRequest(IEnumerable<InputSubscribe> events)
     {

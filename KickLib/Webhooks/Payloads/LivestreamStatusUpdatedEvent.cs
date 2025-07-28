@@ -16,17 +16,17 @@ public class LivestreamStatusUpdatedEvent : WebhookEventBase
     /// <summary>
     ///    Title of the stream. 
     /// </summary>
-    public required string Title { get; set; }
+    public string Title { get; set; } = string.Empty;
     
     /// <summary>
     ///     When the stream started.
     /// </summary>
     [JsonProperty(PropertyName = "started_at")]
-    public required DateTimeOffset StartedAt { get; set; }
+    public DateTimeOffset StartedAt { get; set; }
     
     /// <summary>
     ///     When the stream ended (if offline).
     /// </summary>
     [JsonProperty(PropertyName = "ended_at")]
-    public required DateTimeOffset? EndedAt { get; set; }
+    public DateTimeOffset? EndedAt { get; set; }
 }

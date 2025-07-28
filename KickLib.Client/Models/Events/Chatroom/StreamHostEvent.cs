@@ -14,5 +14,5 @@ public class StreamHostEvent
     public int NumberViewers { get; set; }
 
     [JsonProperty(PropertyName = "host_username")]
-    public required string HostUsername { get; set; }
+    public string HostUsername { get; set; } = string.Empty;
 }

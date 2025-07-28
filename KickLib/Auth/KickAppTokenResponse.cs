@@ -11,13 +11,13 @@ namespace KickLib.Auth
         ///     Access (Bearer) token.
         /// </summary>
         [JsonProperty("access_token")]
-        public required string AccessToken { get; set; }
+        public string AccessToken { get; set; } = string.Empty;
 
         /// <summary>
         ///     Type of the token.
         /// </summary>
         [JsonProperty("token_type")]
-        public required string TokenType { get; set; }
+        public string TokenType { get; set; } = string.Empty;
 
         /// <summary>
         ///     Expiration time of the token in seconds.

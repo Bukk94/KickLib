@@ -4,5 +4,5 @@ namespace KickLib.Client.Models.Args;
 
 public class RewardRedeemedEventArgs : EventArgs
 {
-    public required RewardRedeemedEvent Data { get; set; }
+    public RewardRedeemedEvent Data { get; set; } = new();
 }

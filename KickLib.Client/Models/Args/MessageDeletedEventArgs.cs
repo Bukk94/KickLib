@@ -4,5 +4,5 @@ namespace KickLib.Client.Models.Args;
 
 public class MessageDeletedEventArgs : EventArgs
 {
-    public required MessageDeletedEvent Data { get; set; }
+    public MessageDeletedEvent Data { get; set; } = new();
 }

@@ -2,7 +2,7 @@
 
 public class OriginalMessage
 {
-    public required string Id { get; set; }
+    public string Id { get; set; } = string.Empty;
 
-    public required string Content { get; set; }
+    public string Content { get; set; } = string.Empty;
 }

@@ -4,5 +4,5 @@ namespace KickLib.Client.Models.Args;
 
 public class PinnedMessageCreatedEventArgs : EventArgs
 {
-    public required PinnedMessageCreatedEvent Data { get; set; }
+    public PinnedMessageCreatedEvent Data { get; set; } = new();
 }

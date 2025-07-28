@@ -11,7 +11,7 @@ public class Badge
     /// <summary>
     ///     Text of the badge (e.g. 'moderator').
     /// </summary>
-    public required string Text { get; set; }
+    public string Text { get; set; } = string.Empty;
     
     /// <summary>
     ///     Type of the badge.

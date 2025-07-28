@@ -2,7 +2,7 @@ namespace KickLib.Client.Models.Events.Chatroom.Pins;
 
 public class PinnedMessageCreatedEvent
 {
-    public required PinMessage Message { get; set; }
+    public PinMessage Message { get; set; } = new();
     
     /// <summary>
     ///     Duration how long the message is pinned.
@@ -11,7 +11,7 @@ public class PinnedMessageCreatedEvent
     /// <example>
     ///     1200
     /// </example>
-    public required string Duration { get; set; }
-    
-    public required PinUser PinnedBy { get; set; }
+    public string Duration { get; set; } = string.Empty;
+
+    public PinUser PinnedBy { get; set; } = new();
 }

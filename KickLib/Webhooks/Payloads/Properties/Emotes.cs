@@ -11,10 +11,10 @@ public class Emotes
     ///     ID of the emote.
     /// </summary>
     [JsonProperty(PropertyName = "emote_id")]
-    public required string EmoteId { get; set; }
-    
+    public string EmoteId { get; set; } = string.Empty;
+
     /// <summary>
     ///     Positions of the emote in the message.
     /// </summary>
-    public required ICollection<Positions> Positions { get; set; }
+    public ICollection<Positions> Positions { get; set; } = [];
 }

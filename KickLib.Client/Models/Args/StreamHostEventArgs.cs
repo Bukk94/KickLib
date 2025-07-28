@@ -4,5 +4,5 @@ namespace KickLib.Client.Models.Args;
 
 public class StreamHostEventArgs : EventArgs
 {
-    public required StreamHostEvent Data { get; set; }
+    public StreamHostEvent Data { get; set; } = new();
 }

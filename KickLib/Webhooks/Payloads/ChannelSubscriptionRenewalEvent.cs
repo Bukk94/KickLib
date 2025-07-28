@@ -10,8 +10,8 @@ public class ChannelSubscriptionRenewalEvent : WebhookEventBase
     /// <summary>
     ///     The user who renewed the subscription.
     /// </summary>
-    public required KickUser Subscriber { get; set; }
-
+    public KickUser Subscriber { get; set; } = new();
+    
     /// <summary>
     ///     The duration of the subscription in months.
     /// </summary>

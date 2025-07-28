@@ -11,17 +11,17 @@ public class ChatMessageSentEvent : WebhookEventBase
     ///     ID of the message.
     /// </summary>
     [JsonProperty(PropertyName = "message_id")]
-    public required string MessageId { get; set; }
-    
+    public string MessageId { get; set; } = string.Empty;
+
     /// <summary>
     ///     Details of the user who sent the message.
     /// </summary>
-    public required KickUser Sender { get; set; }
+    public KickUser Sender { get; set; } = new();
     
     /// <summary>
     ///     The content of the message.
     /// </summary>
-    public required string Content { get; set; }
+    public string Content { get; set; } = string.Empty;
     
     /// <summary>
     ///     Information about the emotes present in the message.

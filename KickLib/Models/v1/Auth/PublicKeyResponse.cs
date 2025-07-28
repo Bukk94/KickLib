@@ -11,5 +11,5 @@ public class PublicKeyResponse
     ///     Public key used for signing.
     /// </summary>
     [JsonProperty(PropertyName = "public_key")]
-    public required string PublicKey { get; set; }
+    public string PublicKey { get; set; } = string.Empty;
 }

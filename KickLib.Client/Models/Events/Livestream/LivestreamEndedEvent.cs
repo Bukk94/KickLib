@@ -4,5 +4,5 @@ public class LivestreamEndedEvent
 {
     public int Id { get; set; }
 
-    public required LivestreamChannel Channel { get; set; }
+    public LivestreamChannel Channel { get; set; } = new();
 }

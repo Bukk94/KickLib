@@ -42,10 +42,16 @@ public class EventSubscriptions : ApiBase, IEventSubscriptions
         string? accessToken = null,
         CancellationToken cancellationToken = default)
     {
+#if NET8_0_OR_GREATER
         var eventTypes = Enum.GetValues<EventType>()
             .Where(x => x != EventType.Unknown)
             .ToList();
-        
+#else
+        var eventTypes = Enum.GetValues(typeof(EventType))
+            .Cast<EventType>()
+            .Where(x => x != EventType.Unknown)
+            .ToList();
+#endif   
         return SubscribeToEventsAsync(eventTypes, 1, accessToken, cancellationToken);
     }
     
