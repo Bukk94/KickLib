@@ -4,6 +4,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## WIP [1.6.0](https://www.nuget.org/packages/KickLib/1.6.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.5.1...v1.6.0)
+### Added
+- Support for `.NET Standard 2.1`
+- Extended `GetLivestreamsAsync` to get livestreams by multiple `broadcasterIds`
+
 ## [1.5.1](https://www.nuget.org/packages/KickLib/1.5.1) - [diff](https://github.com/Bukk94/KickLib/compare/v1.5.0...v1.5.1)
 ### Added
 - Reply message metadata to `KickLib.Client` Message data

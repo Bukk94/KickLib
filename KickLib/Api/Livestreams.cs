@@ -16,14 +16,7 @@ public class Livestreams : ApiBase, ILivestreams
     {
     }
 
-    /// <summary>
-    ///     Get current Kick Livestreams based on parameters.
-    /// </summary>
-    /// <paramref name="broadcasterId">Limit results to specific broadcaster (returns single result).</paramref>
-    /// <paramref name="categoryId">Limit results to specific category.</paramref>
-    /// <paramref name="language">Limit results to specific language.</paramref>
-    /// <paramref name="limit">Number of results to return (default: 25, maximum: 100).</paramref>
-    /// <paramref name="sort">Result sorting.</paramref>
+    /// <inheritdoc />
     public Task<Result<ICollection<LivestreamResponse>>> GetLivestreamsAsync(
         int? broadcasterId = null, 
         int? categoryId = null,
@@ -33,10 +26,30 @@ public class Livestreams : ApiBase, ILivestreams
         string? accessToken = null,
         CancellationToken cancellationToken = default)
     {
+        var broadcasterIds = broadcasterId is null 
+            ? [] 
+            : new List<int> { broadcasterId.Value };
+        
+        return GetLivestreamsAsync(broadcasterIds, categoryId, language, limit, sort, accessToken, cancellationToken);
+    }
+    
+    /// <inheritdoc />
+    public Task<Result<ICollection<LivestreamResponse>>> GetLivestreamsAsync(
+        ICollection<int> broadcasterIds, 
+        int? categoryId = null,
+        string? language = null,
+        int? limit = null,
+        LivestreamSorting? sort = null,
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
+    {
         var query = new List<KeyValuePair<string, string>>();
-        if (broadcasterId.HasValue)
+        if (broadcasterIds?.Any() == true)
         {
-            query.Add(new("broadcaster_user_id", broadcasterId.ToString()!));
+            foreach (var id in broadcasterIds.Distinct())
+            {
+                query.Add(new("broadcaster_user_id", id.ToString()));
+            }
         }
         
         if (categoryId.HasValue)
