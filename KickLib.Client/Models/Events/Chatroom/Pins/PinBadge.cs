@@ -2,9 +2,9 @@ namespace KickLib.Client.Models.Events.Chatroom.Pins;
 
 public class PinBadge
 {
-    public required string Type { get; set; }
+    public string Type { get; set; } = string.Empty;
     
-    public required string Text { get; set; }
+    public string Text { get; set; } = string.Empty;
     
     public int? Count { get; set; }
 

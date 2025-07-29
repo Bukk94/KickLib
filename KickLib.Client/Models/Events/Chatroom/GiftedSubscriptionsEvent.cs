@@ -25,7 +25,7 @@ public class GiftedSubscriptionsEvent
     ///     Username of the user, who gifted the subscriptions.
     /// </summary>
     [JsonProperty(PropertyName = "gifter_username")]
-    public required string GifterUsername { get; set; }
+    public string GifterUsername { get; set; } = string.Empty;
     
     /// <summary>
     ///     Number of subscriptions this user gifted in total (not during this event, but in total). 

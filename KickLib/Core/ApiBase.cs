@@ -36,9 +36,16 @@ public abstract class ApiBase
     /// <param name="logger">Instance of a logger.</param>
     protected ApiBase(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger logger)
     {
-        ArgumentNullException.ThrowIfNull(settings);
-        ArgumentNullException.ThrowIfNull(logger);
-
+        if (settings is null)
+        {
+            throw new ArgumentNullException(nameof(settings));
+        }
+        
+        if (logger is null)
+        {
+            throw new ArgumentNullException(nameof(logger));
+        }
+ 
         _settings = settings;
         _logger = logger;
         _kickOAuthGenerator = oauthGenerator;
@@ -200,7 +207,11 @@ public abstract class ApiBase
         
         if (!response.IsSuccessStatusCode)
         {
+#if NET8_0_OR_GREATER
             var data = await response.Content.ReadAsStringAsync(CancellationToken.None).ConfigureAwait(false);
+#else
+            var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+#endif
             return HandleErrorResponse(response, data, $"PATCH {url} | Payload: {json}");
         }
 
@@ -238,7 +249,11 @@ public abstract class ApiBase
         
         if (!response.IsSuccessStatusCode)
         {
+#if NET8_0_OR_GREATER
             var data = await response.Content.ReadAsStringAsync(CancellationToken.None).ConfigureAwait(false);
+#else
+            var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+#endif
             return HandleErrorResponse(response, data, $"DELETE {url}");
         }
 
@@ -287,7 +302,11 @@ public abstract class ApiBase
         
         if (!response.IsSuccessStatusCode)
         {
+#if NET8_0_OR_GREATER
             var data = await response.Content.ReadAsStringAsync(CancellationToken.None).ConfigureAwait(false);
+#else
+            var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+#endif
             return HandleErrorResponse(response, data, $"DELETE {url}");
         }
 
@@ -429,7 +448,10 @@ public abstract class ApiBase
         ApiVersion version,
         List<KeyValuePair<string, string>>? queryParams = null)
     {
-        ArgumentException.ThrowIfNullOrEmpty(urlPart);
+        if (string.IsNullOrWhiteSpace(urlPart))
+        {
+            throw new ArgumentException("URL part cannot be null or empty.", nameof(urlPart));
+        }
 
         var url = $"{BaseUrl}v{(int)version}/{urlPart}";
 

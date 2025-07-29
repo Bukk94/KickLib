@@ -8,5 +8,5 @@ public class ChannelFollowedEvent : WebhookEventBase
     /// <summary>
     ///     The user who followed the channel.
     /// </summary>
-    public required KickUser Follower { get; set; }
+    public KickUser Follower { get; set; } = new();
 }

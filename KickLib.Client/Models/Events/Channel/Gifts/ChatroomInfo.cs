@@ -7,7 +7,7 @@ public class ChatroomInfo
     public int Id { get; set; }
 
     [JsonProperty(PropertyName = "chatable_type")]
-    public  required string ChatableType { get; set; }
+    public string ChatableType { get; set; } = string.Empty;
 
     [JsonProperty(PropertyName = "channel_id")]
     public int ChannelId { get; set; }
@@ -22,7 +22,7 @@ public class ChatroomInfo
     public string ChatModeOld { get; set; } = string.Empty;
 
     [JsonProperty(PropertyName = "chat_mode")]
-    public required string ChatMode { get; set; }
+    public string ChatMode { get; set; } = string.Empty;
 
     [JsonProperty(PropertyName = "slow_mode")]
     public bool SlowMode { get; set; }

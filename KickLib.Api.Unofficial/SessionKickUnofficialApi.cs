@@ -49,8 +49,11 @@ namespace KickLib.Api.Unofficial
             ILogger logger,
             out string currentSessionId)
         {
-            ArgumentNullException.ThrowIfNull(sessionManager);
-            
+            if (sessionManager == null)
+            {
+                throw new ArgumentNullException(nameof(sessionManager));
+            }
+
             // Create or use existing session
             currentSessionId = sessionId ?? sessionManager.CreateSession();
             

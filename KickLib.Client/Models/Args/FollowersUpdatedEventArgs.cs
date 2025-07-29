@@ -4,5 +4,5 @@ namespace KickLib.Client.Models.Args;
 
 public class FollowersUpdatedEventArgs : EventArgs
 {
-    public required FollowersUpdatedEvent Data { get; set; }
+    public FollowersUpdatedEvent Data { get; set; } = new();
 }

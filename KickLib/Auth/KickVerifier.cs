@@ -8,6 +8,6 @@
         /// <summary>
         ///     Code verifier.
         /// </summary>
-        public required string CodeVerifier { get; set; }
+        public string CodeVerifier { get; set; } = string.Empty;
     }
 }

@@ -145,7 +145,10 @@ public class Channels : ApiBase, IChannels
         string? accessToken = null,
         CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        if (request == null)
+        {
+            throw new ArgumentNullException(nameof(request));
+        }
         
         // v1/channels
         var result = await PatchAsync(ApiUrlPart, ApiVersion.v1, request, accessToken, cancellationToken).ConfigureAwait(false);

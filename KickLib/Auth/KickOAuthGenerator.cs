@@ -43,10 +43,19 @@ public class KickOAuthGenerator : IKickOAuthGenerator
         out string verifier,
         string? state = null)
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientId);
-        ArgumentException.ThrowIfNullOrEmpty(redirectUri);
-        ArgumentNullException.ThrowIfNull(scopes, nameof(scopes));
-        
+        if (string.IsNullOrEmpty(clientId))
+        {
+            throw new ArgumentException("Client ID cannot be null or empty.", nameof(clientId));
+        }
+        if (string.IsNullOrEmpty(redirectUri))
+        {
+            throw new ArgumentException("Redirect URI cannot be null or empty.", nameof(redirectUri));
+        }
+        if (scopes is null)
+        {
+            throw new ArgumentNullException(nameof(scopes), "Scopes cannot be null.");
+        }
+
         if (scopes.Count == 0)
         {
             throw new ArgumentException("Scopes cannot be empty (select at least one of `KickScopes`).", nameof(scopes));
@@ -93,10 +102,22 @@ public class KickOAuthGenerator : IKickOAuthGenerator
         string state,
         string? verifier = null)
     {
-        ArgumentException.ThrowIfNullOrEmpty(code);
-        ArgumentException.ThrowIfNullOrEmpty(clientId);
-        ArgumentException.ThrowIfNullOrEmpty(state);
-        ArgumentException.ThrowIfNullOrEmpty(redirectUrl);
+        if (string.IsNullOrEmpty(code))
+        {
+            throw new ArgumentException("Code cannot be null or empty.", nameof(code));
+        }
+        if (string.IsNullOrEmpty(clientId))
+        {
+            throw new ArgumentException("Client ID cannot be null or empty.", nameof(clientId));
+        }
+        if (string.IsNullOrEmpty(state))
+        {
+            throw new ArgumentException("State cannot be null or empty.", nameof(state));
+        }
+        if (string.IsNullOrEmpty(redirectUrl))
+        {
+            throw new ArgumentException("Redirect URL cannot be null or empty.", nameof(redirectUrl));
+        }
 
         using var client = new HttpClient();
 
@@ -156,7 +177,10 @@ public class KickOAuthGenerator : IKickOAuthGenerator
         string clientId,
         string clientSecret)
     {
-        ArgumentException.ThrowIfNullOrEmpty(clientId);
+        if (string.IsNullOrEmpty(clientId))
+        {
+            throw new ArgumentException("Client ID cannot be null or empty.", nameof(clientId));
+        }
 
         using var client = new HttpClient();
 
@@ -207,10 +231,19 @@ public class KickOAuthGenerator : IKickOAuthGenerator
         string clientId,
         string clientSecret)
     {
-        ArgumentException.ThrowIfNullOrEmpty(refreshToken);
-        ArgumentException.ThrowIfNullOrEmpty(clientId);
-        ArgumentException.ThrowIfNullOrEmpty(clientSecret);
-
+        if (string.IsNullOrEmpty(refreshToken))
+        {
+            throw new ArgumentException("Refresh token cannot be null or empty.", nameof(refreshToken));
+        }
+        if (string.IsNullOrEmpty(clientId))
+        {
+            throw new ArgumentException("Client ID cannot be null or empty.", nameof(clientId));
+        }
+        if (string.IsNullOrEmpty(clientSecret))
+        {
+            throw new ArgumentException("Client secret cannot be null or empty.", nameof(clientSecret));
+        }
+        
         using var client = new HttpClient();
 
         var data = new FormUrlEncodedContent(
@@ -265,8 +298,11 @@ public class KickOAuthGenerator : IKickOAuthGenerator
         string tokenToRevoke,
         bool isAccessToken)
     {
-        ArgumentException.ThrowIfNullOrEmpty(tokenToRevoke);
-
+        if (string.IsNullOrEmpty(tokenToRevoke))
+        {
+            throw new ArgumentException("Token to revoke cannot be null or empty.", nameof(tokenToRevoke));
+        }
+        
         using var client = new HttpClient();
 
         var hintType = isAccessToken ? "access_token" : "refresh_token";

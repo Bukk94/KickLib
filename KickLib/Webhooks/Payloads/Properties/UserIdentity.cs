@@ -11,10 +11,10 @@ public class UserIdentity
     ///     Color for username in hex format (e.g. #FF5733).
     /// </summary>
     [JsonProperty(PropertyName = "username_color")]
-    public required string UsernameColor { get; set; }
-
+    public string UsernameColor { get; set; } = string.Empty;
+    
     /// <summary>
     ///     A list of badges user has.
     /// </summary>
-    public ICollection<Badge> Badges { get; set; } = new List<Badge>();
+    public ICollection<Badge> Badges { get; set; } = [];
 }

@@ -22,7 +22,7 @@ public class SubscribeToEventResponse
     /// <summary>
     ///     Name of the subscribed event.
     /// </summary>
-    public required string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
     
     /// <summary>
     ///     Version of subscribed event.

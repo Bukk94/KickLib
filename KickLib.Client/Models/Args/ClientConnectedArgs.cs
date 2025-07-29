@@ -2,5 +2,5 @@ namespace KickLib.Client.Models.Args;
 
 public class ClientConnectedArgs : EventArgs
 {
-    public required string SocketId { get; set; }
+    public string SocketId { get; set; } = string.Empty;
 }

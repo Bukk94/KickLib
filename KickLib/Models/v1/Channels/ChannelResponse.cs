@@ -17,33 +17,33 @@ public class ChannelResponse
     /// <summary>
     ///     URL identifier of the channel.
     /// </summary>
-    public required string Slug { get; set; }
+    public string Slug { get; set; } = string.Empty;
     
     /// <summary>
     ///     Description of the channel
     /// </summary>
     [JsonProperty(PropertyName = "channel_description")]
-    public required string ChannelDescription { get; set; }
+    public string ChannelDescription { get; set; } = string.Empty;
     
     /// <summary>
     ///     URL of the channel's profile picture.
     /// </summary>
     [JsonProperty(PropertyName = "banner_picture")]
-    public required string BannerPicture { get; set; }
+    public string BannerPicture { get; set; } = string.Empty;
     
     /// <summary>
     ///     Current stream title.
     /// </summary>
     [JsonProperty(PropertyName = "stream_title")]
-    public required string StreamTitle { get; set; }
+    public string StreamTitle { get; set; } = string.Empty;
 
     /// <summary>
     ///     Current stream details.
     /// </summary>
-    public required StreamResponse Stream { get; set; }
-    
+    public StreamResponse Stream { get; set; } = new();
+
     /// <summary>
     ///     Current category of the channel.
     /// </summary>
-    public required CategoryResponse Category { get; set; }
+    public CategoryResponse Category { get; set; } = new();
 }

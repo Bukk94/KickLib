@@ -5,21 +5,21 @@ namespace KickLib.Client.Models.Events.Chatroom;
 
 public class ChatMessageEvent
 {
-    public required string Id { get; set; }
+    public string Id { get; set; } = string.Empty;
     
     [JsonProperty(PropertyName = "chatroom_id")]
     public int ChatroomId { get; set; }
     
-    public required string Content { get; set; }
+    public string Content { get; set; } = string.Empty;
 
     // TODO: Convert to enum when all possible types are known
     // Known values: message, reply
-    public required string Type { get; set; }
+    public string Type { get; set; } = string.Empty;
 
     [JsonProperty(PropertyName = "created_at")]
     public DateTime CreatedAt { get; set; }
 
-    public required MessageSender Sender { get; set; }
+    public MessageSender Sender { get; set; } = new();
 
     // Optional metadata
     // Known values: original message data

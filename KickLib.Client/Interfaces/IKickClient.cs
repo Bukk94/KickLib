@@ -1,5 +1,7 @@
-using System.Collections.Immutable;
 using KickLib.Client.Models.Args;
+#if NET8_0_OR_GREATER
+using System.Collections.Immutable;
+#endif
 
 namespace KickLib.Client.Interfaces;
 
@@ -138,6 +140,7 @@ public interface IKickClient
     /// </remarks>
     string? SocketId { get; }
 
+#if NET8_0_OR_GREATER
     /// <summary>
     ///     List of channels the client is listening to.
     /// </summary>
@@ -147,7 +150,18 @@ public interface IKickClient
     ///     List of chatrooms the client is listening to.
     /// </summary>
     public ImmutableHashSet<int> ListeningToChatRooms { get; }
+#else
+    /// <summary>
+    ///     List of channels the client is listening to.
+    /// </summary>
+    public HashSet<int> ListeningToChannels { get; }
 
+    /// <summary>
+    ///     List of chatrooms the client is listening to.
+    /// </summary>
+    public HashSet<int> ListeningToChatRooms { get; }
+#endif
+    
     /// <summary>
     ///     Listens to events of specific channel.
     ///     Uses the `channel.${channelId}` Pusher channel.

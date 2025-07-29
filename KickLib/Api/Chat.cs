@@ -26,7 +26,10 @@ public class Chat : ApiBase, IChat
         string? accessToken = null,
         CancellationToken cancellationToken = default)
     {
-        ArgumentException.ThrowIfNullOrEmpty(message);
+        if (string.IsNullOrEmpty(message))
+        {
+            throw new ArgumentException("Message cannot be null or empty.", nameof(message));
+        }
         
         return PostMessageInternalAsync(message, MessageType.User, broadcasterId, null, accessToken, cancellationToken);
     }
@@ -40,8 +43,11 @@ public class Chat : ApiBase, IChat
         string? accessToken = null,
         CancellationToken cancellationToken = default)
     {
-        ArgumentException.ThrowIfNullOrEmpty(message);
-
+        if (string.IsNullOrEmpty(message))
+        {
+            throw new ArgumentException("Message cannot be null or empty.", nameof(message));
+        }
+        
         return PostMessageInternalAsync(message, MessageType.Bot, null, null, accessToken, cancellationToken);
     }
     
@@ -56,9 +62,15 @@ public class Chat : ApiBase, IChat
         string? accessToken = null,
         CancellationToken cancellationToken = default)
     {
-        ArgumentException.ThrowIfNullOrEmpty(message);
-        ArgumentException.ThrowIfNullOrEmpty(messageId);
-        
+        if (string.IsNullOrEmpty(message))
+        {
+            throw new ArgumentException("Message cannot be null or empty.", nameof(message));
+        }
+        if (string.IsNullOrEmpty(messageId))
+        {
+            throw new ArgumentException("Message ID cannot be null or empty.", nameof(messageId));
+        }
+
         return PostMessageInternalAsync(message, MessageType.User, broadcasterId, messageId, accessToken, cancellationToken);
     }
     
@@ -72,7 +84,10 @@ public class Chat : ApiBase, IChat
         string? accessToken = null,
         CancellationToken cancellationToken = default)
     {
-        ArgumentException.ThrowIfNullOrEmpty(messageId);
+        if (string.IsNullOrEmpty(messageId))
+        {
+            throw new ArgumentException("Message ID cannot be null or empty.", nameof(messageId));
+        }
 
         return PostMessageInternalAsync(message, MessageType.Bot, null, messageId, accessToken, cancellationToken);
     }
@@ -85,7 +100,10 @@ public class Chat : ApiBase, IChat
         string? accessToken,
         CancellationToken cancellationToken)
     {
-        ArgumentException.ThrowIfNullOrEmpty(message);
+        if (string.IsNullOrEmpty(message))
+        {
+            throw new ArgumentException("Message cannot be null or empty.", nameof(message));
+        }
 
         var input = new SendMessageRequest(message, type)
         {

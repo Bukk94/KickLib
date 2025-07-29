@@ -1,4 +1,6 @@
+#if NET8_0_OR_GREATER
 using System.Collections.Immutable;
+#endif
 using KickLib.Client.Interfaces;
 using KickLib.Client.Models.Args;
 using KickLib.Client.Models.Events.Channel;
@@ -57,8 +59,14 @@ public class KickClient : IKickClient
     
     public bool IsConnected => _pusher.State == ConnectionState.Connected;
     public string? SocketId => _pusher.SocketID;
+    
+#if NET8_0_OR_GREATER
     public ImmutableHashSet<int> ListeningToChannels => _listeningToChannels.ToImmutableHashSet();
     public ImmutableHashSet<int> ListeningToChatRooms => _listeningToChatRooms.ToImmutableHashSet();
+#else
+    public HashSet<int> ListeningToChannels => _listeningToChannels;
+    public HashSet<int> ListeningToChatRooms => _listeningToChatRooms;
+#endif
     
     public async Task ListenToChannelAsync(int channelId)
     {

@@ -20,7 +20,7 @@ public class StreamResponse
     /// <summary>
     ///     Current language of the stream.
     /// </summary>
-    public required string Language { get; set; }
+    public string Language { get; set; } = string.Empty;
     
     /// <summary>
     ///     Indicates if the stream is live.

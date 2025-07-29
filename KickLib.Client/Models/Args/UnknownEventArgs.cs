@@ -2,9 +2,9 @@ namespace KickLib.Client.Models.Args;
 
 public class UnknownEventArgs : EventArgs
 {
-    public required string EventName { get; set; }
+    public string EventName { get; set; } = string.Empty;
     
-    public required string RawData { get; set; }
+    public string RawData { get; set; } = string.Empty;
     
     public EventSource Source { get; set; }
 }
