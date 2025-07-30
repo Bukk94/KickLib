@@ -71,35 +71,47 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
             payloadPrep.Add("isMobileRequest", true);
             payloadPrep.Add("email", authenticationSettings.Username);
             payloadPrep.Add("password", authenticationSettings.Password);
-            payloadPrep.Add(tokenProvider["nameFieldName"]!.ToString(), "");
-            payloadPrep.Add(tokenProvider["validFromFieldName"]!.ToString(), tokenProvider["encryptedValidFrom"]);
+            //payloadPrep.Add(tokenProvider["nameFieldName"]!.ToString(), "");
+            //payloadPrep.Add(tokenProvider["validFromFieldName"]!.ToString(), tokenProvider["encryptedValidFrom"]);
             if (authenticationSettings.UseOtp)
             {
                 var otp = GenerateTotp(authenticationSettings.TwoFactorAuthCode);
                 payloadPrep.Add("one_time_password", otp);
+                payloadPrep.Add("code", otp);
             }
         
             var loginPayload = Newtonsoft.Json.JsonConvert.SerializeObject(payloadPrep);
-        
+
+            var randomUa = UserAgentRandomizer.GetRandomUserAgent();
+            
             // Using mobile login is easier  
-            var loginResponse = await page.EvaluateFunctionAsync<string>($@"
+            var loginResponseRaw = await page.EvaluateFunctionAsync<string>($@"
             async () => {{
                 const response = await fetch('https://kick.com/mobile/login', {{
                     method: 'POST',
                     headers: {{
                         'Accept': 'application/json',
+                        'Authorization': 'Bearer {xsrfToken}',
                         'Content-Type': 'application/json',
+                        'Referer': 'https://kick.com/',
+                        'Origin': 'https://kick.com',
+                        'User-Agent': '{randomUa}',
                         'X-Xsrf-Token': '{xsrfToken}'
                     }},
                     body: JSON.stringify({loginPayload})
                 }});
-                return response.text();
+                const body = await response.text();
+                return JSON.stringify({{ status: response.status, body }});
             }}
             ").ConfigureAwait(false);
 
-            if (loginResponse.Contains("CSRF token mismatch"))
+            var loginResponseObj = JObject.Parse(loginResponseRaw);
+            var loginResponse = loginResponseObj["body"]?.ToString();
+            var loginStatus = loginResponseObj["status"]?.ToObject<int>() ?? 0;
+
+            if (loginStatus != 200)
             {
-                throw new ArgumentException("Something went wrong: CSRF token mismatch");
+                throw new ArgumentException($"Login request failed with status code {loginStatus}. Response: {loginResponse}");
             }
 
             JToken parsedLoginResponse;
