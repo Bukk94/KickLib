@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using KickLib.Api.Unofficial.Clients.Puppeteer;
 using KickLib.Api.Unofficial.Exceptions;
 using KickLib.Api.Unofficial.Interfaces;
@@ -8,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using Polly;
 using PuppeteerSharp;
+using PusherClient;
+using System.Text.RegularExpressions;
 
 namespace KickLib.Api.Unofficial.Clients
 {
@@ -24,50 +25,67 @@ namespace KickLib.Api.Unofficial.Clients
 
         public BrowserClient(
             IAuthenticationService authenticationService,
-            BrowserSettings settings, 
+            BrowserSettings settings,
             ILogger logger = null)
         {
             _authenticationService = authenticationService;
             _logger = logger;
             _settings = settings ?? BrowserSettings.Empty;
         }
-    
+
         /// <inheritdoc />
         public Task AuthenticateAsync(AuthenticationSettings authenticationSettings)
         {
             return _authenticationService.AuthenticateAsync(authenticationSettings);
         }
-    
+
         /// <inheritdoc />
         public async Task<KeyValuePair<int, string>> SendRequestAsync(string url)
         {
-            await using var browser = await BrowserInitializer.LaunchBrowserAsync(_settings).ConfigureAwait(false);
-        
-            await using var page = await browser.NewPageAsync().ConfigureAwait(false);
-            await page.GoToAsync(url);
+            // Polly retry policy: 3 attempts with 5 seconds delay between each attempt
+            var retryPolicy = Policy
+                .Handle<Exception>() // Handle all exceptions
+                .Or<OperationException>() // Handle specific exceptions
+                .WaitAndRetryAsync(
+                    retryCount: 3,
+                    sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(5),
+                    onRetry: (outcome, timespan, retryCount, context) =>
+                    {
+                        // Log retry information for debugging
+                        Console.WriteLine($"Retry attempt {retryCount} for URL: {url}");
+                    });
 
-            try
+            return await retryPolicy.ExecuteAsync(async () =>
             {
-                // Wait for one of following selector:
-                //    1) <body> with no class - that means JSON response with no formatting -> expected behavior
-                //    2) Specific div that contains error name -> this happens when Kick throw 404 or 500 errors (we catch this to avoid timeout waiting)
-                await page.WaitForSelectorAsync(
-                    "body:not([class]), body > div > div > div > div.ml-4.text-lg.text-gray-500.uppercase.tracking-wider");
-            }
-            catch (Exception ex)
-            {
-                throw new KickLibException("KickLib failed to get response from Kick.com. See inner exception for details.", ex);
-            }
-        
-            var content = await page.GetContentAsync().ConfigureAwait(false);
+                await using var browser = await BrowserInitializer.LaunchBrowserAsync(_settings).ConfigureAwait(false);
 
-            var match = _regex.Match(content);
-            if (!match.Success)
-            {
-                return GetErrorResponse(content);
-            }
-        
-            return new KeyValuePair<int, string>(200, match.Groups["json"].Value);
+                await using var page = await browser.NewPageAsync().ConfigureAwait(false);
+                await page.GoToAsync(url);
+
+                try
+                {
+                    // Wait for one of following selector:
+                    //    1) <body> with no class - that means JSON response with no formatting -> expected behavior
+                    //    2) Specific div that contains error name -> this happens when Kick throw 404 or 500 errors (we catch this to avoid timeout waiting)
+                    await page.WaitForSelectorAsync(
+                        "body:not([class]), body > div > div > div > div.ml-4.text-lg.text-gray-500.uppercase.tracking-wider");
+                }
+                catch (Exception ex)
+                {
+                    throw new KickLibException("KickLib failed to get response from Kick.com. See inner exception for details.", ex);
+                }
+
+                var content = await page.GetContentAsync().ConfigureAwait(false);
+                var match = _regex.Match(content);
+
+                if (!match.Success)
+                {
+                    // If match.Success is false, throw exception so Polly will retry
+                    throw new InvalidOperationException("Regex match failed, retrying...");
+                }
+
+                return new KeyValuePair<int, string>(200, match.Groups["json"].Value);
+            });
         }
 
         /// <inheritdoc />
@@ -77,13 +95,13 @@ namespace KickLib.Api.Unofficial.Clients
             {
                 throw new ArgumentException($"Cannot send authenticated request without authenticating first! Call '{nameof(AuthenticateAsync)}' first.");
             }
-        
+
             await using var browser = await BrowserInitializer.LaunchBrowserAsync(_settings).ConfigureAwait(false);
-        
+
             try
             {
                 await using var page = await browser.NewPageAsync().ConfigureAwait(false);
-            
+
                 var method = payload is not null ? "POST" : "GET";
                 var body = payload is not null
                     ? $", body: JSON.stringify({payload})"
@@ -116,7 +134,7 @@ namespace KickLib.Api.Unofficial.Clients
 
                 // Try to extract status code from the call. It's not always there.
                 var statusCode = int.Parse(parsedResponse["status"]?["code"]?.ToString() ?? "200");
-            
+
                 return new KeyValuePair<int, string>(statusCode, response);
             }
             catch (Exception ex)
@@ -137,7 +155,7 @@ namespace KickLib.Api.Unofficial.Clients
                 {
                     // Sometimes Kick doesn't like our requests and we get 'Failed to fetch' exception
                     // Simple retry is enough to pass through 
-                
+
                     var response = await page.EvaluateFunctionAsync<string>($@"
                     async () => {{
                         const response = await fetch('{url}', {{
@@ -161,7 +179,7 @@ namespace KickLib.Api.Unofficial.Clients
                     return response;
                 });
         }
-    
+
         private static KeyValuePair<int, string> GetErrorResponse(string pageContent)
         {
             if (pageContent.Contains("<title>Server Error</title>"))
@@ -169,7 +187,7 @@ namespace KickLib.Api.Unofficial.Clients
                 // Kick throws 500
                 return new KeyValuePair<int, string>(503, string.Empty);
             }
-        
+
             if (pageContent.Contains("<title>Not Found</title>"))
             {
                 // Kick sends Not found error
