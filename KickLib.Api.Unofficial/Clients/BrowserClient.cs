@@ -45,7 +45,7 @@ namespace KickLib.Api.Unofficial.Clients
             // Polly retry policy: 3 attempts with 5 seconds delay between each attempt
             var retryPolicy = Policy
                 .Handle<Exception>() // Handle all exceptions
-                .Or<OperationException>() // Handle specific exceptions
+                .Or<InvalidOperationException>() // Handle specific exceptions
                 .WaitAndRetryAsync(
                     retryCount: 3,
                     sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(5),
