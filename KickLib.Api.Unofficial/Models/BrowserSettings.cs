@@ -20,6 +20,16 @@ namespace KickLib.Api.Unofficial.Models
         public string BrowserDownloadPath { get; set; }
 
         /// <summary>
+        ///     Retry delay for failed requests.
+        /// </summary>
+        public TimeSpan RetryDelay { get; set; } = TimeSpan.FromSeconds(5);
+        
+        /// <summary>
+        ///     Number of times to retry a request before failing.
+        /// </summary>
+        public int MaxRetryCount { get; set; } = 3;
+
+        /// <summary>
         ///     Sets the puppeteer plugins to be added when initializing the browser.
         /// </summary>
         public IEnumerable<PuppeteerExtraPlugin> PuppeteerPlugins { get; set; } =

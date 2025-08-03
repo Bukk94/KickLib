@@ -7,8 +7,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using Polly;
 using PuppeteerSharp;
-using PusherClient;
 using System.Text.RegularExpressions;
+using Polly.Retry;
 
 namespace KickLib.Api.Unofficial.Clients
 {
@@ -22,6 +22,7 @@ namespace KickLib.Api.Unofficial.Clients
         private readonly IAuthenticationService _authenticationService;
         private readonly BrowserSettings _settings;
         private readonly ILogger _logger;
+        private readonly AsyncRetryPolicy<KeyValuePair<int, string>> _retryPolicy;
 
         public BrowserClient(
             IAuthenticationService authenticationService,
@@ -31,6 +32,20 @@ namespace KickLib.Api.Unofficial.Clients
             _authenticationService = authenticationService;
             _logger = logger;
             _settings = settings ?? BrowserSettings.Empty;
+            
+            // Polly retry policy with delay between each attempt
+            _retryPolicy = Policy
+                .Handle<Exception>() // Handle all exceptions
+                .OrResult<KeyValuePair<int, string>>(x => x.Key >= 500) // Handle 500 error responses
+                .WaitAndRetryAsync(
+                    retryCount: _settings.MaxRetryCount,
+                    sleepDurationProvider: _ => _settings.RetryDelay,
+                    onRetry: (_, _, retryCount, context) =>
+                    {
+                        context.TryGetValue("url", out var url);
+                        // Log retry information for debugging
+                        _logger.LogInformation("Retry attempt {RetryCount} for URL: {Value}", retryCount, url);
+                    });
         }
 
         /// <inheritdoc />
@@ -42,20 +57,7 @@ namespace KickLib.Api.Unofficial.Clients
         /// <inheritdoc />
         public async Task<KeyValuePair<int, string>> SendRequestAsync(string url)
         {
-            // Polly retry policy: 3 attempts with 5 seconds delay between each attempt
-            var retryPolicy = Policy
-                .Handle<Exception>() // Handle all exceptions
-                .Or<InvalidOperationException>() // Handle specific exceptions
-                .WaitAndRetryAsync(
-                    retryCount: 3,
-                    sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(5),
-                    onRetry: (outcome, timespan, retryCount, context) =>
-                    {
-                        // Log retry information for debugging
-                        Console.WriteLine($"Retry attempt {retryCount} for URL: {url}");
-                    });
-
-            return await retryPolicy.ExecuteAsync(async () =>
+            return await _retryPolicy.ExecuteAsync(async (_) =>
             {
                 await using var browser = await BrowserInitializer.LaunchBrowserAsync(_settings).ConfigureAwait(false);
 
@@ -80,12 +82,11 @@ namespace KickLib.Api.Unofficial.Clients
 
                 if (!match.Success)
                 {
-                    // If match.Success is false, throw exception so Polly will retry
-                    throw new InvalidOperationException("Regex match failed, retrying...");
+                    return GetErrorResponse(content);
                 }
 
                 return new KeyValuePair<int, string>(200, match.Groups["json"].Value);
-            });
+            }, new Dictionary<string, object> { { "url", url } }).ConfigureAwait(false);
         }
 
         /// <inheritdoc />

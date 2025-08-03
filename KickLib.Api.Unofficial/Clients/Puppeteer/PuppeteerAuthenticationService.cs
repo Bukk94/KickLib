@@ -71,13 +71,12 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
             payloadPrep.Add("isMobileRequest", true);
             payloadPrep.Add("email", authenticationSettings.Username);
             payloadPrep.Add("password", authenticationSettings.Password);
-            //payloadPrep.Add(tokenProvider["nameFieldName"]!.ToString(), "");
-            //payloadPrep.Add(tokenProvider["validFromFieldName"]!.ToString(), tokenProvider["encryptedValidFrom"]);
+            payloadPrep.Add(tokenProvider["nameFieldName"]!.ToString(), "");
+            payloadPrep.Add(tokenProvider["validFromFieldName"]!.ToString(), tokenProvider["encryptedValidFrom"]);
             if (authenticationSettings.UseOtp)
             {
                 var otp = GenerateTotp(authenticationSettings.TwoFactorAuthCode);
                 payloadPrep.Add("one_time_password", otp);
-                payloadPrep.Add("code", otp);
             }
         
             var loginPayload = Newtonsoft.Json.JsonConvert.SerializeObject(payloadPrep);
@@ -91,7 +90,6 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
                     method: 'POST',
                     headers: {{
                         'Accept': 'application/json',
-                        'Authorization': 'Bearer {xsrfToken}',
                         'Content-Type': 'application/json',
                         'Referer': 'https://kick.com/',
                         'Origin': 'https://kick.com',
