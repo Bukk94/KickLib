@@ -217,6 +217,7 @@ public class KickClient : IKickClient
                 });
                 break;
             
+            case "SubscriptionEvent":
             case "App\\Events\\SubscriptionEvent":
                 var parsedSubscriptionEvent = ParseData<SubscriptionEvent>(e.Data);
                 OnSubscription?.Invoke(this, new SubscriptionEventArgs
@@ -225,6 +226,7 @@ public class KickClient : IKickClient
                 });
                 break;
             
+            case "GiftedSubscriptionsEvent":
             case "App\\Events\\GiftedSubscriptionsEvent":
                 var parsedGiftedSubscriptionEvent = ParseData<GiftedSubscriptionsEvent>(e.Data);
                 OnGiftedSubscription?.Invoke(this, new GiftedSubscriptionsEventArgs
