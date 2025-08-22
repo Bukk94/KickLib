@@ -285,6 +285,10 @@ await client.ConnectAsync();
 // otherwise you won't be able to receive messages.
 ```
 
+## Testing Webhooks
+
+If you don't have a server set up to receive webhooks but want to test the payloads sent by Kick, you can use a service like [Webhook.site](https://webhook.site/).
+
 # Disclaimer
 
 For a long time, Kick didn't have any official API.

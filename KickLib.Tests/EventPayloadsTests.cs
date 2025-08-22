@@ -12,6 +12,7 @@ public class EventPayloadsTests : BaseKickLibTests
     
     [Theory]
     [InlineData("ChatMessageSentEventPayload")]
+    [InlineData("ChatMessageSentEventWithReplyPayload")]
     [InlineData("ChatMessageSentEventPayload_NoEmotes")]
     public void CorrectlyDeserialize_ChatMessageSentEventPayload(string data)
     {
@@ -38,6 +39,21 @@ public class EventPayloadsTests : BaseKickLibTests
         webhookEvent.Sender.Identity.Badges.Should().Contain(x => x.Type == BadgeType.Subscriber);
         webhookEvent.Sender.Identity.Badges.Should().Contain(x => x.Type == BadgeType.SubGifter);
         webhookEvent.Sender.Identity.Badges.Should().Contain(x => x.Type == BadgeType.SubGifter && x.Count == 5);
+    }
+    
+    [Fact]
+    public void ChatMessageSentEventWithReplyPayload_ContainsCorrectValues()
+    {
+        var payload = GetPayload("ChatMessageSentEventWithReplyPayload");
+
+        var webhookEvent = WebhookEventParser.ParseChatMessageSentEvent(payload);
+
+        payload.Should().NotBeNull();
+        webhookEvent.Should().NotBeNull();
+        webhookEvent.RepliesTo.Should().NotBeNull();
+        webhookEvent.RepliesTo.MessageId.Should().Be("unique_message_id_456");
+        webhookEvent.RepliesTo.Content.Should().Be("This is the parent message!");
+        webhookEvent.RepliesTo.Sender.Should().NotBeNull();
     }
     
     [Fact]

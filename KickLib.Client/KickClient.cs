@@ -73,22 +73,31 @@ public class KickClient : IKickClient
         var channel = await _pusher.SubscribeAsync($"channel.{channelId}").ConfigureAwait(false);
         channel.BindAll(ChannelDataReader);
         
+        var channelAlternative = await _pusher.SubscribeAsync($"channel_{channelId}").ConfigureAwait(false);
+        channelAlternative.BindAll(ChannelDataReader);
+        
         _listeningToChannels.Add(channelId);
     }
     
     public Task StopListeningToChannelAsync(int channelId)
     {
         _listeningToChannels.Remove(channelId);
-        return _pusher.UnsubscribeAsync($"channel.{channelId}");
+        return Task.WhenAll(
+            _pusher.UnsubscribeAsync($"channel.{channelId}"),
+            _pusher.UnsubscribeAsync($"channel_{channelId}")
+        );
     }
     
     public async Task ListenToChatRoomAsync(int chatroomId)
     {
-        var channelV2 = await _pusher.SubscribeAsync($"chatrooms.{chatroomId}.v2").ConfigureAwait(false);
-        channelV2.BindAll(ChatRoomDataReader);
-
-        var channelV1 = await _pusher.SubscribeAsync($"chatroom_{chatroomId}").ConfigureAwait(false);
-        channelV1.BindAll(ChatRoomDataReader);
+        var chatroom = await _pusher.SubscribeAsync($"chatroom_{chatroomId}").ConfigureAwait(false);
+        chatroom.BindAll(ChatRoomDataReader);
+        
+        var chatroomsV1 = await _pusher.SubscribeAsync($"chatrooms.{chatroomId}").ConfigureAwait(false);
+        chatroomsV1.BindAll(ChatRoomDataReader);
+        
+        var chatroomsV2 = await _pusher.SubscribeAsync($"chatrooms.{chatroomId}.v2").ConfigureAwait(false);
+        chatroomsV2.BindAll(ChatRoomDataReader);
         
         _listeningToChatRooms.Add(chatroomId);
     }
@@ -97,8 +106,9 @@ public class KickClient : IKickClient
     {
         _listeningToChatRooms.Remove(chatroomId);
         return Task.WhenAll(
-            _pusher.UnsubscribeAsync($"chatrooms.{chatroomId}.v2"),
-            _pusher.UnsubscribeAsync($"chatroom_{chatroomId}")
+            _pusher.UnsubscribeAsync($"chatroom_{chatroomId}"),
+            _pusher.UnsubscribeAsync($"chatrooms.{chatroomId}"),
+            _pusher.UnsubscribeAsync($"chatrooms.{chatroomId}.v2")
         );
     }
     
@@ -173,8 +183,8 @@ public class KickClient : IKickClient
                 });
                 break;
             
-            // case "App\\Events\\StreamHostedEvent":
-            // case "App\\Events\\ChannelSubscriptionEvent":
+            // case "App\\Events\\StreamHostedEvent": {"event":"App\\Events\\StreamHostedEvent","data":"{\"message\":{\"id\":\"af4673b8-a06f-4d47-84d2-9fb8c75117e2\",\"numberOfViewers\":8,\"optionalMessage\":null,\"createdAt\":\"2025-08-19T09:37:20.859247Z\"},\"user\":{\"id\":2341810,\"username\":\"ABC\",\"isSuperAdmin\":false,\"verified\":false}}","channel":"chatrooms.12345"}
+            // case "App\\Events\\ChannelSubscriptionEvent": {\"user_ids\":[1234500],\"username\":\"ABC\",\"channel_id\":1174682}","channel":"channel.1174682"}
             // case "App\\Events\\LuckyUsersWhoGotGiftSubscriptionsEvent":
             
             case "App\\Events\\GiftsLeaderboardUpdated":

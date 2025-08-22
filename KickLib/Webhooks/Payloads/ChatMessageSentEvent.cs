@@ -14,6 +14,12 @@ public class ChatMessageSentEvent : WebhookEventBase
     public string MessageId { get; set; } = string.Empty;
 
     /// <summary>
+    ///     If user is replying to another message, details about that message.
+    /// </summary>
+    [JsonProperty(PropertyName = "replies_to")]
+    public ReplyToDetails? RepliesTo { get; set; }
+    
+    /// <summary>
     ///     Details of the user who sent the message.
     /// </summary>
     public KickUser Sender { get; set; } = new();
