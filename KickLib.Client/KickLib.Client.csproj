@@ -6,8 +6,8 @@
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
         <Authors>Bukk94</Authors>
-        <AssemblyVersion>1.6.0</AssemblyVersion>
-        <FileVersion>1.6.0</FileVersion>
+        <AssemblyVersion>1.6.1</AssemblyVersion>
+        <FileVersion>1.6.1</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>

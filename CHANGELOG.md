@@ -4,6 +4,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.1](https://www.nuget.org/packages/KickLib/1.6.1) - [diff](https://github.com/Bukk94/KickLib/compare/v1.6.0...v1.6.1)
+### Added
+- Extended listened topics for `KickLib.Client`
+- Added retry policy for `BrowserClient`
+- Added replies_to field to `ChatMessageSentEvent` webhook event
+### Fixed
+- Fixed listening for `SubscriptionEvent` event
+
 ## [1.6.0](https://www.nuget.org/packages/KickLib/1.6.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.5.1...v1.6.0)
 ### Added
 - Support for `.NET Standard 2.1`

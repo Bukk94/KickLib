@@ -16,10 +16,10 @@
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Added Support for .NET Standard 2.1, extended livestreams endpoint</PackageReleaseNotes>
-        <Version>1.6.0</Version>
-        <AssemblyVersion>1.6.0</AssemblyVersion>
-        <FileVersion>1.6.0</FileVersion>
+        <PackageReleaseNotes>Added replies_to field to webhooks, retry policy to BrowserClient, fixes</PackageReleaseNotes>
+        <Version>1.6.1</Version>
+        <AssemblyVersion>1.6.1</AssemblyVersion>
+        <FileVersion>1.6.1</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
