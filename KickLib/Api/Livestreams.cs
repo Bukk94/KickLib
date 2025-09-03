@@ -87,4 +87,25 @@ public class Livestreams : ApiBase, ILivestreams
         // v1/livestreams
         return GetAsync<ICollection<LivestreamResponse>>(ApiUrlPart, ApiVersion.v1, query, accessToken, cancellationToken);
     }
+    
+    /// <inheritdoc />
+    public async Task<Result<LivestreamResponse?>> GetLivestreamAsync(
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
+    {
+        // v1/livestreams/stats
+        var urlPart = $"{ApiUrlPart}/stats";
+        
+        var result = await GetAsync<ICollection<LivestreamResponse>>(urlPart, ApiVersion.v1, null, accessToken, cancellationToken)
+            .ConfigureAwait(false);
+        
+        if (result.IsFailed)
+        {
+            return Result.Fail<LivestreamResponse?>(result.Errors);
+        }
+
+        return Result.Ok(
+            result.Value.Any() ? result.Value.First() : null)
+            .WithSuccesses(result.Successes);
+    }
 }

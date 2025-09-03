@@ -40,4 +40,12 @@ public interface ILivestreams
         LivestreamSorting? sort = null,
         string? accessToken = null,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Get livestream information for currently authorised user.
+    /// </summary>
+    /// <returns>Returns <c>null</c> if user is not livestreaming.</returns>
+    Task<Result<LivestreamResponse?>> GetLivestreamAsync(
+        string? accessToken = null,
+        CancellationToken cancellationToken = default);
 }
