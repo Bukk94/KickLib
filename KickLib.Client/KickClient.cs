@@ -55,6 +55,7 @@ public class KickClient : IKickClient
     public event EventHandler<PinnedMessageCreatedEventArgs>? OnPinnedMessageCreated;
     public event EventHandler<PinnedMessageDeletedEventArgs>? OnPinnedMessageDeleted;
     public event EventHandler<RewardRedeemedEventArgs>? OnRewardRedeemed;
+    public event EventHandler<KicksGiftedEventArgs>? OnKicksGifted;
     #endregion
     
     public bool IsConnected => _pusher.State == ConnectionState.Connected;
@@ -72,10 +73,10 @@ public class KickClient : IKickClient
     {
         var channel = await _pusher.SubscribeAsync($"channel.{channelId}").ConfigureAwait(false);
         channel.BindAll(ChannelDataReader);
-        
+
         var channelAlternative = await _pusher.SubscribeAsync($"channel_{channelId}").ConfigureAwait(false);
         channelAlternative.BindAll(ChannelDataReader);
-        
+
         _listeningToChannels.Add(channelId);
     }
     
@@ -110,7 +111,7 @@ public class KickClient : IKickClient
             _pusher.UnsubscribeAsync($"chatrooms.{chatroomId}"),
             _pusher.UnsubscribeAsync($"chatrooms.{chatroomId}.v2")
         );
-    }
+    }  
     
     public Task ConnectAsync()
     {
@@ -194,6 +195,14 @@ public class KickClient : IKickClient
                     Data = giftsLeaderboardUpdate
                 });
                 break;
+
+            case "KicksGifted":
+                var kicksGiftedEvent = ParseData<KicksGiftedEvent>(e.Data);
+                OnKicksGifted?.Invoke(this, new KicksGiftedEventArgs
+                {
+                    Data = kicksGiftedEvent
+                });
+                break;
             
             default:
                 _logger?.LogInformation("Encountered unknown event during channel reading.");
@@ -226,7 +235,7 @@ public class KickClient : IKickClient
                     Data = messageDeletedEvent
                 });
                 break;
-            
+
             case "SubscriptionEvent":
             case "App\\Events\\SubscriptionEvent":
                 var parsedSubscriptionEvent = ParseData<SubscriptionEvent>(e.Data);
@@ -235,7 +244,7 @@ public class KickClient : IKickClient
                     Data = parsedSubscriptionEvent
                 });
                 break;
-            
+
             case "GiftedSubscriptionsEvent":
             case "App\\Events\\GiftedSubscriptionsEvent":
                 var parsedGiftedSubscriptionEvent = ParseData<GiftedSubscriptionsEvent>(e.Data);
