@@ -123,6 +123,14 @@ public interface IKickClient
     event EventHandler<RewardRedeemedEventArgs> OnRewardRedeemed;
 
     /// <summary>
+    ///     Fires when kicks are gifted in a channel.
+    /// </summary>
+    /// <remarks>
+    ///     Must be listening to Channel <see cref="ListenToChannelAsync"/>.
+    /// </remarks>
+    event EventHandler<KicksGiftedEventArgs> OnKicksGifted;
+
+    /// <summary>
     ///     Event that fires when client receives unknown message.
     /// </summary>
     event EventHandler<UnknownEventArgs> OnUnknownEvent;
