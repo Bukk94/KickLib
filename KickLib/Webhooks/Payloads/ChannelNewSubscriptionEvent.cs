@@ -10,6 +10,7 @@ public class ChannelNewSubscriptionEvent : WebhookEventBase
     /// <summary>
     ///     The user who subscribed to the channel.
     /// </summary>
+    [JsonProperty(PropertyName = "subscriber")]
     public KickUser Gifter { get; set; } = new();
     
     /// <summary>
