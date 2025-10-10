@@ -4,6 +4,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.2](https://www.nuget.org/packages/KickLib/1.6.2) - [diff](https://github.com/Bukk94/KickLib/compare/v1.6.1...v1.6.2)
+### Added
+- GetLivestreamAsync overload to get livestream for currently authenticated user
+- Add KicksGifted event to Client
+### Fixed
+- Fixed data deserialization for NewSubscriptionEvent webhook event
+
 ## [1.6.1](https://www.nuget.org/packages/KickLib/1.6.1) - [diff](https://github.com/Bukk94/KickLib/compare/v1.6.0...v1.6.1)
 ### Added
 - Extended listened topics for `KickLib.Client`

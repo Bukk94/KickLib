@@ -8,10 +8,15 @@ namespace KickLib.Webhooks.Payloads;
 public class ChannelNewSubscriptionEvent : WebhookEventBase
 {
     /// <summary>
+    ///     The user who subscribed to the channel (same value as Subscriber).
+    /// </summary>
+    [Obsolete("Use Subscriber property instead.")]
+    public KickUser Gifter => Subscriber;
+    
+    /// <summary>
     ///     The user who subscribed to the channel.
     /// </summary>
-    [JsonProperty(PropertyName = "subscriber")]
-    public KickUser Gifter { get; set; } = new();
+    public KickUser Subscriber { get; set; } = new();
     
     /// <summary>
     ///     The duration of the subscription in months.

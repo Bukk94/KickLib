@@ -22,6 +22,10 @@ public class EventPayloadsTests : BaseKickLibTests
         
         payload.Should().NotBeNull();
         webhookEvent.Should().NotBeNull();
+        webhookEvent.MessageId.Should().NotBeNullOrEmpty();
+        webhookEvent.Broadcaster.Should().NotBeNull();
+        webhookEvent.Sender.Should().NotBeNull();
+        webhookEvent.Content.Should().NotBeNullOrEmpty();
     }
     
     [Fact]
@@ -89,6 +93,13 @@ public class EventPayloadsTests : BaseKickLibTests
 
         payload.Should().NotBeNull();
         webhookEvent.Should().NotBeNull();
+        webhookEvent.Broadcaster.Should().NotBeNull();
+        webhookEvent.Gifter.Should().NotBeNull();
+        webhookEvent.Subscriber.Should().NotBeNull();
+        webhookEvent.Subscriber.UserId.Should().Be(987654321);
+        webhookEvent.Duration.Should().Be(1);
+        webhookEvent.CreatedAt.Should().BeCloseTo(DateTimeOffset.Parse("2025-01-14T16:08:06Z"), TimeSpan.FromSeconds(1));
+        webhookEvent.ExpiresAt.Should().BeCloseTo(DateTimeOffset.Parse("2025-03-15T16:08:06Z"), TimeSpan.FromSeconds(1));
     }
 
     [Fact]
