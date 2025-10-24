@@ -49,5 +49,10 @@ public enum EventType
     /// <summary>
     ///     Event type moderation.banned.
     /// </summary>
-    ModerationUserBanned
+    ModerationUserBanned,
+    
+    /// <summary>
+    ///     Event type kicks.gifted.
+    /// </summary>
+    KicksGifted
 }

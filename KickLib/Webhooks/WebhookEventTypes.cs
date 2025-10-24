@@ -44,4 +44,9 @@ public static class WebhookEventTypes
     ///     Event type for a moderation when user is banned (or timed-out).
     /// </summary>
     public const string ModerationUserBanned = "moderation.banned";
+    
+    /// <summary>
+    ///     Event type for a gifted kicks to a channel.
+    /// </summary>
+    public const string KicksGifted = "kicks.gifted";
 }

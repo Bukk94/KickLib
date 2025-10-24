@@ -30,12 +30,12 @@ public static class WebhookEventParser
     public const string KickEventSignatureHeader = "Kick-Event-Signature";
 
     /// <summary>
-    ///     Header name for the Kick event subscription ID.
+    ///     Header name for the Kick event subscription ID (ULID).
     /// </summary>
     public const string KickEventSubscriptionIdHeader = "Kick-Event-Subscription-Id";
 
     /// <summary>
-    ///     Header name for the Kick event message ID.
+    ///     Header name for the Kick event message ID (ULID).
     /// </summary>
     public const string KickEventMessageIdHeader = "Kick-Event-Message-Id";
     
@@ -70,7 +70,8 @@ public static class WebhookEventParser
             EventType.ChatMessageSent => ParseChatMessageSentEvent(payload),
             EventType.LivestreamStatusUpdated => ParseLivestreamStatusUpdatedEvent(payload),
             EventType.LivestreamMetadataUpdated => ParseLivestreamMetadataUpdatedEvent(payload),
-            EventType.ModerationUserBanned => ParseModerationUserBannedSentEvent(payload),
+            EventType.ModerationUserBanned => ParseModerationUserBannedEvent(payload),
+            EventType.KicksGifted => ParseKicksGiftedEvent(payload),
             _ => null
         };
         
@@ -152,8 +153,18 @@ public static class WebhookEventParser
     /// </summary>
     /// <param name="payload">Payload to parse.</param>
     /// <returns>Returns parsed event or <c>null</c>.</returns>
-    public static ModerationUserBannedEvent? ParseModerationUserBannedSentEvent(string payload)
+    public static ModerationUserBannedEvent? ParseModerationUserBannedEvent(string payload)
     {
         return JsonConvert.DeserializeObject<ModerationUserBannedEvent>(payload);
+    }
+    
+    /// <summary>
+    ///     Parse kicks.gifted event.
+    /// </summary>
+    /// <param name="payload">Payload to parse.</param>
+    /// <returns>Returns parsed event or <c>null</c>.</returns>
+    public static KicksGiftedEvent? ParseKicksGiftedEvent(string payload)
+    {
+        return JsonConvert.DeserializeObject<KicksGiftedEvent>(payload);
     }
 }

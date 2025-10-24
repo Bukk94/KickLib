@@ -38,6 +38,7 @@
       <EmbeddedResource Include="Data\WebhookPayloads\ChatMessageSentEventPayload.json" />
       <EmbeddedResource Include="Data\WebhookPayloads\ChatMessageSentEventPayload_NoEmotes.json" />
       <EmbeddedResource Include="Data\WebhookPayloads\ChatMessageSentEventWithReplyPayload.json" />
+      <EmbeddedResource Include="Data\WebhookPayloads\KicksGiftedEventPayload.json" />
       <EmbeddedResource Include="Data\WebhookPayloads\LivestreamStatusUpdatedEventPayload_Live.json" />
       <EmbeddedResource Include="Data\WebhookPayloads\LivestreamStatusUpdatedEventPayload_Offline.json" />
       <None Remove="Data\ChatMessageSentEventPayload.json" />

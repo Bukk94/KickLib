@@ -46,6 +46,7 @@ public static class WebhookExtensions
             WebhookEventTypes.LivestreamStatusUpdated => EventType.LivestreamStatusUpdated,
             WebhookEventTypes.LivestreamMetadataUpdated => EventType.LivestreamMetadataUpdated,
             WebhookEventTypes.ModerationUserBanned => EventType.ModerationUserBanned,
+            WebhookEventTypes.KicksGifted => EventType.KicksGifted,
             _ => EventType.Unknown
         };
     }
@@ -65,6 +66,7 @@ public static class WebhookExtensions
             EventType.LivestreamStatusUpdated => WebhookEventTypes.LivestreamStatusUpdated,
             EventType.LivestreamMetadataUpdated => WebhookEventTypes.LivestreamMetadataUpdated,
             EventType.ModerationUserBanned => WebhookEventTypes.ModerationUserBanned,
+            EventType.KicksGifted => WebhookEventTypes.KicksGifted,
             EventType.Unknown => throw new ArgumentException("Unknown event type", nameof(type)),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };

@@ -144,7 +144,7 @@ public class EventPayloadsTests : BaseKickLibTests
     {
         var payload = GetPayload(data);
 
-        var webhookEvent = WebhookEventParser.ParseModerationUserBannedSentEvent(payload);
+        var webhookEvent = WebhookEventParser.ParseModerationUserBannedEvent(payload);
         
         payload.Should().NotBeNull();
         webhookEvent.Should().NotBeNull();
@@ -152,5 +152,33 @@ public class EventPayloadsTests : BaseKickLibTests
         webhookEvent.BannedUser.Should().NotBeNull();
         webhookEvent.Metadata.Should().NotBeNull();
         webhookEvent.Metadata.Reason.Should().NotBeNull();
+    }
+    
+    [Fact]
+    public void CorrectlyDeserialize_KicksGiftedEventPayload()
+    {
+        var payload = GetPayload("KicksGiftedEventPayload");
+
+        var webhookEvent = WebhookEventParser.ParseKicksGiftedEvent(payload);
+
+        payload.Should().NotBeNull();
+        webhookEvent.Should().NotBeNull();
+        webhookEvent.Broadcaster.Should().NotBeNull();
+        webhookEvent.Broadcaster.Username.Should().Be("broadcaster_name");
+        webhookEvent.Broadcaster.ChannelSlug.Should().Be("broadcaster_channel");
+        webhookEvent.Broadcaster.ProfilePicture.Should().Be("https://example.com/broadcaster_avatar.jpg");
+        webhookEvent.Broadcaster.IsVerified.Should().BeTrue();
+        webhookEvent.Broadcaster.UserId.Should().Be(123456789);
+        webhookEvent.Sender.Should().NotBeNull();
+        webhookEvent.Sender.IsVerified.Should().BeFalse();
+        webhookEvent.Sender.Username.Should().Be("gift_sender");
+        webhookEvent.Sender.ChannelSlug.Should().Be("gift_sender_channel");
+        webhookEvent.Sender.ProfilePicture.Should().Be("https://example.com/sender_avatar.jpg");
+        webhookEvent.Sender.UserId.Should().Be(987654321);
+        webhookEvent.Gift.Amount.Should().Be(100);
+        webhookEvent.Gift.Name.Should().Be("Full Send");
+        webhookEvent.Gift.Type.Should().Be("BASIC");
+        webhookEvent.Gift.Tier.Should().Be("BASIC");
+        webhookEvent.Gift.Message.Should().Be("w");
     }
 }
