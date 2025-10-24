@@ -114,6 +114,16 @@ namespace KickLib.Api.Unofficial.Core
 
             await _client.SendAuthenticatedRequestAsync(url, payloadJson);
         }
+        
+        protected async Task<bool> DeleteAuthenticatedAsync(
+            string urlPart,
+            ApiVersion version)
+        {
+            var url = ConstructResourceUrl(urlPart, version);
+            var result = await _client.SendAuthenticatedRequestAsync(url, null, HttpMethod.Delete);
+            
+            return result.Key is 200 or 204;
+        }
     
         private static string ConstructResourceUrl(
             string urlPart,

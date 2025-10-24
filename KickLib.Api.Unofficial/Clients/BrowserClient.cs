@@ -90,7 +90,10 @@ namespace KickLib.Api.Unofficial.Clients
         }
 
         /// <inheritdoc />
-        public async Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload)
+        public async Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(
+            string url, 
+            string payload,
+            HttpMethod? method = null)
         {
             if (!_authenticationService.IsAuthenticated)
             {
@@ -103,7 +106,7 @@ namespace KickLib.Api.Unofficial.Clients
             {
                 await using var page = await browser.NewPageAsync().ConfigureAwait(false);
 
-                var method = payload is not null ? "POST" : "GET";
+                var requestMethod = method?.ToString() ?? (payload is not null ? "POST" : "GET");
                 var body = payload is not null
                     ? $", body: JSON.stringify({payload})"
                     : "";
@@ -118,7 +121,7 @@ namespace KickLib.Api.Unofficial.Clients
                     })
                     .ExecuteAsync(async () =>
                     {
-                        response = await GetApiResponseAsync(page, url, method, body).ConfigureAwait(false);
+                        response = await GetApiResponseAsync(page, url, requestMethod, body).ConfigureAwait(false);
                     });
 
                 if (response is null)

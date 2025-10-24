@@ -25,7 +25,7 @@ namespace KickLib.Api.Unofficial.Clients
         }
 
         /// <inheritdoc />
-        public Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload)
+        public Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload, HttpMethod? method = null)
         {
             throw new NotImplementedException();
         }

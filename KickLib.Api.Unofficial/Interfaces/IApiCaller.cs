@@ -16,6 +16,6 @@ namespace KickLib.Api.Unofficial.Interfaces
 
         Task AuthenticateAsync(AuthenticationSettings authenticationSettings);
 
-        Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload);
+        Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload, HttpMethod? method = null);
     }
 }

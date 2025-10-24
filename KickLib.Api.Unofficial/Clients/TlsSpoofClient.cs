@@ -51,7 +51,7 @@ namespace KickLib.Api.Unofficial.Clients
         }
 
         /// <inheritdoc />
-        public async Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload)
+        public async Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload, HttpMethod? method = null)
         {
             if (!_authenticationService.IsAuthenticated)
             {
@@ -62,9 +62,9 @@ namespace KickLib.Api.Unofficial.Clients
             {
                 var options = CycleTlsInitializer.GetOptions(url);
 
-                var method = payload is not null ? "POST" : "GET";
+                var requestMethod = method?.ToString() ?? (payload is not null ? "POST" : "GET");
 
-                options.Method = method;
+                options.Method = requestMethod;
                 options.Body = payload;
                 options.Headers.TryAdd("X-XSRF-TOKEN", _authenticationService.XsrfToken);
                 options.Headers.TryAdd("Authorization", $"Bearer {_authenticationService.BearerToken}");

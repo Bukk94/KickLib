@@ -38,5 +38,40 @@ namespace KickLib.Api.Unofficial.Api
         
             await PostAuthenticatedAsync(urlPart, ApiVersion.V2, payload);
         }
+        
+        /// <summary>
+        ///     [Auth Required] Deletes a specific message from a chatroom.
+        /// </summary>
+        /// <param name="chatroomId">Chatroom ID in which delete the message.</param>
+        /// <param name="messageId">Message ID to be deleted.</param>
+        public async Task<bool> DeleteMessageAsync(int chatroomId, string messageId)
+        {
+            if (string.IsNullOrWhiteSpace(messageId))
+            {
+                throw new ArgumentNullException(nameof(messageId));
+            }
+        
+            var urlPart = $"chatrooms/{chatroomId}/messages/{messageId}";
+
+            return await DeleteAuthenticatedAsync(urlPart, ApiVersion.V2);
+        }
+        
+        /// <summary>
+        ///     [Auth Required] Deletes a messages in bulk from a chatroom.
+        /// </summary>
+        /// <param name="chatroomId">Chatroom ID in which delete the message.</param>
+        /// <param name="messageIds">Message IDs to be deleted.</param>
+        public async Task DeleteMessagesAsync(int chatroomId, ICollection<string> messageIds)
+        {
+            if (!messageIds.Any())
+            {
+                return;
+            }
+            
+            foreach (var messageId in messageIds.Distinct().Where(x => !string.IsNullOrWhiteSpace(x)))
+            {
+                await DeleteMessageAsync(chatroomId, messageId);
+            }
+        }
     }
 }

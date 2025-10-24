@@ -133,9 +133,10 @@ namespace KickLib.Api.Unofficial.Clients
         }
 
         /// <inheritdoc />
-        public async Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload)
+        public async Task<KeyValuePair<int, string>> SendAuthenticatedRequestAsync(string url, string payload, HttpMethod? method = null)
         {
             var session = _sessionManager.GetSession(_sessionId);
+            method ??= HttpMethod.Post;
             if (session == null)
             {
                 throw new InvalidOperationException($"Session {_sessionId} not found");
@@ -160,7 +161,7 @@ namespace KickLib.Api.Unofficial.Clients
                 var response = await _browserManager.ExecuteFetchRequestAsync(
                     _sessionId,
                     url,
-                    "POST",
+                    method.ToString(),
                     payload,
                     headers
                 );
@@ -183,7 +184,7 @@ namespace KickLib.Api.Unofficial.Clients
                     var retryResponse = await _browserManager.ExecuteFetchRequestAsync(
                         _sessionId,
                         url,
-                        "POST",
+                        method.ToString(),
                         payload,
                         headers
                     );
