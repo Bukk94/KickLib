@@ -1,5 +1,7 @@
 using KickLib.Api.Unofficial.Core;
 using KickLib.Api.Unofficial.Interfaces;
+using KickLib.Api.Unofficial.Models.Response;
+using KickLib.Api.Unofficial.Models.Response.v2.Messages;
 using Microsoft.Extensions.Logging;
 
 namespace KickLib.Api.Unofficial.Api
@@ -21,7 +23,8 @@ namespace KickLib.Api.Unofficial.Api
         /// </summary>
         /// <param name="chatroomId">Chatroom ID where to send the message.</param>
         /// <param name="message">Message to be send.</param>
-        public async Task SendMessageAsync(int chatroomId, string message)
+        /// <returns>Returns response object (if successful), containing message ID and other details.</returns>
+        public async Task<SendMessageResponse?> SendMessageAsync(int chatroomId, string message)
         {
             if (string.IsNullOrWhiteSpace(message))
             {
@@ -36,7 +39,8 @@ namespace KickLib.Api.Unofficial.Api
                 type = "message"
             };
         
-            await PostAuthenticatedAsync(urlPart, ApiVersion.V2, payload);
+            var messageData = await PostAuthenticatedAsync<DataWrapper<SendMessageResponse>>(urlPart, ApiVersion.V2, payload);
+            return messageData?.Data;
         }
         
         /// <summary>

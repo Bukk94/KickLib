@@ -41,6 +41,13 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
             var xsrfToken = await page.GetXsrfTokenAsync(_logger).ConfigureAwait(false);
             XsrfToken = xsrfToken;
 
+            if (authenticationSettings.HasTokenOverride)
+            {
+                BearerToken = authenticationSettings.BearerTokenOverride;
+                _logger?.LogInformation("Authenticated using bearer token override!");
+                return;
+            }
+            
             // Call kick-token-provider to get data required for login process
             var tokenProviderResponse = await page.EvaluateFunctionAsync<string>(@"
             async () => {

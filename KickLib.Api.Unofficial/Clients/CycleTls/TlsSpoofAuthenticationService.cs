@@ -35,6 +35,13 @@ namespace KickLib.Api.Unofficial.Clients.CycleTls
             var xsrfToken = await GetXsrfTokenAsync().ConfigureAwait(false);
             XsrfToken = xsrfToken;
 
+            if (authenticationSettings.HasTokenOverride)
+            {
+                BearerToken = authenticationSettings.BearerTokenOverride;
+                _logger?.LogInformation("Authenticated using bearer token override!");
+                return;
+            }
+            
             // Call kick-token-provider to get data required for login process
             var tokenProviderOptions = CycleTlsInitializer.GetOptions("https://kick.com/kick-token-provider");
             tokenProviderOptions.Method = "GET";

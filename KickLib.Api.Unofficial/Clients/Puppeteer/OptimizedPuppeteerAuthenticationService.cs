@@ -51,6 +51,14 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
                 
                 // Update session with XSRF token
                 _sessionManager.UpdateSessionAuth(_sessionId, null, xsrfToken);
+                
+                if (authenticationSettings.HasTokenOverride)
+                {
+                    // Update session with authentication data
+                    UpdateSessionAuthData(authenticationSettings.BearerTokenOverride, xsrfToken, authenticationSettings);
+                    _logger?.LogInformation("Authenticated using bearer token override!");
+                    return;
+                }
 
                 // Get token provider data
                 var tokenProviderResponse = await _browserManager.ExecuteFetchRequestAsync(
@@ -133,13 +141,7 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
                 }
 
                 // Update session with authentication data
-                _sessionManager.UpdateSessionAuth(_sessionId, token, xsrfToken);
-
-                var session = _sessionManager.GetSession(_sessionId);
-                if (session != null)
-                {
-                    session.AuthenticationSettings = authenticationSettings;
-                }
+                UpdateSessionAuthData(token, xsrfToken, authenticationSettings);
 
                 _logger?.LogInformation("Successfully authenticated session {SessionId}!", _sessionId);
             }
@@ -185,6 +187,18 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
             var totp = new Totp(secretKey);
 
             return totp.ComputeTotp();
+        }
+        
+        
+        private void UpdateSessionAuthData(string token, string xsrfToken, AuthenticationSettings authenticationSettings)
+        {
+            _sessionManager.UpdateSessionAuth(_sessionId, token, xsrfToken);
+
+            var session = _sessionManager.GetSession(_sessionId);
+            if (session != null)
+            {
+                session.AuthenticationSettings = authenticationSettings;
+            }
         }
     }
 }

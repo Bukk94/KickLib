@@ -99,7 +99,7 @@ namespace KickLib.Api.Unofficial.Core
             return JsonConvert.DeserializeObject<TType>(data.Value, _serializerSettings);
         }
     
-        protected async Task PostAuthenticatedAsync(
+        protected async Task<TType?> PostAuthenticatedAsync<TType>(
             string urlPart,
             ApiVersion version,
             object payload)
@@ -112,7 +112,15 @@ namespace KickLib.Api.Unofficial.Core
             var url = ConstructResourceUrl(urlPart, version);
             var payloadJson = JsonConvert.SerializeObject(payload);
 
-            await _client.SendAuthenticatedRequestAsync(url, payloadJson);
+            var data = await _client.SendAuthenticatedRequestAsync(url, payloadJson);
+            if (data.Key != 200 && 
+                data.Key != 204)
+            {
+                HandleErrorThrowIfCritical(data.Key);
+                return default;
+            }
+        
+            return JsonConvert.DeserializeObject<TType>(data.Value, _serializerSettings);
         }
         
         protected async Task<bool> DeleteAuthenticatedAsync(
