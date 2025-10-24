@@ -8,12 +8,20 @@ namespace KickLib.Api.Unofficial.Clients.Puppeteer
     {
         private static async Task EnsureBrowserAsync(BrowserSettings settings)
         {
+#if NET8_0_OR_GREATER
+            var browserFetcher = new BrowserFetcher(new BrowserFetcherOptions
+            {
+                Platform = settings.BrowserPlatform,
+                Path = settings.BrowserDownloadPath
+            });
+#else
             using var browserFetcher = new BrowserFetcher(new BrowserFetcherOptions
             {
                 Platform = settings.BrowserPlatform,
                 Path = settings.BrowserDownloadPath
             });
-            
+#endif
+
             await browserFetcher.DownloadAsync();
         }
     

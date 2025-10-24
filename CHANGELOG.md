@@ -4,6 +4,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.0](https://www.nuget.org/packages/KickLib/1.7.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.6.2...v1.7.0)
+### Added
+- Added Delete Message for Unofficial API
+- Added `KicksGiftedEvent` webhook event support
+### Changed
+- Extended `IApiCaller` with `HttpMethod` parameter for `SendAuthenticatedRequestAsync` method.
+- Extended `SendMessageAsync` in Unofficial API to return sent message data (like ID and sender)
+- Extended Unofficial API `AuthenticationSettings` to allow passing override Bearer token to bypass login flow
+- Updated Puppeteer version to 20.x for Unofficial API on .NET 8 and above
+### Remove
+- Removed `PinnedMessageDeletedEvent` in Kick.Client as this event has no data (and it was confusing users)
+
 ## [1.6.2](https://www.nuget.org/packages/KickLib/1.6.2) - [diff](https://github.com/Bukk94/KickLib/compare/v1.6.1...v1.6.2)
 ### Added
 - GetLivestreamAsync overload to get livestream for currently authenticated user

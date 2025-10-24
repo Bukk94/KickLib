@@ -16,29 +16,36 @@
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Livestream endpoint and fixes</PackageReleaseNotes>
-        <Version>1.6.2</Version>
-        <AssemblyVersion>1.6.2</AssemblyVersion>
-        <FileVersion>1.6.2</FileVersion>
+        <PackageReleaseNotes>Kicks Gifted webhook event support</PackageReleaseNotes>
+        <Version>1.7.0</Version>
+        <AssemblyVersion>1.7.0</AssemblyVersion>
+        <FileVersion>1.7.0</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+        <PackageReference Include="PuppeteerExtraSharp" Version="[2.0.0]" />
+        <PackageReference Include="PuppeteerSharp" Version="[14.0.0]" />
+        <PackageReference Include="RestSharp" Version="112.1.0" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0' OR '$(TargetFramework)' == 'net9.0'">
+        <PackageReference Include="PuppeteerExtraSharp" Version="3.0.1" />
+        <PackageReference Include="PuppeteerSharp" Version="20.2.2" />
+    </ItemGroup>
+    
     <ItemGroup>
         <PackageReference Include="FluentResults" Version="3.16.0" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.10" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.10" />
         <!-- References for NuGet package -->
         <PackageReference Include="JsonSubTypes" Version="2.0.1" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="RestSharp" Version="112.1.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="System.Net.Security" Version="4.3.2" />
         <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
         <PackageReference Include="WebSocketSharper" Version="1.0.42" />
         <PackageReference Include="PusherClient" Version="2.2.1" />
         <PackageReference Include="Otp.NET" Version="1.4.0" />
-        <PackageReference Include="Polly" Version="8.6.3" />
-        <PackageReference Include="PuppeteerExtraSharp" Version="2.0.0" />
-        <PackageReference Include="PuppeteerSharp" Version="14.0.0" />
+        <PackageReference Include="Polly" Version="8.6.4" />
     </ItemGroup>
 
     <ItemGroup>

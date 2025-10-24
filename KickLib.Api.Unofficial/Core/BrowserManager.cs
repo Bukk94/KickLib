@@ -162,12 +162,19 @@ namespace KickLib.Api.Unofficial.Core
 
         private async Task EnsureBrowserAsync()
         {
+#if NET8_0_OR_GREATER
+            var browserFetcher = new BrowserFetcher(new BrowserFetcherOptions
+            {
+                Platform = _settings.BrowserPlatform,
+                Path = _settings.BrowserDownloadPath
+            });
+#else
             using var browserFetcher = new BrowserFetcher(new BrowserFetcherOptions
             {
                 Platform = _settings.BrowserPlatform,
                 Path = _settings.BrowserDownloadPath
             });
-            
+#endif
             await browserFetcher.DownloadAsync();
         }
 
