@@ -287,11 +287,7 @@ public class KickClient : IKickClient
                 break;
             
             case "App\\Events\\PinnedMessageDeletedEvent":
-                var pinnedMessageDeleted = ParseData<PinnedMessageDeletedEvent>(e.Data);
-                OnPinnedMessageDeleted?.Invoke(this, new PinnedMessageDeletedEventArgs
-                {
-                    Data = pinnedMessageDeleted
-                });
+                OnPinnedMessageDeleted?.Invoke(this, new PinnedMessageDeletedEventArgs());
                 break;
 
             case "RewardRedeemedEvent":
