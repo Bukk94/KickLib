@@ -15,11 +15,12 @@
         <Copyright>Copyright (c) 2025 Bukk94</Copyright>
         <PackageProjectUrl>https://github.com/Bukk94/KickLib</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Kicks Gifted webhook event support</PackageReleaseNotes>
-        <Version>1.7.0</Version>
-        <AssemblyVersion>1.7.0</AssemblyVersion>
-        <FileVersion>1.7.0</FileVersion>
+        <PackageReleaseNotes>Kicks API endpoints support</PackageReleaseNotes>
+        <Version>1.7.1</Version>
+        <AssemblyVersion>1.7.1</AssemblyVersion>
+        <FileVersion>1.7.1</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
@@ -28,7 +29,7 @@
         <PackageReference Include="PuppeteerSharp" Version="[14.0.0]" />
         <PackageReference Include="RestSharp" Version="112.1.0" />
     </ItemGroup>
-    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0' OR '$(TargetFramework)' == 'net9.0'">
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net9.0'">
         <PackageReference Include="PuppeteerExtraSharp" Version="3.0.1" />
         <PackageReference Include="PuppeteerSharp" Version="20.2.2" />
     </ItemGroup>

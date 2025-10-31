@@ -4,6 +4,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.1](https://www.nuget.org/packages/KickLib/1.7.1) - [diff](https://github.com/Bukk94/KickLib/compare/v1.7.0...v1.7.1)
+### Added 
+- Added Kicks endpoints - full support for new Kicks endpoints and Leaderboards endpoint
+- Added SubscribeToEvent to EventSubscriptions, to allow subscribing to single event
+### Changed
+- Improved interface docs 
+
 ## [1.7.0](https://www.nuget.org/packages/KickLib/1.7.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.6.2...v1.7.0)
 ### Added
 - Added Delete Message for Unofficial API
