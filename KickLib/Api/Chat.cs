@@ -16,10 +16,7 @@ public class Chat : ApiBase, IChat
     {
     }
     
-    /// <summary>
-    ///     Post a chat message to a channel as a user.
-    ///     When sending as a user, the broadcaster_user_id is required.
-    /// </summary>
+    /// <inheritdoc />
     public Task<Result<SendChatMessageResponse>> SendMessageAsUserAsync(
         int broadcasterId, 
         string message,
@@ -34,10 +31,7 @@ public class Chat : ApiBase, IChat
         return PostMessageInternalAsync(message, MessageType.User, broadcasterId, null, accessToken, cancellationToken);
     }
     
-    /// <summary>
-    ///     Post a chat message to a channel as a bot.
-    ///     As a bot, the message will always be sent to the channel attached to your token.
-    /// </summary>
+    /// <inheritdoc />
     public Task<Result<SendChatMessageResponse>> SendMessageAsBotAsync(
         string message,
         string? accessToken = null,
@@ -51,10 +45,7 @@ public class Chat : ApiBase, IChat
         return PostMessageInternalAsync(message, MessageType.Bot, null, null, accessToken, cancellationToken);
     }
     
-    /// <summary>
-    ///     Post a chat message as reply to a channel as a user.
-    ///     When sending as a user, the broadcaster_user_id is required.
-    /// </summary>
+    /// <inheritdoc />
     public Task<Result<SendChatMessageResponse>> ReplyToMessageAsUserAsync(
         int broadcasterId, 
         string message,
@@ -74,10 +65,7 @@ public class Chat : ApiBase, IChat
         return PostMessageInternalAsync(message, MessageType.User, broadcasterId, messageId, accessToken, cancellationToken);
     }
     
-    /// <summary>
-    ///     Post a chat message as reply to a channel as a bot.
-    ///     As a bot, the message will always be sent to the channel attached to your token.
-    /// </summary>
+    /// <inheritdoc />
     public Task<Result<SendChatMessageResponse>> ReplyToMessageAsBotAsync(
         string message,
         string messageId,

@@ -16,9 +16,7 @@ public class Users : ApiBase, IUsers
     {
     }
     
-    /// <summary>
-    ///     Retrieve user information based on provided user ID.
-    /// </summary>
+    /// <inheritdoc />
     public async Task<Result<UserResponse>> GetUserAsync(
         int userId, 
         string? accessToken = null,
@@ -41,10 +39,7 @@ public class Users : ApiBase, IUsers
         return Result.Ok(result.Value.First()).WithSuccesses(result.Successes);
     }
     
-    /// <summary>
-    ///     Retrieve user information based on provided user IDs.
-    ///     If no user IDs are specified, the information for the currently authorised user will be returned by default.
-    /// </summary>
+    /// <inheritdoc />
     public Task<Result<ICollection<UserResponse>>> GetUsersAsync(
         ICollection<int>? userIds, 
         string? accessToken = null,
@@ -64,9 +59,7 @@ public class Users : ApiBase, IUsers
         return GetAsync<ICollection<UserResponse>>(ApiUrlPart, ApiVersion.v1, query, accessToken, cancellationToken);
     }
     
-    /// <summary>
-    ///     Retrieve information for the currently authorised user.
-    /// </summary>
+    /// <inheritdoc />
     public async Task<Result<UserResponse>> GetMeAsync(
         string? accessToken = null,
         CancellationToken cancellationToken = default)

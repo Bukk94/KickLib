@@ -16,9 +16,7 @@ public class EventSubscriptions : ApiBase, IEventSubscriptions
     {
     }
     
-    /// <summary>
-    ///     Get active event subscriptions for given account.
-    /// </summary>
+    /// <inheritdoc />
     public async Task<Result<ICollection<EventSubscriptionResponse>>> GetEventSubscriptionsAsync(
         string? accessToken = null,
         CancellationToken cancellationToken = default)
@@ -35,9 +33,7 @@ public class EventSubscriptions : ApiBase, IEventSubscriptions
         return result;
     }
 
-    /// <summary>
-    ///     Subscribe to all available event subscriptions for given account.
-    /// </summary>
+    /// <inheritdoc />
     public Task<Result<ICollection<SubscribeToEventResponse>>> SubscribeToAllEventsAsync(
         string? accessToken = null,
         CancellationToken cancellationToken = default)
@@ -55,9 +51,42 @@ public class EventSubscriptions : ApiBase, IEventSubscriptions
         return SubscribeToEventsAsync(eventTypes, 1, accessToken, cancellationToken);
     }
     
-    /// <summary>
-    ///     Subscribe to v1 event subscriptions for given account.
-    /// </summary>
+    /// <inheritdoc />
+    public async Task<Result<SubscribeToEventResponse>> SubscribeToEventAsync(
+        EventType eventType,
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await SubscribeToEventsAsync([eventType], 1, accessToken, cancellationToken)
+            .ConfigureAwait(false);
+        
+        if (result.IsFailed)
+        {
+            return Result.Fail<SubscribeToEventResponse>(result.Errors);
+        }
+
+        return Result.Ok(result.Value.First()).WithSuccesses(result.Successes);
+    }
+    
+    /// <inheritdoc />
+    public async Task<Result<SubscribeToEventResponse>> SubscribeToEventAsync(
+        EventType eventType,
+        int version,
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await SubscribeToEventsAsync([eventType], version, accessToken, cancellationToken)
+            .ConfigureAwait(false);
+        
+        if (result.IsFailed)
+        {
+            return Result.Fail<SubscribeToEventResponse>(result.Errors);
+        }
+
+        return Result.Ok(result.Value.First()).WithSuccesses(result.Successes);
+    }
+    
+    /// <inheritdoc />
     public Task<Result<ICollection<SubscribeToEventResponse>>> SubscribeToEventsAsync(
         ICollection<EventType> eventTypes,
         string? accessToken = null,
@@ -66,9 +95,7 @@ public class EventSubscriptions : ApiBase, IEventSubscriptions
         return SubscribeToEventsAsync(eventTypes, 1, accessToken, cancellationToken);
     }
     
-    /// <summary>
-    ///     Subscribe to event subscriptions for given account.
-    /// </summary>
+    /// <inheritdoc />
     public async Task<Result<ICollection<SubscribeToEventResponse>>> SubscribeToEventsAsync(
         ICollection<EventType> eventTypes,
         int version,
@@ -113,9 +140,7 @@ public class EventSubscriptions : ApiBase, IEventSubscriptions
         return result;
     }
 
-    /// <summary>
-    /// Delete a specific subscription for given account.
-    /// </summary>
+    /// <inheritdoc />
     public Task<Result<bool>> UnsubscribeEventsAsync(
         string subscriptionId,
         string? accessToken = null,
@@ -129,9 +154,7 @@ public class EventSubscriptions : ApiBase, IEventSubscriptions
         return UnsubscribeEventsAsync([subscriptionId], accessToken, cancellationToken);
     }
     
-    /// <summary>
-    ///     Delete specific event subscriptions for given account.
-    /// </summary>
+    /// <inheritdoc />
     public async Task<Result<bool>> UnsubscribeEventsAsync(
         ICollection<string> subscriptionIds,
         string? accessToken = null,

@@ -17,10 +17,7 @@ public class Categories : ApiBase, ICategories
     }
     
     
-    /// <summary>
-    ///     Gets categories or search for category by name.
-    ///     Returns up to 100 results at a time; use the <paramref name="page"/> parameter to get more results.
-    /// </summary>
+    /// <inheritdoc />
     public Task<Result<ICollection<CategoryResponse>>> GetCategoriesAsync(
         string searchKeyword,
         int? page = 1,
@@ -47,9 +44,7 @@ public class Categories : ApiBase, ICategories
         return GetAsync<ICollection<CategoryResponse>>(ApiUrlPart, ApiVersion.v1, query, accessToken, cancellationToken);
     }
     
-    /// <summary>
-    ///     Gets specific category by ID.
-    /// </summary>
+    /// <inheritdoc />
     public Task<Result<CategoryResponse>> GetCategoryAsync(
         int id, 
         string? accessToken = null,

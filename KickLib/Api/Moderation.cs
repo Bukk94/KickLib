@@ -16,12 +16,7 @@ public class Moderation : ApiBase, IModeration
     {
     }
 
-    /// <summary>
-    ///     Permanently ban a user from participating in a broadcaster's chat room.
-    /// </summary>
-    /// <paramref name="broadcasterUserId">Broadcaster ID in which chat room to ban the user.</paramref>
-    /// <paramref name="userIdToBan">User ID to ban.</paramref>
-    /// <paramref name="reason">Reason of the ban (Max 100 characters).</paramref>
+    /// <inheritdoc />
     public async Task<Result> BanUserAsync(
         int broadcasterUserId,
         int userIdToBan,
@@ -59,13 +54,7 @@ public class Moderation : ApiBase, IModeration
         return Result.Ok().WithSuccesses(result.Successes);
     }
     
-    /// <summary>
-    ///     Timeout a user from participating in a broadcaster's chat room for a specified duration.
-    /// </summary>
-    /// <paramref name="broadcasterUserId">Broadcaster ID in which chat room to ban the user.</paramref>
-    /// <paramref name="userIdToBan">User ID to ban.</paramref>
-    /// <paramref name="duration">Timeout duration in minutes (1 - 10080).</paramref>
-    /// <paramref name="reason">Reason of the ban (Max 100 characters).</paramref>
+    /// <inheritdoc />
     public async Task<Result> TimeoutUserAsync(
         int broadcasterUserId,
         int userIdToBan,
@@ -110,11 +99,7 @@ public class Moderation : ApiBase, IModeration
         return Result.Ok().WithSuccesses(result.Successes);
     }
     
-    /// <summary>
-    ///     Unban or remove timeout that was placed on the specific user in a broadcaster's chat room.
-    /// </summary>
-    /// <paramref name="broadcasterUserId">Broadcaster ID in which chat room to unban the user.</paramref>
-    /// <paramref name="userIdToUnban">User ID to unban.</paramref>
+    /// <inheritdoc />
     public async Task<Result> UnbanUserAsync(
         int broadcasterUserId,
         int userIdToUnban,

@@ -8,9 +8,14 @@ public interface IModeration
     /// <summary>
     ///     Permanently ban a user from participating in a broadcaster's chat room.
     /// </summary>
-    /// <paramref name="broadcasterUserId">Broadcaster ID in which chat room to ban the user.</paramref>
-    /// <paramref name="userIdToBan">User ID to ban.</paramref>
-    /// <paramref name="reason">Reason of the ban (Max 100 characters).</paramref>
+    /// <remarks>
+    ///     Required scope: moderation:ban
+    /// </remarks>
+    /// <param name="broadcasterUserId">Broadcaster ID in which chat room to ban the user.</param>
+    /// <param name="userIdToBan">User ID to ban.</param>
+    /// <param name="reason">Reason of the ban (Max 100 characters).</param>
+    /// <param name="accessToken">Access token to be used for this request. If null, token from <see cref="ApiSettings"/> will be used.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel operation.</param>
     Task<Result> BanUserAsync(
         int broadcasterUserId,
         int userIdToBan,
@@ -21,10 +26,15 @@ public interface IModeration
     /// <summary>
     ///     Timeout a user from participating in a broadcaster's chat room for a specified duration.
     /// </summary>
-    /// <paramref name="broadcasterUserId">Broadcaster ID in which chat room to ban the user.</paramref>
-    /// <paramref name="userIdToBan">User ID to ban.</paramref>
-    /// <paramref name="duration">Timeout duration in minutes (1 - 10080).</paramref>
-    /// <paramref name="reason">Reason of the ban (Max 100 characters).</paramref>
+    /// <remarks>
+    ///     Required scope: moderation:ban
+    /// </remarks>
+    /// <param name="broadcasterUserId">Broadcaster ID in which chat room to ban the user.</param>
+    /// <param name="userIdToBan">User ID to ban.</param>
+    /// <param name="duration">Timeout duration in minutes (1 - 10080).</param>
+    /// <param name="reason">Reason of the ban (Max 100 characters).</param>
+    /// <param name="accessToken">Access token to be used for this request. If null, token from <see cref="ApiSettings"/> will be used.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel operation.</param>
     Task<Result> TimeoutUserAsync(
         int broadcasterUserId,
         int userIdToBan,
@@ -36,8 +46,13 @@ public interface IModeration
     /// <summary>
     ///     Unban or remove timeout that was placed on the specific user in a broadcaster's chat room.
     /// </summary>
-    /// <paramref name="broadcasterUserId">Broadcaster ID in which chat room to unban the user.</paramref>
-    /// <paramref name="userIdToUnban">User ID to unban.</paramref>
+    /// <remarks>
+    ///     Required scope: moderation:ban
+    /// </remarks>
+    /// <param name="broadcasterUserId">Broadcaster ID in which chat room to unban the user.</param>
+    /// <param name="userIdToUnban">User ID to unban.</param>
+    /// <param name="accessToken">Access token to be used for this request. If null, token from <see cref="ApiSettings"/> will be used.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel operation.</param>
     Task<Result> UnbanUserAsync(
         int broadcasterUserId,
         int userIdToUnban,

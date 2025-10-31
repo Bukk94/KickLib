@@ -30,6 +30,9 @@ public class KickApi : IKickApi
     public ILivestreams Livestreams { get; }
     
     /// <inheritdoc />
+    public IKicks Kicks { get; }
+    
+    /// <inheritdoc />
     public IModeration Moderation { get; }
     
     /// <inheritdoc />
@@ -47,9 +50,10 @@ public class KickApi : IKickApi
     /// <param name="chat">Chat api implementation.</param>
     /// <param name="eventSubscriptions">Event subscription api implementation.</param>
     /// <param name="livestreams">Live stream api implementation.</param>
-    /// <param name="moderation">Modration api implementation.</param>
+    /// <param name="kicks">Kicks api implementation.</param>
+    /// <param name="moderation">Moderation api implementation.</param>
     /// <param name="users">User api implementation.</param>
-    /// <param name="settings">API Settings.  {(If null, default settings will be used}.</param>
+    /// <param name="settings">API Settings. {(If null, default settings will be used}.</param>
     public KickApi(
         IAuthorization authorization,
         ICategories categories,
@@ -57,6 +61,7 @@ public class KickApi : IKickApi
         IChannels channels,
         IEventSubscriptions eventSubscriptions,
         ILivestreams livestreams,
+        IKicks kicks,
         IModeration moderation,
         IUsers users,
         ApiSettings? settings = null)
@@ -70,6 +75,7 @@ public class KickApi : IKickApi
         Channels = channels;
         EventSubscriptions = eventSubscriptions;
         Livestreams = livestreams;
+        Kicks = kicks;
         Moderation = moderation;
         Users = users;
     }
@@ -94,6 +100,7 @@ public class KickApi : IKickApi
             new Channels(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Channels>()),
             new EventSubscriptions(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<EventSubscriptions>()),
             new Livestreams(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Livestreams>()),
+            new Kicks(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Kicks>()),
             new Moderation(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Moderation>()),
             new Users(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Users>()),
             apiSettings);

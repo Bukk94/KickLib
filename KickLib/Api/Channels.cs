@@ -16,10 +16,7 @@ public class Channels : ApiBase, IChannels
     {
     }
 
-    /// <summary>
-    ///     Retrieve channel information based on provided streamer ID.
-    ///     If no streamer ID is specified, the information for the currently authorised streamer will be returned by default.
-    /// </summary>
+    /// <inheritdoc />
     public async Task<Result<ChannelResponse>> GetChannelAsync(
         int broadcasterUserId,
         string? accessToken = null,
@@ -39,10 +36,7 @@ public class Channels : ApiBase, IChannels
         return Result.Ok(result.Value.First()).WithSuccesses(result.Successes);
     }
     
-    /// <summary>
-    ///     Retrieve channel information based on provided streamer IDs.
-    ///     If no streamer IDs are specified, the information for the currently authorised streamer will be returned by default.
-    /// </summary>
+    /// <inheritdoc />
     public Task<Result<ICollection<ChannelResponse>>> GetChannelsAsync(
         ICollection<int> broadcasterUserIds, 
         string? accessToken = null,
@@ -62,10 +56,7 @@ public class Channels : ApiBase, IChannels
         return GetAsync<ICollection<ChannelResponse>>(ApiUrlPart, ApiVersion.v1, query, accessToken, cancellationToken);
     }
     
-    /// <summary>
-    ///     Retrieve channel information based on provided streamer slug (unique username).
-    ///     If no slug is specified, the information for the currently authorised streamer will be returned by default.
-    /// </summary>
+    /// <inheritdoc />
     public async Task<Result<ChannelResponse>> GetChannelAsync(
         string slug,
         string? accessToken = null,
@@ -91,10 +82,7 @@ public class Channels : ApiBase, IChannels
         return Result.Ok(result.Value.First()).WithSuccesses(result.Successes);
     }
     
-    /// <summary>
-    ///     Retrieve channel information based on provided streamer slugs (unique username).
-    ///     If no slugs are specified, the information for the currently authorised streamer will be returned by default.
-    /// </summary>
+    /// <inheritdoc />
     public Task<Result<ICollection<ChannelResponse>>> GetChannelsAsync(
         ICollection<string> slugs, 
         string? accessToken = null,
@@ -114,9 +102,7 @@ public class Channels : ApiBase, IChannels
         return GetAsync<ICollection<ChannelResponse>>(ApiUrlPart, ApiVersion.v1, query, accessToken, cancellationToken);
     }
     
-    /// <summary>
-    ///     Retrieve channel information for the currently authorised user.
-    /// </summary>
+    /// <inheritdoc />
     public async Task<Result<ChannelResponse>> GetMyChannelAsync(
         string? accessToken = null,
         CancellationToken cancellationToken = default)
@@ -137,9 +123,7 @@ public class Channels : ApiBase, IChannels
         return Result.Ok(result.Value.First()).WithSuccesses(result.Successes);
     }
     
-    /// <summary>
-    ///     Update channel information.
-    /// </summary>
+    /// <inheritdoc />
     public async Task<Result<bool>> UpdateChannelAsync(
         UpdateChannelRequest request,
         string? accessToken = null,

@@ -10,11 +10,13 @@ public interface ILivestreams
     /// <summary>
     ///     Get current Kick Livestreams based on parameters.
     /// </summary>
-    /// <paramref name="broadcasterId">Limit results to specific broadcaster (returns single result).</paramref>
-    /// <paramref name="categoryId">Limit results to specific category.</paramref>
-    /// <paramref name="language">Limit results to specific language.</paramref>
-    /// <paramref name="limit">Number of results to return (default: 25, maximum: 100).</paramref>
-    /// <paramref name="sort">Result sorting.</paramref>
+    /// <param name="broadcasterId">Limit results to specific broadcaster (returns single result).</param>
+    /// <param name="categoryId">Limit results to specific category.</param>
+    /// <param name="language">Limit results to specific language.</param>
+    /// <param name="limit">Number of results to return (default: 25, maximum: 100).</param>
+    /// <param name="sort">Result sorting.</param>
+    /// <param name="accessToken">Access token to be used for this request. If null, token from <see cref="ApiSettings"/> will be used.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel operation.</param>
     Task<Result<ICollection<LivestreamResponse>>> GetLivestreamsAsync(
         int? broadcasterId = null, 
         int? categoryId = null, 
@@ -27,11 +29,13 @@ public interface ILivestreams
     /// <summary>
     ///     Get current Kick Livestreams based on parameters.
     /// </summary>
-    /// <paramref name="broadcasterIds">Limit results to specific broadcasters.</paramref>
-    /// <paramref name="categoryId">Limit results to specific category.</paramref>
-    /// <paramref name="language">Limit results to specific language.</paramref>
-    /// <paramref name="limit">Number of results to return (default: 25, maximum: 100).</paramref>
-    /// <paramref name="sort">Result sorting.</paramref>
+    /// <param name="broadcasterIds">Limit results to specific broadcasters.</param>
+    /// <param name="categoryId">Limit results to specific category.</param>
+    /// <param name="language">Limit results to specific language.</param>
+    /// <param name="limit">Number of results to return (default: 25, maximum: 100).</param>
+    /// <param name="sort">Result sorting.</param>
+    /// <param name="accessToken">Access token to be used for this request. If null, token from <see cref="ApiSettings"/> will be used.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel operation.</param>
     Task<Result<ICollection<LivestreamResponse>>> GetLivestreamsAsync(
         ICollection<int> broadcasterIds,
         int? categoryId = null,
@@ -45,6 +49,8 @@ public interface ILivestreams
     ///     Get livestream information for currently authorised user.
     /// </summary>
     /// <returns>Returns <c>null</c> if user is not livestreaming.</returns>
+    /// <param name="accessToken">Access token to be used for this request. If null, token from <see cref="ApiSettings"/> will be used.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel operation.</param>
     Task<Result<LivestreamResponse?>> GetLivestreamAsync(
         string? accessToken = null,
         CancellationToken cancellationToken = default);

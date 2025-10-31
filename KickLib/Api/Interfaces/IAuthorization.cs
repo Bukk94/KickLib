@@ -16,11 +16,14 @@ public interface IAuthorization
     /// <remarks>
     ///     Find the full spec here: https://datatracker.ietf.org/doc/html/rfc7662
     /// </remarks>
+    /// <param name="accessToken">Access token to be used for this request. If null, token from <see cref="ApiSettings"/> will be used.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel operation.</param>
     Task<Result<TokenIntrospectResponse>> IntrospectTokenAsync(string? accessToken = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Retrieve the public key used for verifying signatures.
     /// </summary>
+    /// <param name="cancellationToken">The cancellation token to cancel operation.</param>
     Task<Result<PublicKeyResponse>> GetPublicKeyAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -32,6 +35,8 @@ public interface IAuthorization
     /// <summary>
     ///     Get app access token.
     /// </summary>
+    /// <param name="clientId">Application client ID.</param>
+    /// <param name="clientSecret">Application secret.</param>
     /// <returns>Returns access token for the application, used for public endpoints.</returns>
     Task<Result<KickAppTokenResponse>> GetAppAccessTokenAsync(string clientId, string clientSecret);
 }

@@ -57,4 +57,9 @@ public static class KickScopes
     ///     Execute moderation actions for moderators.
     /// </summary>
     public const string ModerationBan = "moderation:ban";
+    
+    /// <summary>
+    ///     View KICKs related information in Kick e.g leaderboards, etc.
+    /// </summary>
+    public const string KicksRead = "kicks:read";
 }
