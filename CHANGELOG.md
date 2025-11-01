@@ -4,6 +4,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.2](https://www.nuget.org/packages/KickLib/1.7.2) - [diff](https://github.com/Bukk94/KickLib/compare/v1.7.1...v1.7.2)
+### Changed
+- Improved working with HTTP Client to better utilize connection pooling
+- Added HTTP transient errors retry policy to API calls
+- Added IHttpClientFactory to OAuthGenerator
+
 ## [1.7.1](https://www.nuget.org/packages/KickLib/1.7.1) - [diff](https://github.com/Bukk94/KickLib/compare/v1.7.0...v1.7.1)
 ### Added 
 - Added Kicks endpoints - full support for new Kicks endpoints and Leaderboards endpoint

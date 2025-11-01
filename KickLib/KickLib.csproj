@@ -17,10 +17,10 @@
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Kicks API endpoints support</PackageReleaseNotes>
-        <Version>1.7.1</Version>
-        <AssemblyVersion>1.7.1</AssemblyVersion>
-        <FileVersion>1.7.1</FileVersion>
+        <PackageReleaseNotes>Improve HTTP Client calls</PackageReleaseNotes>
+        <Version>1.7.2</Version>
+        <AssemblyVersion>1.7.2</AssemblyVersion>
+        <FileVersion>1.7.2</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
