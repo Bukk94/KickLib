@@ -72,6 +72,7 @@ public interface IChannels
     /// </summary>
     /// <remarks>
     ///     Required scope: channel:read
+    ///     Optional scope: streamkey:read (if you want to retrieve the stream key information)
     /// </remarks>
     /// <param name="accessToken">Access token to be used for this request. If null, token from <see cref="ApiSettings"/> will be used.</param>
     /// <param name="cancellationToken">The cancellation token to cancel operation.</param>

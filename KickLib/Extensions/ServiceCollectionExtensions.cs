@@ -1,6 +1,7 @@
 using KickLib;
 using KickLib.Api.Interfaces;
 using KickLib.Auth;
+using Polly;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
@@ -18,7 +19,15 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddKickLib(this IServiceCollection services)
         {
             return services
-                .AddHttpClient()
+                .AddHttpClient(HttpConstants.HttpClientName)
+#if NET8_0_OR_GREATER
+                .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+                {
+                    PooledConnectionLifetime = TimeSpan.FromMinutes(5)
+                })
+#endif
+                .AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(3, retry => TimeSpan.FromMilliseconds(200 * retry)))
+                .Services
                 .AddScoped<IKickApi, KickApi>()
                 .AddScoped<ApiSettings>(_ => ApiSettings.Default)
                 .AddScoped<IAuthorization, KickLib.Api.Authorization>()

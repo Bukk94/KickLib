@@ -23,7 +23,7 @@ public abstract class ApiBase
     private readonly ILogger _logger;
     private readonly JsonSerializerSettings _serializerSettings;
     private readonly IKickOAuthGenerator _kickOAuthGenerator;
-    private readonly HttpClient _client;
+    private readonly IHttpClientFactory _clientFactory;
 
     private const string BaseUrl = "https://api.kick.com/public/";
     
@@ -49,7 +49,7 @@ public abstract class ApiBase
         _settings = settings;
         _logger = logger;
         _kickOAuthGenerator = oauthGenerator;
-        _client = clientFactory.CreateClient();
+        _clientFactory = clientFactory;
 
         _serializerSettings = new JsonSerializerSettings
         {
@@ -84,15 +84,17 @@ public abstract class ApiBase
     {
         var url = ConstructResourceUrl(urlPart, version, queryParams);
 
+        var client = GetClient();
         var token = await ResolveAccessTokenAsync(accessToken).ConfigureAwait(false);
         if (!string.IsNullOrWhiteSpace(token))
         {
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
         
         var response = await ExecuteRequestAsync(
-            () => _client.GetAsync(url, cancellationToken),
-            !string.IsNullOrWhiteSpace(accessToken)).ConfigureAwait(false);
+            () => client.GetAsync(url, cancellationToken),
+            !string.IsNullOrWhiteSpace(accessToken),
+            client).ConfigureAwait(false);
 
         var (data, error) = await ProcessResponseAsync(response, $"GET {url}").ConfigureAwait(false);
         if (data is null ||
@@ -143,7 +145,8 @@ public abstract class ApiBase
             return Result.Fail("Access token is missing.");
         }
         
-        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        var client = GetClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         StringContent? payload = null;
         if (input is not null)
@@ -153,8 +156,9 @@ public abstract class ApiBase
         }
         
         var response = await ExecuteRequestAsync(
-            () => _client.PostAsync(url, payload, cancellationToken),
-            !string.IsNullOrWhiteSpace(accessToken)).ConfigureAwait(false);
+            () => client.PostAsync(url, payload, cancellationToken),
+            !string.IsNullOrWhiteSpace(accessToken),
+            client).ConfigureAwait(false);
         
         var (data, error) = await ProcessResponseAsync(response, $"POST {url}").ConfigureAwait(false);
         if (data is null ||
@@ -191,14 +195,16 @@ public abstract class ApiBase
             return Result.Fail("Access token is missing.");
         }
         
-        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        var client = GetClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var json = JsonConvert.SerializeObject(input, _serializerSettings);
         var payload = new StringContent(json, Encoding.UTF8, "application/json");
         
         var response = await ExecuteRequestAsync(
-            () => _client.PatchAsync(url, payload, cancellationToken),
-            !string.IsNullOrWhiteSpace(accessToken)).ConfigureAwait(false);
+            () => client.PatchAsync(url, payload, cancellationToken),
+            !string.IsNullOrWhiteSpace(accessToken),
+            client).ConfigureAwait(false);
         
         if (response is null)
         {
@@ -236,11 +242,13 @@ public abstract class ApiBase
             return Result.Fail("Access token is missing.");
         }
         
-        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        var client = GetClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var response = await ExecuteRequestAsync(
-            () => _client.DeleteAsync(url, cancellationToken),
-            !string.IsNullOrWhiteSpace(accessToken)).ConfigureAwait(false);
+            () => client.DeleteAsync(url, cancellationToken),
+            !string.IsNullOrWhiteSpace(accessToken),
+            client).ConfigureAwait(false);
 
         if (response is null)
         {
@@ -278,8 +286,9 @@ public abstract class ApiBase
         {
             return Result.Fail("Access token is missing.");
         }
-        
-        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var client = GetClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         StringContent? payload = null;
         if (input is not null)
@@ -289,11 +298,12 @@ public abstract class ApiBase
         }
         
         var response = await ExecuteRequestAsync(
-            () => _client.SendAsync(new HttpRequestMessage(HttpMethod.Delete, url)
+            () => client.SendAsync(new HttpRequestMessage(HttpMethod.Delete, url)
             {
                 Content = payload
             }, cancellationToken),
-            !string.IsNullOrWhiteSpace(accessToken)).ConfigureAwait(false);
+            !string.IsNullOrWhiteSpace(accessToken),
+            client).ConfigureAwait(false);
 
         if (response is null)
         {
@@ -315,7 +325,8 @@ public abstract class ApiBase
     
     private async Task<HttpResponseMessage?> ExecuteRequestAsync(
         Func<Task<HttpResponseMessage>> requestFunc,
-        bool usingExternalToken)
+        bool usingExternalToken,
+        HttpClient client)
     {
         HttpResponseMessage response;
         try
@@ -334,7 +345,7 @@ public abstract class ApiBase
             // Retry the call if we get new access token
             if (!string.IsNullOrWhiteSpace(token))
             {
-                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 try
                 {
@@ -467,5 +478,10 @@ public abstract class ApiBase
         }
 
         return url;
+    }
+
+    private HttpClient GetClient()
+    {
+        return _clientFactory.CreateClient(HttpConstants.HttpClientName);
     }
 }

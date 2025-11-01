@@ -11,6 +11,8 @@ namespace KickLib.Auth;
 /// </summary>
 public class KickOAuthGenerator : IKickOAuthGenerator
 {
+    private readonly IHttpClientFactory _clientFactory;
+    
     /// <summary>
     ///     Authorization URL
     /// </summary>
@@ -26,6 +28,15 @@ public class KickOAuthGenerator : IKickOAuthGenerator
     /// </summary>
     public const string RevokeTokenUrl = "https://id.kick.com/oauth/revoke";
 
+    /// <summary>
+    ///     Creates instance of Kick OAuth Generator.
+    /// </summary>
+    /// <param name="clientFactory">HTTP Client Factory for HTTP requests.</param>
+    public KickOAuthGenerator(IHttpClientFactory? clientFactory = null)
+    {
+        _clientFactory = clientFactory ?? new KickLibHttpClientFactory();
+    }
+    
     /// <summary>
     ///     [User Access Token] Generate the OAuth authorization URL.
     ///     When state is provided, it will be used. Otherwise Base64 encoded verifier will be used (unsafe).
@@ -119,7 +130,7 @@ public class KickOAuthGenerator : IKickOAuthGenerator
             throw new ArgumentException("Redirect URL cannot be null or empty.", nameof(redirectUrl));
         }
 
-        using var client = new HttpClient();
+        var client = GetClient();
 
         if (string.IsNullOrWhiteSpace(verifier))
         {
@@ -182,7 +193,7 @@ public class KickOAuthGenerator : IKickOAuthGenerator
             throw new ArgumentException("Client ID cannot be null or empty.", nameof(clientId));
         }
 
-        using var client = new HttpClient();
+        var client = GetClient();
 
         var data = new FormUrlEncodedContent(
         [
@@ -244,7 +255,7 @@ public class KickOAuthGenerator : IKickOAuthGenerator
             throw new ArgumentException("Client secret cannot be null or empty.", nameof(clientSecret));
         }
         
-        using var client = new HttpClient();
+        var client = GetClient();
 
         var data = new FormUrlEncodedContent(
         [
@@ -303,7 +314,7 @@ public class KickOAuthGenerator : IKickOAuthGenerator
             throw new ArgumentException("Token to revoke cannot be null or empty.", nameof(tokenToRevoke));
         }
         
-        using var client = new HttpClient();
+        var client = GetClient();
 
         var hintType = isAccessToken ? "access_token" : "refresh_token";
         var data = new FormUrlEncodedContent(
@@ -373,4 +384,6 @@ public class KickOAuthGenerator : IKickOAuthGenerator
             return string.Empty;
         }
     }
+    
+    private HttpClient GetClient() => _clientFactory.CreateClient(HttpConstants.HttpClientName);
 }

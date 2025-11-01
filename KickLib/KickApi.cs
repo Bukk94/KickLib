@@ -85,24 +85,26 @@ public class KickApi : IKickApi
     /// </summary>
     /// <param name="settings">Optional API settings (if not provided, defaults will be used).</param>
     /// <param name="loggerFactory">Logger factory for logging (if not provided, NullLogger will be used).</param>
+    /// <param name="httpClientFactory">Optional IHttpClientFactory to be used for HTTP calls (if not provided, defaults will be used).</param>
     public static IKickApi Create(
         ApiSettings? settings = null,
-        ILoggerFactory? loggerFactory = null)
+        ILoggerFactory? loggerFactory = null,
+        IHttpClientFactory? httpClientFactory = null)
     {
         var apiSettings = settings ?? ApiSettings.Default;
-        var oauthGenerator = new KickOAuthGenerator();
-        var clientFactory = new KickLibHttpClientFactory();
+        httpClientFactory ??= new KickLibHttpClientFactory();
+        var oauthGenerator = new KickOAuthGenerator(httpClientFactory);
         
         return new KickApi(
-            new Authorization(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Authorization>()),
-            new Categories(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Categories>()),
-            new Chat(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Chat>()),
-            new Channels(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Channels>()),
-            new EventSubscriptions(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<EventSubscriptions>()),
-            new Livestreams(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Livestreams>()),
-            new Kicks(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Kicks>()),
-            new Moderation(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Moderation>()),
-            new Users(apiSettings, oauthGenerator, clientFactory, loggerFactory.GetLogger<Users>()),
+            new Authorization(apiSettings, oauthGenerator, httpClientFactory, loggerFactory.GetLogger<Authorization>()),
+            new Categories(apiSettings, oauthGenerator, httpClientFactory, loggerFactory.GetLogger<Categories>()),
+            new Chat(apiSettings, oauthGenerator, httpClientFactory, loggerFactory.GetLogger<Chat>()),
+            new Channels(apiSettings, oauthGenerator, httpClientFactory, loggerFactory.GetLogger<Channels>()),
+            new EventSubscriptions(apiSettings, oauthGenerator, httpClientFactory, loggerFactory.GetLogger<EventSubscriptions>()),
+            new Livestreams(apiSettings, oauthGenerator, httpClientFactory, loggerFactory.GetLogger<Livestreams>()),
+            new Kicks(apiSettings, oauthGenerator, httpClientFactory, loggerFactory.GetLogger<Kicks>()),
+            new Moderation(apiSettings, oauthGenerator, httpClientFactory, loggerFactory.GetLogger<Moderation>()),
+            new Users(apiSettings, oauthGenerator, httpClientFactory, loggerFactory.GetLogger<Users>()),
             apiSettings);
     }
 }
