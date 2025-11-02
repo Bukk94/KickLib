@@ -32,6 +32,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_build", "_build", "{2DCD54
 		.github\workflows\ci.yml = .github\workflows\ci.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{947C9E14-9749-4415-8C55-C65C3629C9F2}"
+	ProjectSection(SolutionItems) = preProject
+		Examples\KickClientExample.cs = Examples\KickClientExample.cs
+		Examples\UnofficialApiExample.cs = Examples\UnofficialApiExample.cs
+		Examples\KickApiExample.cs = Examples\KickApiExample.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

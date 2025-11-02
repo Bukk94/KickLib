@@ -113,6 +113,11 @@ If you are using Dependency Injection, you can easily add KickLib via extension 
 
 ## Examples 💡
 
+To see complex examples you can copy-out, check out [KickLib Examples folder](Examples):
+- [API Examples](Examples/KickApiExample.cs)
+- [Unofficial API Examples](Examples/UnofficialApiExample.cs)
+- [Client Examples](Examples/KickClientExample.cs)
+
 ### OAuth flow / Authenticated API calls
 
 Almost all calls requires authentication. Kick officially supports OAuth 2.1 flow.
