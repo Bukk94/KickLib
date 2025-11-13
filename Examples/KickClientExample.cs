@@ -2,22 +2,22 @@ using KickLib.Client;
 using KickLib.Client.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace ExampleApp.Examples;
+namespace KickLib.Examples;
 
 /// <summary>
-/// Kick WebSocket Client (IKickClient) Usage Examples
+///     Kick WebSocket Client (IKickClient) Usage Examples
 /// 
-/// This example demonstrates how to use the KickClient to listen to real-time events
-/// from Kick.com using WebSocket connections (Pusher protocol).
+///     This example demonstrates how to use the KickClient to listen to real-time events
+///     from Kick.com using WebSocket connections (Pusher protocol).
 /// 
-/// The client allows you to:
-/// - Listen to chat messages in real-time
-/// - Detect stream state changes (online/offline)
-/// - Monitor follows, subscriptions, and gifts
-/// - Track moderation events (bans, timeouts, message deletions)
-/// - Receive pinned messages and reward redemptions
+///     The client allows you to:
+///     - Listen to chat messages in real-time
+///     - Detect stream state changes (online/offline)
+///     - Monitor follows, subscriptions, and gifts
+///     - Track moderation events (bans, timeouts, message deletions)
+///     - Receive pinned messages and reward redemptions
 /// 
-/// No authentication required for reading public events!
+///     No authentication required for reading public events!
 /// </summary>
 public static class KickClientExample
 {

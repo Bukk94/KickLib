@@ -5,19 +5,19 @@ using KickLib.Api.Unofficial.Models.Response.v1.Emotes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace ExampleApp.Examples;
+namespace KickLib.Examples;
 
 /// <summary>
-/// Unofficial Kick API (IUnofficialKickApi) Usage Examples
+///     Unofficial Kick API (IUnofficialKickApi) Usage Examples
 /// 
-/// This example demonstrates how to use the unofficial/undocumented Kick API.
-/// The unofficial API provides access to features not yet available in the official API,
-/// such as getting videos/clips, getting detailed channel data, and more.
+///     This example demonstrates how to use the unofficial/undocumented Kick API.
+///     The unofficial API provides access to features not yet available in the official API,
+///     such as getting videos/clips, getting detailed channel data, and more.
 /// 
-/// WARNING: This uses undocumented endpoints that may change without notice.
-/// Use at your own risk. For production applications, prefer the official API when possible.
+///     WARNING: This uses undocumented endpoints that may change without notice.
+///     Use at your own risk. For production applications, prefer the official API when possible.
 ///
-/// NOTE: IDs and Tokens are NOT interchangeable between the official and unofficial APIs!
+///     NOTE: IDs and Tokens are NOT interchangeable between the official and unofficial APIs!
 /// </summary>
 public static class UnofficialApiExample
 {
@@ -32,6 +32,8 @@ public static class UnofficialApiExample
             .WithSessionPuppeteerClient() // Uses Puppeteer for browser automation
             // or you can use .WithTlsClient() or .WithSessionPuppeteerClient()
             // you cannot combine the client types in the same DI setup
+            // 
+            // Optionally, add logging (you can use `Microsoft.Extensions.Logging.Console` package) with simple Console logger
             .AddLogging(builder => builder.AddConsole())
             .BuildServiceProvider();
 
@@ -52,7 +54,7 @@ public static class UnofficialApiExample
     /// </summary>
     public static void Example2_ManualSetup()
     {
-        // Create logger (optional but recommended)
+        // Create logger (optional but recommended) - Requires `Microsoft.Extensions.Logging.Console` package
         var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
         var logger = loggerFactory.CreateLogger("UnofficialApi");
         
@@ -355,7 +357,7 @@ public static class UnofficialApiExample
     /// </summary>
     public static async Task Example16_CompleteWorkflow()
     {
-        // 1. Setup
+        // 1. Setup - Requires `Microsoft.Extensions.Logging.Console` package
         var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
         var logger = loggerFactory.CreateLogger("UnofficialApi");
         IUnofficialKickApi api = new KickUnofficialApi(logger: logger);

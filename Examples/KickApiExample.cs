@@ -6,18 +6,18 @@ using KickLib.Models.v1.Moderation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace ExampleApp.Examples;
+namespace KickLib.Examples;
 
 /// <summary>
-/// Official Kick API (IKickApi) Usage Examples
+///     Official Kick API (IKickApi) Usage Examples
 /// 
-/// This example demonstrates how to use the official Kick API with OAuth 2.1 authentication.
-/// The official API provides access to channels, users, categories, livestreams, chat, moderation, and webhook subscriptions.
+///     This example demonstrates how to use the official Kick API with OAuth authentication.
+///     The official API provides access to channels, users, categories, livestreams, chat, moderation, and webhook subscriptions.
 /// 
-/// Prerequisites:
-/// - Register your application at https://kick.com/dashboard/settings/applications
-/// - Obtain Client ID and Client Secret
-/// - Set up a redirect URI for OAuth callback
+///     Prerequisites:
+///     - Register your application at https://kick.com/settings/developer
+///     - Obtain Client ID and Client Secret
+///     - Set up a redirect URI for OAuth callback
 /// </summary>
 public static class OfficialApiExample
 {
@@ -29,11 +29,12 @@ public static class OfficialApiExample
     /// <summary>
     /// Example 1: Basic Setup with Dependency Injection (Recommended)
     /// </summary>
-    public static void Example1_SetupWithDependencyInjection()
+    public static IKickApi Example1_SetupWithDependencyInjection()
     {
         // Setup this in your Dependency Injection configuration
         var serviceProvider = new ServiceCollection()
             .AddKickLib()
+            // Optionally, add logging (you can use `Microsoft.Extensions.Logging.Console` package) with simple Console logger 
             .AddLogging(builder => builder.AddConsole())
             .BuildServiceProvider();
 
@@ -60,14 +61,15 @@ public static class OfficialApiExample
         };
         
         Console.WriteLine("API configured successfully!");
+        return api;
     }
 
     /// <summary>
     /// Example 2: Manual Setup without Dependency Injection
     /// </summary>
-    public static void Example2_ManualSetup()
+    public static IKickApi Example2_ManualSetup()
     {
-        // Create logger factory (optional but recommended)
+        // Create logger factory (optional but recommended) - Requires `Microsoft.Extensions.Logging.Console` package
         var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
         
         // Configure API settings
@@ -78,11 +80,25 @@ public static class OfficialApiExample
             AccessToken = "YOUR_ACCESS_TOKEN",
             RefreshToken = "YOUR_REFRESH_TOKEN"
         };
-
+        
         // Create API instance
         var api = KickApi.Create(settings, loggerFactory);
         
+        // Subscribe to token change events to persist tokens
+        api.ApiSettings.AccessTokenChanged += (_, args) =>
+        {
+            Console.WriteLine($"Access token updated: {args.NewToken}");
+            // Save to database/file for persistence
+        };
+        
+        api.ApiSettings.RefreshTokenChanged += (_, args) =>
+        {
+            Console.WriteLine($"Refresh token updated: {args.NewToken}");
+            // Save to database/file for persistence
+        };
+        
         Console.WriteLine($"KickApi instance created successfully!");
+        return api;
     }
 
     /// <summary>
@@ -137,6 +153,26 @@ public static class OfficialApiExample
         else
         {
             Console.WriteLine($"✗ Authentication failed: {tokenResult.Errors.First().Message}");
+        }
+    }
+
+    /// <summary>
+    /// Example 3.1: OAuth 2.1 Authentication Flow - Getting App Access Token
+    /// </summary>
+    public async Task Example3_OAuth_App_Flow()
+    {
+        var gen = new KickOAuthGenerator();
+        var result = await gen.GenerateAppAccessTokenAsync(ClientId, ClientSecret);
+        if (result.IsSuccess)
+        {
+            var appToken = result.Value;
+            Console.WriteLine($"\n✓ App Access Token generated successfully!");
+            Console.WriteLine($"Access Token: {appToken.AccessToken}");
+            Console.WriteLine($"Expires In: {appToken.ExpiresIn} seconds");
+        }
+        else
+        {
+            Console.WriteLine($"✗ Failed to generate App Access Token: {result.Errors.First().Message}");
         }
     }
 
@@ -356,7 +392,7 @@ public static class OfficialApiExample
             Console.WriteLine($"✗ Failed to timeout user: {timeoutResult.Errors.First().Message}");
         }
         
-        // Example 2: Using predefined timeout durations
+        // Example 2: Using predefined timeout durations - You should use only ONE call for one user
         await api.Moderation.TimeoutUserAsync(broadcasterUserId, userIdToModerate, TimeoutDuration.OneMinute);
         await api.Moderation.TimeoutUserAsync(broadcasterUserId, userIdToModerate, TimeoutDuration.ThirtyMinutes);
         await api.Moderation.TimeoutUserAsync(broadcasterUserId, userIdToModerate, TimeoutDuration.OneHour);
@@ -387,7 +423,7 @@ public static class OfficialApiExample
         // Example 6: Timeout a user using plain int (minutes)
         await api.Moderation.TimeoutUserAsync(broadcasterUserId, userIdToModerate, 5);
         
-        // Example 7: Permanently ban a user (still uses int)
+        // Example 7: Permanently ban a user
         var banResult = await api.Moderation.BanUserAsync(
             broadcasterUserId: broadcasterUserId,
             userIdToBan: userIdToModerate,
@@ -439,7 +475,7 @@ public static class OfficialApiExample
     /// </summary>
     public static async Task Example14_CompleteWorkflow()
     {
-        // 1. Setup
+        // 1. Setup - Requires `Microsoft.Extensions.Logging.Console` package
         var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
         var settings = new ApiSettings
         {

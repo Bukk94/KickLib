@@ -98,6 +98,18 @@ public class Moderation : ApiBase, IModeration
 
         return Result.Ok().WithSuccesses(result.Successes);
     }
+
+    /// <inheritdoc />
+    public Task<Result> TimeoutUserAsync(
+        int broadcasterUserId,
+        int userIdToBan,
+        TimeoutDuration duration,
+        string? reason = null,
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
+    {
+        return TimeoutUserAsync(broadcasterUserId, userIdToBan, duration.Minutes, reason, accessToken, cancellationToken);
+    }
     
     /// <inheritdoc />
     public async Task<Result> UnbanUserAsync(
