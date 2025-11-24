@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;net8.0;net9.0</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;net8.0;net9.0;net10.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <LangVersion>latest</LangVersion>
@@ -15,16 +15,16 @@
         <PackageReference Include="PuppeteerSharp" Version="[14.0.0]" />
         <PackageReference Include="RestSharp" Version="112.1.0" />
     </ItemGroup>
-    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net9.0'">
-        <PackageReference Include="PuppeteerExtraSharp" Version="3.0.1" />
-        <PackageReference Include="PuppeteerSharp" Version="20.2.2" />
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net9.0' Or '$(TargetFramework)' == 'net10.0'">
+        <PackageReference Include="PuppeteerExtraSharp" Version="3.0.2" />
+        <PackageReference Include="PuppeteerSharp" Version="20.2.4" />
     </ItemGroup>
     
     <ItemGroup>
         <PackageReference Include="JsonSubTypes" Version="2.0.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="Otp.NET" Version="1.4.0" />
-        <PackageReference Include="Polly" Version="8.6.4" />
+        <PackageReference Include="Polly" Version="8.6.5" />
         <PackageReference Include="System.Net.Security" Version="4.3.2" />
         <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
         <PackageReference Include="WebSocketSharper" Version="1.0.42" />

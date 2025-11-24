@@ -38,6 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{94
 		Examples\UnofficialApiExample.cs = Examples\UnofficialApiExample.cs
 		Examples\KickApiExample.cs = Examples\KickApiExample.cs
 		Examples\LocalOAuth.cs = Examples\LocalOAuth.cs
+		Examples\DevelopmentTest.cs = Examples\DevelopmentTest.cs
 	EndProjectSection
 EndProject
 Global
