@@ -12,5 +12,9 @@
   "started_at": "2025-04-03T12:00:00+11:00",
   "stream_title": "Test livestream",
   "thumbnail": "text",
-  "viewer_count": 1
+  "viewer_count": 1,
+  "custom_tags": [
+    "tag1",
+    "tag2"
+  ]
 }

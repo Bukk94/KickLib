@@ -63,4 +63,10 @@ public class LivestreamResponse
     /// </summary>
     [JsonProperty(PropertyName = "viewer_count")]
     public int ViewerCount { get; set; }
+    
+    /// <summary>
+    ///     Custom tags associated with the stream.
+    /// </summary>
+    [JsonProperty(PropertyName = "custom_tags")]
+    public ICollection<string> CustomTags { get; set; } = [];
 }

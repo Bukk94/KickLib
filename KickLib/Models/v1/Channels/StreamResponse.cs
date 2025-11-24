@@ -50,4 +50,10 @@ public class StreamResponse
     ///     URL to a stream thumbnail.
     /// </summary>
     public string Thumbnail { get; set; } = string.Empty;
+
+    /// <summary>
+    ///     Custom tags associated with the stream.
+    /// </summary>
+    [JsonProperty(PropertyName = "custom_tags")]
+    public ICollection<string> CustomTags { get; set; } = [];
 }

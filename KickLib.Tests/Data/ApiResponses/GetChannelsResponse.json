@@ -9,6 +9,10 @@
   "channel_description": "text",
   "slug": "text",
   "stream": {
+    "custom_tags": [
+      "tag1",
+      "tag2"
+    ],
     "is_live": true,
     "is_mature": true,
     "key": "text",

@@ -33,7 +33,7 @@ public static class LocalOAuth
     private const string ClientId = "XXXXXXXXXXXXXXXXXX";
     private const string ClientSecret = "YYYYYYYYYYYYYYYYYYYYY";
     // Allow following URL in the application as 'Redirect URL'
-    private const string RedirectUrl = "http://localhost:5000";
+    private const string RedirectUrl = "http://localhost:5000/";
     
     public static async Task<KickTokenResponse?> PerformKickLoginAsync(ICollection<string> scopes)
     {

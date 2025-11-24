@@ -93,6 +93,8 @@ public class ApiResponseTests : BaseKickLibTests
         
         deserializedObject.Should().NotBeNull();
         deserializedObject.Should().BeOfType(targetType);
+        ((ChannelResponse)deserializedObject).Stream.CustomTags.Should().NotBeNull();
+        ((ChannelResponse)deserializedObject).Stream.CustomTags.Should().HaveCount(2);
     }
 
     [Theory]
@@ -105,6 +107,8 @@ public class ApiResponseTests : BaseKickLibTests
         
         deserializedObject.Should().NotBeNull();
         deserializedObject.Should().BeOfType(targetType);
+        ((LivestreamResponse)deserializedObject).CustomTags.Should().NotBeNull();
+        ((LivestreamResponse)deserializedObject).CustomTags.Should().HaveCount(2);
     }
     
     [Theory]
