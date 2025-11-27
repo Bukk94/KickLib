@@ -47,20 +47,6 @@
       ]
     }
   },
-  "content": "This is a test message with emotes!",
-  "emotes": [
-    {
-      "emote_id": "12345",
-      "positions": [
-        { "s": 0, "e": 7 }
-      ]
-    },
-    {
-      "emote_id": "67890",
-      "positions": [
-        { "s": 20, "e": 25 }
-      ]
-    }
-  ],
+  "content": "This is a test reply message",
   "created_at": "2025-01-14T16:08:06Z"
 }

@@ -35,6 +35,7 @@ public class ApiResponseTests : BaseKickLibTests
     
     [Theory]
     [InlineData("GetCategoriesResponse", typeof(CategoryResponse))]
+    [InlineData("GetCategoryResponse", typeof(CategoryResponse))]
     public void CorrectlyDeserialize_CategoriesResponses(string payloadResource, Type targetType)
     {
         var payload = GetPayload(payloadResource);
@@ -43,6 +44,15 @@ public class ApiResponseTests : BaseKickLibTests
         
         deserializedObject.Should().NotBeNull();
         deserializedObject.Should().BeOfType(targetType);
+        ((CategoryResponse)deserializedObject).Id.Should().Be(101);
+        ((CategoryResponse)deserializedObject).Name.Should().Be("Old School Runescape");
+        ((CategoryResponse)deserializedObject).Thumbnail.Should().NotBeEmpty();
+        
+        if (payloadResource == "GetCategoryResponse")
+        {
+            ((CategoryResponse)deserializedObject).ViewerCount.Should().Be(1000);
+            ((CategoryResponse)deserializedObject).Tags.Should().HaveCount(2);
+        }
     }
     
     [Theory]

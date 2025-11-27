@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace KickLib.Webhooks.Payloads;
 
 /// <summary>
@@ -38,4 +40,15 @@ public class GiftAmount
     ///     Gift message.
     /// </summary>
     public string Message { get; set; } = string.Empty;
+    
+    /// <summary>
+    ///     Duration in seconds for which the gift is pinned.
+    /// </summary>
+    [JsonProperty(PropertyName = "pinned_time_seconds")]
+    public int PinnedTimeSeconds { get; set; }
+
+    /// <summary>
+    ///     Duration for which the gift is pinned.
+    /// </summary>
+    public TimeSpan PinnedTime => TimeSpan.FromSeconds(PinnedTimeSeconds);
 }

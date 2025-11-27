@@ -175,10 +175,12 @@ public class EventPayloadsTests : BaseKickLibTests
         webhookEvent.Sender.ChannelSlug.Should().Be("gift_sender_channel");
         webhookEvent.Sender.ProfilePicture.Should().Be("https://example.com/sender_avatar.jpg");
         webhookEvent.Sender.UserId.Should().Be(987654321);
-        webhookEvent.Gift.Amount.Should().Be(100);
-        webhookEvent.Gift.Name.Should().Be("Full Send");
-        webhookEvent.Gift.Type.Should().Be("BASIC");
-        webhookEvent.Gift.Tier.Should().Be("BASIC");
+        webhookEvent.Gift.Amount.Should().Be(500);
+        webhookEvent.Gift.Name.Should().Be("Rage Quit");
+        webhookEvent.Gift.Type.Should().Be("LEVEL_UP");
+        webhookEvent.Gift.Tier.Should().Be("MID");
         webhookEvent.Gift.Message.Should().Be("w");
+        webhookEvent.Gift.PinnedTimeSeconds.Should().Be(600);
+        webhookEvent.Gift.PinnedTime.Should().Be(TimeSpan.FromSeconds(600));
     }
 }

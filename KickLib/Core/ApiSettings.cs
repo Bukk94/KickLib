@@ -31,12 +31,14 @@ public class ApiSettings
         get => _accessToken;
         set
         {
-            if (_accessToken != value)
+            if (string.Equals(_accessToken, value))
             {
-                var arg = new TokenChangedEventArgs(_accessToken, value);
-                _accessToken = value;
-                AccessTokenChanged?.Invoke(this, arg);
+                return;
             }
+            
+            var arg = new TokenChangedEventArgs(_accessToken, value);
+            _accessToken = value;
+            AccessTokenChanged?.Invoke(this, arg);
         }
     }
 
@@ -48,12 +50,14 @@ public class ApiSettings
         get => _refreshToken;
         set
         {
-            if (_refreshToken != value)
+            if (string.Equals(_refreshToken, value))
             {
-                var arg = new TokenChangedEventArgs(_refreshToken, value);
-                _refreshToken = value;
-                RefreshTokenChanged?.Invoke(this, arg);
+                return;
             }
+
+            var arg = new TokenChangedEventArgs(_refreshToken, value);
+            _refreshToken = value;
+            RefreshTokenChanged?.Invoke(this, arg);
         }
     }
 
