@@ -3,9 +3,9 @@
 </p>
 
 <p align="center">
-<a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/-.NET%2010.0-1D5F7E" style="max-height: 300px;"></a>
-<a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/-.NET%208.0-de1237" style="max-height: 300px;"></a>
-<a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/-.NET%209.0-blueviolet" style="max-height: 300px;"></a>
+<a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/-.NET%2010-1D5F7E" style="max-height: 300px;"></a>
+<a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/-.NET%209-blueviolet" style="max-height: 300px;"></a>
+<a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/-.NET%208-de1237" style="max-height: 300px;"></a>
 <a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/.NET%20Standard%202.1-2ba8e2" style="max-height: 300px;"></a>⎮
 <a href="https://discord.gg/fPRXy57WrS"><img src="https://img.shields.io/badge/Discord-KickLib-green.svg" style="max-height: 300px;"></a>
 <a href="https://github.com/Bukk94/KickLib/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" style="max-height: 300px;"></a>
