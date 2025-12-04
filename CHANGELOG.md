@@ -4,6 +4,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.0](https://www.nuget.org/packages/KickLib/1.8.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.7.2...v1.8.0)
+### Added
+- Added .NET 10 support
+- Extended `/channels` and `/livestream` endpoints to parse `custom_tags` field 
+- Added official DELETE chat message endpoint
+- Extended Categories response with `Tags` and `ViewerCount` fields
+- Extended Gift webhook payload with `PinnedTime` fields
+- Added `TimeoutDuration` for `TimeoutUserAsync` in Moderation API to ease timeout duration passing
+- Added Examples
+
 ## [1.7.2](https://www.nuget.org/packages/KickLib/1.7.2) - [diff](https://github.com/Bukk94/KickLib/compare/v1.7.1...v1.7.2)
 ### Changed
 - Improved working with HTTP Client to better utilize connection pooling
