@@ -79,6 +79,31 @@ public class Chat : ApiBase, IChat
 
         return PostMessageInternalAsync(message, MessageType.Bot, null, messageId, accessToken, cancellationToken);
     }
+    
+    /// <inheritdoc />
+    public async Task<Result<bool>> DeleteMessageAsync(
+        string messageId,
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrEmpty(messageId))
+        {
+            throw new ArgumentException("MessageId cannot be null or empty.", nameof(messageId));
+        }
+        
+        // v1/chat/{id}
+        var urlPart = $"{ApiUrlPart}/{messageId}";
+        
+        var result = await DeleteAsync(urlPart, ApiVersion.v1, accessToken: accessToken, cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
+        
+        if (result.HasError(x => x.Message == "Response code: 403"))
+        {
+            result.WithError($"Missing scope: {KickScopes.ModerationChatMessageManage}");
+        }
+        
+        return result;
+    }
 
     private async Task<Result<SendChatMessageResponse>> PostMessageInternalAsync(
         string message,

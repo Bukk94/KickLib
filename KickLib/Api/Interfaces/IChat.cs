@@ -75,4 +75,18 @@ public interface IChat
         string messageId, 
         string? accessToken = null, 
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Delete a chat message from a channel.
+    /// </summary>
+    /// <remarks>
+    ///     Required scope: moderation:chat_message:manage
+    /// </remarks>
+    /// <param name="messageId">ID of the message to delete.</param>
+    /// <param name="accessToken">Access token to be used for this request. If null, token from <see cref="ApiSettings"/> will be used.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel operation.</param>
+    Task<Result<bool>> DeleteMessageAsync(
+        string messageId,
+        string? accessToken = null,
+        CancellationToken cancellationToken = default);
 }

@@ -59,6 +59,11 @@ public static class KickScopes
     public const string ModerationBan = "moderation:ban";
     
     /// <summary>
+    ///     Execute moderation actions on chat messages
+    /// </summary>
+    public const string ModerationChatMessageManage = "moderation:chat_message:manage";
+    
+    /// <summary>
     ///     View KICKs related information in Kick e.g leaderboards, etc.
     /// </summary>
     public const string KicksRead = "kicks:read";
