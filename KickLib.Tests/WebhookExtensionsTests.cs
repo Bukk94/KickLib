@@ -13,6 +13,7 @@ public class WebhookExtensionsTests
     [InlineData(EventType.ChannelSubscriptionRenewal, WebhookEventTypes.ChannelSubscriptionRenewal)]
     [InlineData(EventType.ChannelSubscriptionGifts, WebhookEventTypes.ChannelGiftedSubscription)]
     [InlineData(EventType.ChannelSubscriptionNew, WebhookEventTypes.ChannelNewSubscription)]
+    [InlineData(EventType.ChannelRewardRedemptionUpdated, WebhookEventTypes.ChannelRewardRedemptionUpdated)]
     [InlineData(EventType.LivestreamStatusUpdated, WebhookEventTypes.LivestreamStatusUpdated)]
     [InlineData(EventType.LivestreamMetadataUpdated, WebhookEventTypes.LivestreamMetadataUpdated)]
     public void CorrectlyExtractEventType(EventType eventType, string expected)
@@ -28,6 +29,7 @@ public class WebhookExtensionsTests
     [InlineData(WebhookEventTypes.ChannelSubscriptionRenewal, "1", EventType.ChannelSubscriptionRenewal, 1)]
     [InlineData(WebhookEventTypes.ChannelGiftedSubscription, "1", EventType.ChannelSubscriptionGifts, 1)]
     [InlineData(WebhookEventTypes.ChannelNewSubscription, "1", EventType.ChannelSubscriptionNew, 1)]
+    [InlineData(WebhookEventTypes.ChannelRewardRedemptionUpdated, "1", EventType.ChannelRewardRedemptionUpdated, 1)]
     [InlineData(WebhookEventTypes.LivestreamStatusUpdated, "1", EventType.LivestreamStatusUpdated, 1)]
     [InlineData(WebhookEventTypes.LivestreamMetadataUpdated, "1", EventType.LivestreamMetadataUpdated, 1)]
     public void GetEventType_ReturnsCorrectValue(string headerType, string version, EventType expectedType, int expectedVersion)

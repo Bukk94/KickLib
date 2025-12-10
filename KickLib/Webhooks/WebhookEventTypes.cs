@@ -29,6 +29,11 @@ public static class WebhookEventTypes
     ///     Event type for a new subscription to a channel.
     /// </summary>
     public const string ChannelNewSubscription = "channel.subscription.new";
+    
+    /// <summary>
+    ///     Event type channel.reward.redemption.updated.
+    /// </summary>
+    public const string ChannelRewardRedemptionUpdated = "channel.reward.redemption.updated";
 
     /// <summary>
     ///     Event type for a livestream status update.

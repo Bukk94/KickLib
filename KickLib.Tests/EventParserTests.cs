@@ -19,6 +19,7 @@ public class EventParserTests : BaseKickLibTests
             new object[] { "ChannelGiftedSubscriptionEventPayload", EventType.ChannelSubscriptionGifts, typeof(ChannelGiftedSubscriptionEvent) },
             new object[] { "ChannelNewSubscriptionEventPayload", EventType.ChannelSubscriptionNew, typeof(ChannelNewSubscriptionEvent) },
             new object[] { "ChannelSubscriptionRenewalEventPayload", EventType.ChannelSubscriptionRenewal, typeof(ChannelSubscriptionRenewalEvent) },
+            new object[] { "ChannelRewardRedemptionUpdatedEventPayload", EventType.ChannelRewardRedemptionUpdated, typeof(ChannelRewardRedemptionUpdatedEvent) },
             new object[] { "LivestreamStatusUpdatedEventPayload_Live", EventType.LivestreamStatusUpdated, typeof(LivestreamStatusUpdatedEvent) },
             new object[] { "LivestreamMetadataUpdatedEventPayload", EventType.LivestreamMetadataUpdated, typeof(LivestreamMetadataUpdatedEvent) },
             new object[] { "ModerationUserBannedEventPayload", EventType.ModerationUserBanned, typeof(ModerationUserBannedEvent) },

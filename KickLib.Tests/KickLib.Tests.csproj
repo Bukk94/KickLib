@@ -35,6 +35,7 @@
       <EmbeddedResource Include="Data\WebhookPayloads\ChannelGiftedSubscriptionEventPayload.json" />
       <EmbeddedResource Include="Data\WebhookPayloads\ChannelGiftedSubscriptionEventPayload_Anonymous.json" />
       <EmbeddedResource Include="Data\WebhookPayloads\ChannelNewSubscriptionEventPayload.json" />
+      <EmbeddedResource Include="Data\WebhookPayloads\ChannelRewardRedemptionUpdatedEventPayload.json" />
       <EmbeddedResource Include="Data\WebhookPayloads\ChannelSubscriptionRenewalEventPayload.json" />
       <EmbeddedResource Include="Data\WebhookPayloads\ChatMessageSentEventPayload.json" />
       <EmbeddedResource Include="Data\WebhookPayloads\ChatMessageSentEventPayload_NoEmotes.json" />

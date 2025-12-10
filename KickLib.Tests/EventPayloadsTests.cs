@@ -183,4 +183,36 @@ public class EventPayloadsTests : BaseKickLibTests
         webhookEvent.Gift.PinnedTimeSeconds.Should().Be(600);
         webhookEvent.Gift.PinnedTime.Should().Be(TimeSpan.FromSeconds(600));
     }
+
+    [Fact]
+    public void CorrectlyDeserialize_ChannelRewardRedemptionUpdatedEventPayload()
+    {
+        var payload = GetPayload("ChannelRewardRedemptionUpdatedEventPayload");
+
+        var webhookEvent = WebhookEventParser.ParseChannelRewardRedemptionUpdatedEvent(payload);
+
+        payload.Should().NotBeNull();
+        webhookEvent.Should().NotBeNull();
+        webhookEvent.Id.Should().Be("01KBHE78QE4HZY1617DK5FC7YD");
+        webhookEvent.UserInput.Should().Be("unban me");
+        webhookEvent.Status.Should().Be(RedemptionStatus.Rejected);
+        webhookEvent.RedeemedAt.Should().BeCloseTo(DateTimeOffset.Parse("2025-12-02T22:54:19.323Z"), TimeSpan.FromSeconds(1));
+        webhookEvent.Reward.Should().NotBeNull();
+        webhookEvent.Reward.Id.Should().Be("01KBHE7RZNHB0SKDV1H86CD4F3");
+        webhookEvent.Reward.Title.Should().Be("Uban Request");
+        webhookEvent.Reward.Cost.Should().Be(1000);
+        webhookEvent.Reward.Description.Should().Be("Only good reasons pls");
+        webhookEvent.Redeemer.Should().NotBeNull();
+        webhookEvent.Redeemer.UserId.Should().Be(123);
+        webhookEvent.Redeemer.Username.Should().Be("naughty-user");
+        webhookEvent.Redeemer.IsVerified.Should().BeFalse();
+        webhookEvent.Redeemer.ProfilePicture.Should().Be("");
+        webhookEvent.Redeemer.ChannelSlug.Should().Be("naughty_user");
+        webhookEvent.Broadcaster.Should().NotBeNull();
+        webhookEvent.Broadcaster.UserId.Should().Be(333);
+        webhookEvent.Broadcaster.Username.Should().Be("gigachad");
+        webhookEvent.Broadcaster.IsVerified.Should().BeTrue();
+        webhookEvent.Broadcaster.ProfilePicture.Should().Be("");
+        webhookEvent.Broadcaster.ChannelSlug.Should().Be("gigachad");
+    }
 }

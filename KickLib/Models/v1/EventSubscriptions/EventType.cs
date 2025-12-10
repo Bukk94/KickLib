@@ -36,6 +36,11 @@ public enum EventType
     /// </summary>
     ChannelSubscriptionNew,
     
+	/// <summary>
+	///     Event type channel.reward.redemption.updated.
+	/// </summary>
+	ChannelRewardRedemptionUpdated,
+
     /// <summary>
     ///     Event type livestream.status.updated.
     /// </summary>
