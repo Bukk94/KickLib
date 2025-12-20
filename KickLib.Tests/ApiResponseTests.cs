@@ -3,6 +3,7 @@ using KickLib.Core;
 using KickLib.Models;
 using KickLib.Models.v1.Auth;
 using KickLib.Models.v1.Categories;
+using KickLib.Models.v1.ChannelRewards;
 using KickLib.Models.v1.Channels;
 using KickLib.Models.v1.Chat;
 using KickLib.Models.v1.EventSubscriptions;
@@ -131,6 +132,25 @@ public class ApiResponseTests : BaseKickLibTests
         
         deserializedObject.Should().NotBeNull();
         deserializedObject.Should().BeOfType(targetType);
+    }
+    
+    [Fact]
+    public void CorrectlyDeserialize_GetChannelRewards()
+    {
+        var payload = GetPayload("GetChannelRewardResponse");
+        
+        var deserializedObject = JsonConvert.DeserializeObject<ChannelReward>(payload, SerializerSettings);
+        
+        deserializedObject.Should().NotBeNull();
+        deserializedObject.Id.Should().Be("01HZ8X9K2M4N6P8Q0R2S4T6V8W0Y2Z4");
+        deserializedObject.BackgroundColor.Should().Be("#00e701");
+        deserializedObject.Cost.Should().Be(100);
+        deserializedObject.Description.Should().Be("Request a song by providing a URL");
+        deserializedObject.IsEnabled.Should().BeTrue();
+        deserializedObject.IsPaused.Should().BeFalse();
+        deserializedObject.IsUserInputRequired.Should().BeTrue();
+        deserializedObject.ShouldRedemptionsSkipRequestQueue.Should().BeTrue();
+        deserializedObject.Title.Should().Be("Song Request");
     }
     
     [Fact]

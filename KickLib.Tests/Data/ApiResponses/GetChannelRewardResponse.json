@@ -1,0 +1,11 @@
+{
+  "background_color": "#00e701",
+  "cost": 100,
+  "description": "Request a song by providing a URL",
+  "id": "01HZ8X9K2M4N6P8Q0R2S4T6V8W0Y2Z4",
+  "is_enabled": true,
+  "is_paused": false,
+  "is_user_input_required": true,
+  "should_redemptions_skip_request_queue": true,
+  "title": "Song Request"
+}

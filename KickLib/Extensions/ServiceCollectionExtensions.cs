@@ -33,6 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<IAuthorization, KickLib.Api.Authorization>()
                 .AddScoped<ICategories, KickLib.Api.Categories>()
                 .AddScoped<IChannels, KickLib.Api.Channels>()
+                .AddScoped<IChannelRewards, KickLib.Api.ChannelRewards>()
                 .AddScoped<IChat, KickLib.Api.Chat>()
                 .AddScoped<IEventSubscriptions, KickLib.Api.EventSubscriptions>()
                 .AddScoped<IKicks, KickLib.Api.Kicks>()

@@ -30,6 +30,22 @@ public static class KickScopes
     public const string ChannelWrite = "channel:write";
     
     /// <summary>
+    ///     Read channel rewards scope.
+    /// </summary>
+    /// <remarks>
+    ///     Read Channel points rewards information on a channel
+    /// </remarks>
+    public const string ChannelRewardsRead = "channel:rewards:read";
+    
+    /// <summary>
+    ///     Update channel rewards scope.
+    /// </summary>
+    /// <remarks>
+    ///     Read, add, edit and delete Channel points rewards on a channel
+    /// </remarks>
+    public const string ChannelRewardsWrite ="channel:rewards:write";
+    
+    /// <summary>
     ///     Write to chat scope.
     /// </summary>
     /// <remarks>
@@ -54,17 +70,26 @@ public static class KickScopes
     public const string EventsSubscribe = "events:subscribe";
     
     /// <summary>
-    ///     Execute moderation actions for moderators.
+    ///     Ban/Unban users scope.
     /// </summary>
+    /// <remarks>
+    ///     Execute moderation actions for moderators.
+    /// </remarks>
     public const string ModerationBan = "moderation:ban";
     
     /// <summary>
-    ///     Execute moderation actions on chat messages
+    ///     Manage chat messages scope.
     /// </summary>
+    /// <remarks>
+    ///     Execute moderation actions on chat messages.
+    /// </remarks>
     public const string ModerationChatMessageManage = "moderation:chat_message:manage";
     
     /// <summary>
-    ///     View KICKs related information in Kick e.g leaderboards, etc.
+    ///     View KICKs info scope.
     /// </summary>
+    /// <remarks>
+    ///     View KICKs related information in Kick e.g leaderboards, etc.
+    /// </remarks>
     public const string KicksRead = "kicks:read";
 }

@@ -225,7 +225,65 @@ public abstract class ApiBase
     }
     
     /// <summary>
+    ///     Perform PATCH request.
+    /// </summary>
+    protected async Task<Result<TType>> PatchAsync<TType, TInput>(
+        string urlPart,
+        ApiVersion version,
+        TInput input,
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
+        where TType : class
+    {
+        var url = ConstructResourceUrl(urlPart, version);
+
+        var token = await ResolveAccessTokenAsync(accessToken).ConfigureAwait(false);
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            return Result.Fail("Access token is missing.");
+        }
+        
+        var client = GetClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var json = JsonConvert.SerializeObject(input, _serializerSettings);
+        var payload = new StringContent(json, Encoding.UTF8, "application/json");
+        
+        var response = await ExecuteRequestAsync(
+            () => client.PatchAsync(url, payload, cancellationToken),
+            !string.IsNullOrWhiteSpace(accessToken),
+            client).ConfigureAwait(false);
+        
+        var (data, error) = await ProcessResponseAsync(response, $"PATCH {url}").ConfigureAwait(false);
+        if (data is null ||
+            response is null)
+        {
+            return error;
+        }
+        
+        var deserializedObject = JsonConvert.DeserializeObject<DataWrapper<TType>>(data, _serializerSettings);
+
+        return deserializedObject?.Data is not null
+            ? Result.Ok(deserializedObject.Data!)
+                .WithSuccess(((int)response.StatusCode).ToString())
+                .WithSuccess(deserializedObject.Message ?? "Success")
+            : HandleErrorResponse(response, data, $"PATCH {url}", $"Failed to deserialize response to type {typeof(TType)}. Received response from url '{url}': {data}");
+    }
+
+    /// <summary>
     ///     Perform DELETE request.
+    /// </summary>
+    protected Task<Result<bool>> DeleteAsync(
+        string urlPart,
+        ApiVersion version,
+        string? accessToken = null,
+        CancellationToken cancellationToken = default)
+    {
+        return DeleteAsync(urlPart, version, null, accessToken, cancellationToken);
+    }
+    
+    /// <summary>
+    ///     Perform DELETE request with query params.
     /// </summary>
     protected async Task<Result<bool>> DeleteAsync(
         string urlPart,

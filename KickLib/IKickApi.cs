@@ -28,6 +28,11 @@ public interface IKickApi
     IChannels Channels { get; }
     
     /// <summary>
+    ///     Channel Rewards APIs allow an app to interact with channel rewards.
+    /// </summary>
+    IChannelRewards ChannelRewards { get; }
+    
+    /// <summary>
     ///     [WEBHOOKS] Event Subscriptions APIs allow you to subscribe to events on Kick e.g. chat messages, follows, subscriptions.
     ///     Those events are then sent to a webhook URL that you provide.
     /// </summary>

@@ -133,9 +133,11 @@ public class Channels : ApiBase, IChannels
         {
             throw new ArgumentNullException(nameof(request));
         }
+
+        var payload = UpdateChannelApiRequest.FromRequest(request);
         
         // v1/channels
-        var result = await PatchAsync(ApiUrlPart, ApiVersion.v1, request, accessToken, cancellationToken).ConfigureAwait(false);
+        var result = await PatchAsync(ApiUrlPart, ApiVersion.v1, payload, accessToken, cancellationToken).ConfigureAwait(false);
 
         if (result.HasError(x => x.Message == "Response code: 403"))
         {

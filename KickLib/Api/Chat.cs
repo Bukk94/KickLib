@@ -118,14 +118,14 @@ public class Chat : ApiBase, IChat
             throw new ArgumentException("Message cannot be null or empty.", nameof(message));
         }
 
-        var input = new SendMessageRequest(message, type)
+        var input = new SendMessageApiRequest(message, type)
         {
             BroadcasterId = broadcasterId,
             ReplyToMessageId = messageId
         };
         
         // v1/chat
-        var result = await PostAsync<SendChatMessageResponse, SendMessageRequest>(ApiUrlPart, ApiVersion.v1, input, accessToken, cancellationToken)
+        var result = await PostAsync<SendChatMessageResponse, SendMessageApiRequest>(ApiUrlPart, ApiVersion.v1, input, accessToken, cancellationToken)
             .ConfigureAwait(false);
         
         if (result.HasError(x => x.Message == "Response code: 403"))

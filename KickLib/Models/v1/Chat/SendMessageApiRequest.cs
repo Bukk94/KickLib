@@ -2,9 +2,9 @@ using Newtonsoft.Json;
 
 namespace KickLib.Models.v1.Chat;
 
-internal class SendMessageRequest
+internal class SendMessageApiRequest
 {
-    public SendMessageRequest(string content, MessageType type)
+    public SendMessageApiRequest(string content, MessageType type)
     {
         Content = content;
         Type = type;
