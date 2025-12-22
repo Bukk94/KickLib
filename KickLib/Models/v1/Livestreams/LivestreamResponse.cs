@@ -26,6 +26,12 @@ public class LivestreamResponse
     public int ChannelId { get; set; }
     
     /// <summary>
+    ///     Custom tags associated with the stream.
+    /// </summary>
+    [JsonProperty(PropertyName = "custom_tags")]
+    public ICollection<string> CustomTags { get; set; } = [];
+    
+    /// <summary>
     ///     Has livestream mature content?
     /// </summary>
     [JsonProperty(PropertyName = "has_mature_content")]
@@ -35,6 +41,12 @@ public class LivestreamResponse
     ///     Language of the livestream.
     /// </summary>
     public string? Language { get; set; }
+
+    /// <summary>
+    ///     Broadcaster's profile picture.
+    /// </summary>
+    [JsonProperty(PropertyName = "profile_picture")]
+    public string ProfilePicture { get; set; } = string.Empty;
     
     /// <summary>
     ///     Slug identifier of the livestream host.
@@ -63,10 +75,4 @@ public class LivestreamResponse
     /// </summary>
     [JsonProperty(PropertyName = "viewer_count")]
     public int ViewerCount { get; set; }
-    
-    /// <summary>
-    ///     Custom tags associated with the stream.
-    /// </summary>
-    [JsonProperty(PropertyName = "custom_tags")]
-    public ICollection<string> CustomTags { get; set; } = [];
 }

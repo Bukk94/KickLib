@@ -120,6 +120,7 @@ public class ApiResponseTests : BaseKickLibTests
         deserializedObject.Should().BeOfType(targetType);
         ((LivestreamResponse)deserializedObject).CustomTags.Should().NotBeNull();
         ((LivestreamResponse)deserializedObject).CustomTags.Should().HaveCount(2);
+        ((LivestreamResponse)deserializedObject).ProfilePicture.Should().Be("https://kick.com/img/default-profile-pictures/default2.jpeg");
     }
     
     [Theory]
