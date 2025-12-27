@@ -4,6 +4,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.0](https://www.nuget.org/packages/KickLib/1.9.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.8.0...v1.9.0)
+### Added
+- Channel Rewards APIs
+- Channel Rewards webhook events
+
+### Changed
+- Extended `GET /livestreams` response with profile picture
+
 ## [1.8.0](https://www.nuget.org/packages/KickLib/1.8.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.7.2...v1.8.0)
 ### Added
 - Added .NET 10 support

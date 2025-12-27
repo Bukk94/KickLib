@@ -17,10 +17,10 @@
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>.NET 10 support, new Kick API features</PackageReleaseNotes>
-        <Version>1.8.0</Version>
-        <AssemblyVersion>1.8.0</AssemblyVersion>
-        <FileVersion>1.8.0</FileVersion>
+        <PackageReleaseNotes>Channel rewards API support</PackageReleaseNotes>
+        <Version>1.9.0</Version>
+        <AssemblyVersion>1.9.0</AssemblyVersion>
+        <FileVersion>1.9.0</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
