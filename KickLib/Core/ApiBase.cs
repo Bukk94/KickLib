@@ -105,13 +105,19 @@ public abstract class ApiBase
 
         var deserializedObject = JsonConvert.DeserializeObject<DataWrapper<TType>>(data, _serializerSettings);
 
-        return deserializedObject?.Data is not null
-            ? Result.Ok(deserializedObject.Data!)
-                .WithSuccess(((int)response.StatusCode).ToString())
-                .WithSuccess(deserializedObject.Message ?? "Success")
-            : HandleErrorResponse(response, data, $"GET {url}", $"Failed to deserialize response to type {typeof(TType)}. Received response from url '{url}': {data}");
+        if (deserializedObject?.Data is null)
+        {
+            return HandleErrorResponse(response, data, $"GET {url}", $"Failed to deserialize response to type {typeof(TType)}. Received response from url '{url}': {data}");
+        }
+
+        var result = Result.Ok(deserializedObject.Data!)
+            .WithSuccess(((int)response.StatusCode).ToString())
+            .WithSuccess(deserializedObject.Message ?? "Success");
+        AddPaginationMetadata(result, deserializedObject.Pagination);
+                
+        return result;
     }
-    
+   
     /// <summary>
     ///     Perform POST request without payload
     /// </summary>
@@ -536,6 +542,16 @@ public abstract class ApiBase
         }
 
         return url;
+    }
+     
+    private static void AddPaginationMetadata<TType>(Result<TType> result, Pagination? pagination)
+    {
+        if (pagination is null)
+        {
+            return;
+        }
+
+        result.WithSuccess(new ResponseMetadata(pagination));
     }
 
     private HttpClient GetClient()

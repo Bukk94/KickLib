@@ -4,6 +4,7 @@ using KickLib.Models;
 using KickLib.Models.v1.Auth;
 using KickLib.Models.v1.Categories;
 using KickLib.Models.v1.ChannelRewards;
+using KickLib.Models.v1.ChannelRewards.Redemptions;
 using KickLib.Models.v1.Channels;
 using KickLib.Models.v1.Chat;
 using KickLib.Models.v1.EventSubscriptions;
@@ -152,6 +153,39 @@ public class ApiResponseTests : BaseKickLibTests
         deserializedObject.IsUserInputRequired.Should().BeTrue();
         deserializedObject.ShouldRedemptionsSkipRequestQueue.Should().BeTrue();
         deserializedObject.Title.Should().Be("Song Request");
+    }
+    
+    [Fact]
+    public void CorrectlyDeserialize_GetChannelRewardsRedemptions()
+    {
+        var payload = GetPayload("GetChannelRewardRedemptionsResponse");
+        
+        var deserializedObject = JsonConvert.DeserializeObject<ChannelRewardRedemption>(payload, SerializerSettings);
+        
+        deserializedObject.Should().NotBeNull();
+        
+        // Test Redemptions collection
+        deserializedObject.Redemptions.Should().NotBeNull();
+        deserializedObject.Redemptions.Should().HaveCount(1);
+        
+        var redemption = deserializedObject.Redemptions.First();
+        redemption.Id.Should().Be("01KCTMJ2X3DXT814CVX8FR9T1D");
+        redemption.RedeemedAt.Should().Be(DateTimeOffset.Parse("2025-12-19T06:26:36Z"));
+        redemption.Status.Should().Be(RedemptionStatus.Pending);
+        redemption.UserInput.Should().Be("sorry mr strimer");
+        
+        // Test Redeemer
+        redemption.Redeemer.Should().NotBeNull();
+        redemption.Redeemer.UserId.Should().Be(123);
+        
+        // Test Reward
+        deserializedObject.Reward.Should().NotBeNull();
+        deserializedObject.Reward.Id.Should().Be("01KCTMJ2X3DXT814CVX8FR9T1D");
+        deserializedObject.Reward.Title.Should().Be("Unban Request");
+        deserializedObject.Reward.Description.Should().Be("Request to have your ban lifted");
+        deserializedObject.Reward.Cost.Should().Be(100);
+        deserializedObject.Reward.CanManage.Should().BeTrue();
+        deserializedObject.Reward.IsDeleted.Should().BeFalse();
     }
     
     [Fact]

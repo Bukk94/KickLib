@@ -15,5 +15,10 @@ namespace KickLib.Models
         ///     Optional response message.
         /// </summary>
         public string? Message { get; set; }
+
+        /// <summary>
+        ///     Optional pagination information (for endpoints that support it).
+        /// </summary>
+        public Pagination? Pagination { get; set; }
     }
 }

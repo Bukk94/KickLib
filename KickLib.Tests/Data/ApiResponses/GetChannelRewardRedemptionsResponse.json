@@ -1,0 +1,21 @@
+{
+  "redemptions": [
+    {
+      "id": "01KCTMJ2X3DXT814CVX8FR9T1D",
+      "redeemed_at": "2025-12-19T06:26:36Z",
+      "redeemer": {
+        "user_id": 123
+      },
+      "status": "pending",
+      "user_input": "sorry mr strimer"
+    }
+  ],
+  "reward": {
+    "can_manage": true,
+    "cost": 100,
+    "description": "Request to have your ban lifted",
+    "id": "01KCTMJ2X3DXT814CVX8FR9T1D",
+    "is_deleted": false,
+    "title": "Unban Request"
+  }
+}
