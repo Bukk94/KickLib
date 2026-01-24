@@ -27,6 +27,11 @@ public class KickOAuthGenerator : IKickOAuthGenerator
     ///     URL used for Token revocation.
     /// </summary>
     public const string RevokeTokenUrl = "https://id.kick.com/oauth/revoke";
+    
+    /// <summary>
+    ///     URL used for Token introspection.
+    /// </summary>
+    public const string IntrospectTokenUrl = "https://id.kick.com/oauth/token/introspect";
 
     /// <summary>
     ///     Creates instance of Kick OAuth Generator.

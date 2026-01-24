@@ -33,6 +33,11 @@ public class TokenIntrospectResponse
     public string? Scope { get; set; }
 
     /// <summary>
+    ///     Type of the token.
+    /// </summary>
+    public TokenType TokenType { get; set; }
+
+    /// <summary>
     ///     Get token scopes.
     /// </summary>
     public ICollection<string> GetScopes()

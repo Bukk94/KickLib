@@ -26,6 +26,7 @@ public abstract class ApiBase
     private readonly IHttpClientFactory _clientFactory;
 
     private const string BaseUrl = "https://api.kick.com/public/";
+    private const string HttpsPrefix = "https://";
     
     /// <summary>
     ///     Base constructor.
@@ -528,6 +529,11 @@ public abstract class ApiBase
             throw new ArgumentException("URL part cannot be null or empty.", nameof(urlPart));
         }
 
+        if (urlPart.StartsWith(HttpsPrefix, StringComparison.OrdinalIgnoreCase))
+        {
+            return urlPart;
+        }
+        
         var url = $"{BaseUrl}v{(int)version}/{urlPart}";
 
         if (queryParams != null)

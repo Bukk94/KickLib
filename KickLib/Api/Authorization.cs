@@ -11,7 +11,6 @@ public class Authorization : ApiBase, IAuthorization
     private readonly ApiSettings _settings;
     private readonly IKickOAuthGenerator _kickOAuthGenerator;
     private const string PublicKeyApiUrlPart = "public-key";
-    private const string IntrospectApiUrlPart = "token/introspect";
 
     /// <inheritdoc />
     public Authorization(ApiSettings settings, IKickOAuthGenerator oauthGenerator, IHttpClientFactory clientFactory, ILogger<Authorization> logger) 
@@ -34,7 +33,7 @@ public class Authorization : ApiBase, IAuthorization
         CancellationToken cancellationToken = default)
     {
         // v1/token/introspect
-        return PostAsync<TokenIntrospectResponse>(IntrospectApiUrlPart, ApiVersion.v1, accessToken, cancellationToken);
+        return PostAsync<TokenIntrospectResponse>(KickOAuthGenerator.IntrospectTokenUrl, ApiVersion.v1, accessToken, cancellationToken);
     }
     
     /// <summary>
