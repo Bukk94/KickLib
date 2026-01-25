@@ -529,12 +529,9 @@ public abstract class ApiBase
             throw new ArgumentException("URL part cannot be null or empty.", nameof(urlPart));
         }
 
-        if (urlPart.StartsWith(HttpsPrefix, StringComparison.OrdinalIgnoreCase))
-        {
-            return urlPart;
-        }
-        
-        var url = $"{BaseUrl}v{(int)version}/{urlPart}";
+        var url = urlPart.StartsWith(HttpsPrefix, StringComparison.OrdinalIgnoreCase)
+            ? urlPart // URL part is already a full URL
+            : $"{BaseUrl}v{(int)version}/{urlPart}";
 
         if (queryParams != null)
         {

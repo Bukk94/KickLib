@@ -1,14 +1,18 @@
-﻿namespace KickLib.Core
+﻿namespace KickLib.Core;
+
+/// <summary>
+///     Enumeration of API versions.
+/// </summary>
+public enum ApiVersion
 {
+    // ReSharper disable InconsistentNaming
     /// <summary>
-    ///     Enumeration of API versions.
+    ///     V1.
     /// </summary>
-    public enum ApiVersion
-    {
-        /// <summary>
-        ///     V1.
-        /// </summary>
-        // ReSharper disable InconsistentNaming
-        v1 = 1
-    }
+    v1 = 1,
+
+    /// <summary>
+    ///     V2.
+    /// </summary>
+    v2 = 2
 }

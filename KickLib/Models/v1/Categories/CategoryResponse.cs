@@ -36,6 +36,7 @@ public class CategoryResponse
     /// <remarks>
     ///     Only returned when getting specific category by ID!
     /// </remarks>
+    [Obsolete("ViewerCount is deprecated and will be removed in future versions. Kick stopped providing it in their API.")]
     [JsonProperty(PropertyName = "viewer_count")]
     public int? ViewerCount { get; set; }
 }
