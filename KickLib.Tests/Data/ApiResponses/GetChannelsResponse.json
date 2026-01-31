@@ -1,6 +1,8 @@
 {
+  "active_subscribers_count": 150,
   "banner_picture": "text",
   "broadcaster_user_id": 1,
+  "canceled_subscribers_count": 25,
   "category": {
     "id": 1,
     "name": "text",

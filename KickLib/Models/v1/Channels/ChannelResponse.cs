@@ -18,6 +18,18 @@ public class ChannelResponse
     ///     URL identifier of the channel.
     /// </summary>
     public string Slug { get; set; } = string.Empty;
+
+    /// <summary>
+    ///     Number of active subscribers on the channel.
+    /// </summary>
+    [JsonProperty(PropertyName = "active_subscribers_count")]
+    public int ActiveSubscribers { get; set; }
+    
+    /// <summary>
+    ///     Number of canceled subscribers from the channel.
+    /// </summary>
+    [JsonProperty(PropertyName = "canceled_subscribers_count")]
+    public int CanceledSubscribers { get; set; }
     
     /// <summary>
     ///     Description of the channel
