@@ -4,6 +4,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.0](https://www.nuget.org/packages/KickLib/1.10.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.9.0...v1.10.0)
+### Added 
+- Support for Channel reward redemption endpoints
+- Added more filtering options for Categories endpoints (supporting V2 endpoints)
+### Changed
+- Updated introspection to point to new OAuth introspection endpoint
+- Extended channels with active/cancelled subscriptions
+- Extended introspection with `TokenType` field
+
 ## [1.9.0](https://www.nuget.org/packages/KickLib/1.9.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.8.0...v1.9.0)
 ### Added
 - Channel Rewards APIs

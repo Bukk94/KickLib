@@ -4,11 +4,19 @@ This document provides a guide for migrating from one (major/minor) version of t
 
 ## Table of Contents
 
+- [1.9.0 -> 1.10.0](#190---1100)
 - [1.6.x -> 1.7.0](#16x---170)
 - [1.2.0 -> 1.3.0](#12x---130)
 - [1.1.1 -> 1.2.0](#111---120)
 - [0.2.0 -> 1.0.0](#020---100)
 - [0.1.x -> 0.2.0](#01x---020)
+
+## 1.9.0 -> 1.10.0
+
+* Kick has deprecated v1 categories endpoints in favor of better v2. 
+This means that old method allowing pagination via page number and filter by keyword will be soon removed.
+  * To migrate, use new `GetCategoriesAsync` method overloads that support cursor-based pagination and various filtering options.
+* Kick also stopped sending `viewer_count` for categories, so this property will always be `null` now.
 
 ## 1.6.x -> 1.7.0
 

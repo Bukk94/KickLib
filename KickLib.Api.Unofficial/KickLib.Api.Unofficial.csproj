@@ -6,14 +6,14 @@
         <Nullable>disable</Nullable>
         <LangVersion>latest</LangVersion>
         <Authors>Bukk94</Authors>
-        <AssemblyVersion>1.9.0</AssemblyVersion>
-        <FileVersion>1.9.0</FileVersion>
+        <AssemblyVersion>1.10.0</AssemblyVersion>
+        <FileVersion>1.10.0</FileVersion>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
         <PackageReference Include="PuppeteerExtraSharp" Version="[2.0.0]" />
         <PackageReference Include="PuppeteerSharp" Version="[14.0.0]" />
-        <PackageReference Include="RestSharp" Version="113.0.0" />
+        <PackageReference Include="RestSharp" Version="113.1.0" />
     </ItemGroup>
     <ItemGroup Condition="'$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net9.0' Or '$(TargetFramework)' == 'net10.0'">
         <PackageReference Include="PuppeteerExtraSharp" Version="3.1.1" />
