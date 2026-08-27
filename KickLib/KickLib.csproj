@@ -17,10 +17,10 @@
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Updated unofficial Videos endpoints, added kick session</PackageReleaseNotes>
-        <Version>1.13.0</Version>
-        <AssemblyVersion>1.13.0</AssemblyVersion>
-        <FileVersion>1.13.0</FileVersion>
+        <PackageReleaseNotes>Added Ads API and active gifted subscribers count; fixed crashes on missing video</PackageReleaseNotes>
+        <Version>1.14.0</Version>
+        <AssemblyVersion>1.14.0</AssemblyVersion>
+        <FileVersion>1.14.0</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 

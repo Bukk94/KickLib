@@ -4,6 +4,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.0](https://www.nuget.org/packages/KickLib/1.14.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.13.0...v1.14.0)
+### Added
+- Added `ActiveGiftedSubscribers` field to `ChannelResponse` (Get Channels endpoint), returning `active_gifted_subscribers_count` from the API.
+- Added new Ads API (`IKickApi.Ads`) with `CreateAdBreakAsync`, `GetAdBreakStatusAsync`, and `EnrollInAdsAsync`, backed by the new `ads:read` and `ads:write` scopes.
+### Changed
+- `ActiveSubscribers` on `ChannelResponse` now includes gifted subscriptions, matching Kick's `active_subscribers_count` behavior.
+### Fixed
+- Crashes on not-found video playback information endpoint response (404) are now handled gracefully, returning `null` instead of throwing an exception.
+- Removed a redundant `ChannelRewards.CreateChannelRewardAsync(string title, int cost, ...)` overload that made calls with only `title`/`cost` ambiguous; the remaining overload now defaults `isEnabled` to `true` in `IChannelRewards` too, so existing 2-argument calls keep working unchanged.
+
 ## [1.13.0](https://www.nuget.org/packages/KickLib/1.13.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.12.0...v1.13.0)
 ### Added
 - Added video playback information endpoint
@@ -18,7 +28,7 @@ All notable changes to this project will be documented in this file.
 # Changed
 - Changed endpoint for unofficial Videos endpoint, now requiring `ChannelId` to get a video
 ## Obsolete
-- Get video by ID is now deprecated~~~~~~~~
+- Get video by ID is now deprecated
 
 ## [1.11.0](https://www.nuget.org/packages/KickLib/1.11.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.10.0...v1.11.0)
 ### Added
