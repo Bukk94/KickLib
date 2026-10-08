@@ -16,7 +16,7 @@ namespace KickLib.Client;
 
 public class KickClient : IKickClient
 {
-    private const string KickWsKey = "32cbd69e4b950bf97679";
+    private const string KickWsKey = "34bf7a0ff419a2a775b9";
     private readonly Pusher _pusher;
     private readonly ILogger? _logger;
     
