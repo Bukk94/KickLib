@@ -6,8 +6,8 @@
         <Nullable>disable</Nullable>
         <LangVersion>latest</LangVersion>
         <Authors>Bukk94</Authors>
-        <AssemblyVersion>1.14.0</AssemblyVersion>
-        <FileVersion>1.14.0</FileVersion>
+        <AssemblyVersion>1.14.1</AssemblyVersion>
+        <FileVersion>1.14.1</FileVersion>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
@@ -21,11 +21,10 @@
     </ItemGroup>
     
     <ItemGroup>
-        <PackageReference Include="JsonSubTypes" Version="2.0.1" />
+        <PackageReference Include="JsonSubTypes" Version="2.2.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="Otp.NET" Version="1.4.1" />
-        <PackageReference Include="Polly" Version="8.7.0" />
-        <PackageReference Include="System.Net.Security" Version="4.3.2" />
+        <PackageReference Include="Polly" Version="8.8.0" />
         <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
         <PackageReference Include="WebSocketSharper" Version="1.0.42" />
     </ItemGroup>

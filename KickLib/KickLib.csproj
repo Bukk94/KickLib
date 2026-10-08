@@ -17,10 +17,10 @@
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Added Ads API and active gifted subscribers count; fixed crashes on missing video</PackageReleaseNotes>
-        <Version>1.14.0</Version>
-        <AssemblyVersion>1.14.0</AssemblyVersion>
-        <FileVersion>1.14.0</FileVersion>
+        <PackageReleaseNotes>Updated Websocket app key</PackageReleaseNotes>
+        <Version>1.14.1</Version>
+        <AssemblyVersion>1.14.1</AssemblyVersion>
+        <FileVersion>1.14.1</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
@@ -40,14 +40,13 @@
         <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="10.0.9" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.9" />
         <!-- References for NuGet package -->
-        <PackageReference Include="JsonSubTypes" Version="2.0.1" />
+        <PackageReference Include="JsonSubTypes" Version="2.2.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-        <PackageReference Include="System.Net.Security" Version="4.3.2" />
         <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
         <PackageReference Include="WebSocketSharper" Version="1.0.42" />
         <PackageReference Include="PusherClient" Version="2.2.1" />
         <PackageReference Include="Otp.NET" Version="1.4.1" />
-        <PackageReference Include="Polly" Version="8.7.0" />
+        <PackageReference Include="Polly" Version="8.8.0" />
     </ItemGroup>
 
     <ItemGroup>

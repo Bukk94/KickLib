@@ -4,6 +4,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.1](https://www.nuget.org/packages/KickLib/1.14.1) - [diff](https://github.com/Bukk94/KickLib/compare/v1.14.0...v1.14.1)
+### Fixed
+- Updated Kick WebSocket (Pusher) app key in `KickClient`, restoring real-time chat and event connections.
+### Changed
+- Updated dependencies: `JsonSubTypes` 2.2.0, `Polly` 8.8.0.
+- Removed unnecessary `System.Net.Security` package reference.
+
 ## [1.14.0](https://www.nuget.org/packages/KickLib/1.14.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.13.0...v1.14.0)
 ### Added
 - Added `ActiveGiftedSubscribers` field to `ChannelResponse` (Get Channels endpoint), returning `active_gifted_subscribers_count` from the API.
