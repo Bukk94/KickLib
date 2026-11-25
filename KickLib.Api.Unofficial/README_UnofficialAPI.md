@@ -4,6 +4,7 @@
 
 
 <p align="center">
+<a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/-.NET%2011-512BD4" style="max-height: 300px;"></a>
 <a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/-.NET%2010-1D5F7E" style="max-height: 300px;"></a>
 <a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/-.NET%209-blueviolet" style="max-height: 300px;"></a>
 <a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/-.NET%208-de1237" style="max-height: 300px;"></a>

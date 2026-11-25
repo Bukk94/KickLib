@@ -4,6 +4,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.0](https://www.nuget.org/packages/KickLib/1.15.0) - [diff](https://github.com/Bukk94/KickLib/compare/v1.14.1...v1.15.0)
+### Added
+- Added .NET 11 (`net11.0`) target framework.
+### Changed
+- `Microsoft.Extensions.*` package versions are now selected per target framework, so older targets no longer require the 10.x packages (where not forced by `PuppeteerSharp`).
+
 ## [1.14.1](https://www.nuget.org/packages/KickLib/1.14.1) - [diff](https://github.com/Bukk94/KickLib/compare/v1.14.0...v1.14.1)
 ### Fixed
 - Updated Kick WebSocket (Pusher) app key in `KickClient`, restoring real-time chat and event connections.

@@ -17,10 +17,10 @@
         <RepositoryUrl>https://github.com/Bukk94/KickLib</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Updated Websocket app key</PackageReleaseNotes>
-        <Version>1.14.1</Version>
-        <AssemblyVersion>1.14.1</AssemblyVersion>
-        <FileVersion>1.14.1</FileVersion>
+        <PackageReleaseNotes>Added .NET 11 support</PackageReleaseNotes>
+        <Version>1.15.0</Version>
+        <AssemblyVersion>1.15.0</AssemblyVersion>
+        <FileVersion>1.15.0</FileVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
